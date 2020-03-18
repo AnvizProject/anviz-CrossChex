@@ -59,7 +59,7 @@ export default{
             label: 'COM7'
           }, {
             value: 8,
-            label: 'COM8'
+            label: 'COM88'
           }
         ]
       }
