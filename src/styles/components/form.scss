@@ -1,0 +1,242 @@
+.input{
+    width: 100%;
+    max-height: 42px;
+    line-height: 1.2;
+    margin: 0;
+    outline: none;
+    -webkit-appearance: none;
+    box-sizing: border-box;
+    -webkit-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+    background: $color-ff;
+    padding: 12px 20px;
+    text-align: left;
+    font-size: $input-fontsize;
+    color: $color-re;
+    border-color: $color-dd;
+    border: 1px solid $color-dd;
+    border-radius: 0;
+    transition: $transition-base;
+    @media (max-width: $mobile-max-width){
+        background: rgba($color-ff,.9);
+        border-color: rgba($color-dd,.9);
+        transition: $transition-base;
+    }
+    &:hover,&:focus{
+        color: $color-re;
+        border-color: rgba($color-aa,.9);
+        cursor: text;
+        transition: $transition-base;
+        @media (max-width: $mobile-max-width){
+            color: $color-re;
+            background: rgba($color-ff,.9);
+            border-color: rgba($color-aa,.9);
+            transition: $transition-base;
+        }
+    }
+}
+.el-checkbox__inner {
+    width: 16px;
+    height: 16px;
+}
+.el-button--primary {
+    background: #47a369 !important;
+    border-color:#47a369 !important;
+}
+.el-button--primary:hover{
+    background: #8ed6a7 !important;
+    border-color:#8ed6a7 !important;
+}
+form {
+    width: 100%;
+    .avatar {
+        margin-bottom: 30px;
+    }
+    .el-form-item{
+        .el-form-item__label {
+            font-weight: normal;
+            font-size: 16px;
+            text-align: left;
+        }
+        &.group{
+            .icon {
+                opacity: 1;
+                width: 42px;
+                height: 42px;
+                font-size: 24px;
+                font-weight: 300;
+                color: $color-re;
+                background: transparent;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                z-index: 9;
+                color: #47a369;
+            }
+        }
+        .el-input {
+            input {
+                @extend .input;
+            }
+        }
+        .el-select {
+            width: 100%;
+        }
+        &.has-icon {
+            input {
+                padding-left: 44px;
+            }
+            .el-date-editor {
+                .el-input__prefix {
+                    display: none;
+                }
+            }
+        }
+        &.required {
+            input {
+                padding-right: 60px;
+            }
+            .el-select {
+                input{
+                    padding-right: 80px;
+                }
+                .el-input__suffix {
+                    bottom: 0;
+                    height: 40px;
+                    top: auto;
+                    right: 45px;
+                }
+            }
+            .required-info {
+                position: absolute;
+                bottom: 0;
+                right: 5px;
+                color: #d0021b;
+            }
+        }
+    }
+    &.el-form--label-top {
+        .el-form-item {
+            margin-bottom: 6px;
+            .el-form-item__label {
+                padding: 0;
+            }
+            .el-form-item__content {
+                .el-select {
+                    display: block;
+                }
+                .el-date-editor {
+                    width: 100%;
+                }
+            }
+        }
+    }
+    .el-loading-mask {
+        background-color: rgba(255, 255, 255, 0.7) !important;
+    }
+}
+
+// 全选框位置
+.el-table-column--selection .cell {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+}
+
+
+// 设备列表
+.devicelist{
+    .el-input__icon{
+        color:#000;
+        font-size: 1rem;
+        vertical-align: middle;
+    }
+}
+
+// 新增终端的Dialog
+.device-dialog{
+    .el-dialog{
+        max-width:851px;
+        min-width:851px;
+        background: #f2f2f2;
+    }
+    .el-dialog__header{
+        padding: 10px;
+        background: #fff;
+    }
+    .el-dialog__body{
+        padding: 10px;
+    }
+}
+
+// 查看详情
+.details-wrap{
+    .el-input__inner{
+        border:none;
+        background: none;
+        padding-left: 0;
+    }
+}
+
+// 人员设置的Dialog
+.user-dialog{
+    .el-dialog{
+        max-width:600px;
+        min-width:600px;
+        background: #f2f2f2;
+    }
+    .el-dialog__header{
+        padding: 10px;
+        background: #fff;
+    }
+    .el-dialog__body{
+        padding: 10px;
+    }
+}
+// 人员列表
+.userlist{
+    .el-table td, .el-table th{
+        padding: 5px 0;
+    }
+    .main-left{
+        .el-button--mini{
+            padding: 0 0;
+            border:none;
+        }
+        .tree_button{
+            margin-left: 25px;
+        }
+    }
+}
+// 记录管理
+.record{
+    .el-input__inner{
+        height:28px;
+        line-height:28px;
+    }
+    .el-input__icon{
+        line-height:28px;
+    }
+}
+
+// 考勤管理
+.attendance{
+    .el-tabs--border-card>.el-tabs__content {
+        padding: 0px;
+    }
+    .el-divider__text.is-left {
+        left: 10px;
+    }
+    .el-divider__text {
+        padding: 0 5px;
+    }
+    .el-divider--horizontal{
+        margin: 24px 0 15px ;
+    }
+}
+
+
+

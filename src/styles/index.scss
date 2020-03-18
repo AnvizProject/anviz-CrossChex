@@ -1,0 +1,116 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+@import './font.css';
+@import './card.scss';
+@import './components/form.scss';
+@import './components/main.scss';
+@import './components/navbar.scss';
+@import './deviceList.scss';
+
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  background:linear-gradient(213deg,rgba(19,84,122,1) 0%,rgba(128,208,199,1) 100%);
+  font-size: 16px;
+}
+
+label {
+  font-weight: 700;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  outline: none;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+//main-container全局样式
+.app-container {
+  width: calc(100vw - 230px);
+  height: calc(100vh - 112px);
+  padding: 10px;
+  background: rgba(255,255,255,0.8);
+  overflow: auto;
+}
+
+
+// loading
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+// 主题色
+.main-color{
+  color:#47a369;
+}
+
+// 修改elementui主题色
+
+// 单选框
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: #47a369;
+  background: #47a369;
+}
+// 复选框
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  border-color: #47a369;
+  background: #47a369;
+}
