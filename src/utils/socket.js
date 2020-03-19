@@ -5,8 +5,8 @@ var globalCallback = null
 // 初始化websocket
 function initWebSocket() {
   // ws地址 -->这里是你的请求路径
-  var ws = 'ws://47.101.160.190:8081'
-  // var ws = 'ws://' + location.hostname + ':8081'
+  // var ws = 'ws://47.101.160.190:8081'
+  var ws = 'ws://' + location.hostname + ':8081'
   websock = new WebSocket(ws)
   websock.onmessage = function(e) {
     websocketonmessage(e)
