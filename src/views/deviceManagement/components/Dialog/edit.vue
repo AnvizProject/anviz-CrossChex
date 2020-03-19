@@ -7,8 +7,8 @@
       center>
       <span slot="title" class="dialog-header ">
         <el-button @click="centerDialogVisible = false">取 消</el-button>
-        <div>新增终端</div>
-        <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+        <div>{{ dialogtitle }}</div>
+        <el-button type="primary" @click="add_device">确 定</el-button>
       </span>
       <el-row>
         <el-col :span="24">
@@ -17,7 +17,7 @@
             <div class="net-input-item">
               <span class="icon-size icon-nav-network"/>
               <span>
-                <selectbox/>
+                <selectbox :options="device_options.value1" v-model="form.DeviceType"/>
               </span>
             </div>
           </div>
@@ -26,15 +26,14 @@
       <div class="parameter">
         <span class="parameter-item">
           <h4>通讯方式</h4>
-          <el-radio-group v-model="radio">
-            <el-radio :label="1">USB（无驱）</el-radio>
-            <p><el-radio :label="2">网络设置</el-radio></p>
+          <el-radio-group v-model="form.Linkmode">
+            <p><el-radio :label="1">网络设置</el-radio></p>
             <div class="net-input">
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
                   <el-input
-                    v-model="input"
+                    v-model="form.ipaddress"
                     placeholder="请输入内容"
                     clearable
                     class="input-box"/>
@@ -45,32 +44,13 @@
                 <span class="icon-size icon-nav-network"/>
                 <span>
                   <el-input
-                    v-model="input"
+                    v-model="form.CommPort"
                     placeholder="请输入内容"
                     clearable/>
                 </span>
               </div>
             </div>
-            <el-radio :label="3">RS485</el-radio>
-            <div class="net-input">
-              <div class="net-input-item">
-                <span class="icon-size icon-nav-network"/>
-                <span>
-                  <selectbox/>
-                </span>
-              </div>
-              <div class="port">通讯密码</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-nav-network"/>
-                <span>
-                  <el-input
-                    v-model="input"
-                    type="password"
-                    placeholder="请输入密码"
-                    clearable/>
-                </span>
-              </div>
-            </div>
+            <p><el-radio :label="4">网络（客户端/客户端+DNS</el-radio></p>
           </el-radio-group>
         </span>
         <span class="parameter-item">
@@ -82,7 +62,8 @@
                 <span class="icon-size icon-nav-network"/>
                 <span>
                   <el-input
-                    v-model="input"
+                    v-model="form.ClientNumber"
+                    :disabled="Prohibit"
                     placeholder="请输入内容"
                     clearable
                     class="input-box"/>
@@ -90,12 +71,12 @@
               </div>
             </div>
             <div class="parameter-item-center">
-              <div>终端编号</div>
+              <div>机器号</div>
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
                   <el-input
-                    v-model="input"
+                    v-model="form.Clientid"
                     placeholder="请输入内容"
                     clearable
                     class="input-box"/>
@@ -105,12 +86,12 @@
           </div>
           <div class="parameter-item-wrap">
             <div class="parameter-item-center">
-              <div>终端编号</div>
+              <div>机器名称</div>
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
                   <el-input
-                    v-model="input"
+                    v-model="form.ClientName"
                     placeholder="请输入内容"
                     clearable
                     class="input-box"/>
@@ -122,7 +103,7 @@
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
-                  <selectbox/>
+                  <selectbox :options="device_list" v-model="form.Floorid"/>
                 </span>
               </div>
             </div>
@@ -133,16 +114,16 @@
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
-                  <selectbox/>
+                  <selectbox :options="device_options.value2" v-model="form.RecStatus"/>
                 </span>
               </div>
             </div>
             <div class="parameter-item-center">
-              <div>设备标签</div>
+              <div>设备标识</div>
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
-                  <selectbox/>
+                  <selectbox :options="device_options.value3" v-model="form.deviceflag"/>
                 </span>
               </div>
             </div>
@@ -199,16 +180,70 @@
 </template>
 <script>
 import selectbox from '@/components/select'
+import options from '@/components/mixin/device'
 export default {
   components: {
     selectbox
+  },
+  mixins: [options],
+  props: {
+    device_list: {
+      type: Array,
+      default: () => {}
+    },
+    de_data: {
+      type: Number,
+      default: null
+    }
   },
   data() {
     return {
       centerDialogVisible: false,
       showClo: false,
-      radio: 1,
-      input: ''
+      dialogtitle: '新增终端',
+      Prohibit: false,
+      form: {
+        DeviceType: null,
+        Clientid: null,
+        ClientNumber: null,
+        ClientName: null,
+        Floorid: null,
+        RecStatus: null,
+        deviceflag: null,
+        ipaddress: null,
+        CommPort: null,
+        Linkmode: 1
+      }
+    }
+  },
+  methods: {
+    add_device() {
+      console.log(this.form)
+      if (this.de_data === 1) {
+        this.$store.dispatch('interactive/Device_create', this.form).then(response => {
+          this.$message({
+            type: 'success',
+            message: '新增成功!'
+          })
+          this.centerDialogVisible = false
+          this.$emit('Terminal_list')
+        }).catch((error) => {
+          console.log(error)
+          this.$message.error('新增失败')
+        })
+      } else if (this.de_data === 0) {
+        console.log(this.form)
+        this.$store.dispatch('interactive/Device_update', this.form).then(response => {
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+          this.centerDialogVisible = false
+        }).catch((error) => {
+          console.log(error)
+          this.$message.error('修改失败')
+        })
+      }
     }
   }
 }
@@ -264,6 +299,7 @@ export default {
     width: 100%;
     p{
       margin-top: 10px;
+      margin-bottom: 10px;
     }
     .el-radio{
       font-weight: 600;

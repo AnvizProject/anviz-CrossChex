@@ -191,18 +191,6 @@ export default {
             type: 'success',
             message: '删除成功!'
           })
-          // for (let i = 0; i < this.list.length; i++) {
-          //   console.log(this.list[i])
-          //   if (this.Deptid === this.list[i].Deptid) {
-          //     this.list.splice(i, 1)
-          //     this.data = this.Tree(this.treeData, 0)
-          //     this.$message({
-          //       type: 'success',
-          //       message: '删除成功!'
-          //     })
-          //     break
-          //   }
-          // }
         }).catch((error) => {
           console.log(error)
         })

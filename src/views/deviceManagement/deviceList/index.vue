@@ -42,7 +42,8 @@
       </div>
       <div class="fun-button">
         <el-button type="primary" size="mini" @click="Adddevice">增加终端</el-button>
-        <el-button type="primary" size="mini">删除终端</el-button>
+        <el-button type="primary" size="mini" @click="editdevice">修改终端</el-button>
+        <el-button type="primary" size="mini" @click="deletedevice">删除终端</el-button>
         <el-button type="primary" size="mini" @click="sync_time">同步时间</el-button>
         <el-button type="primary" size="mini">终端参数</el-button>
         <el-button type="primary" size="mini">打铃设置</el-button>
@@ -79,134 +80,20 @@
             </el-col>
           </el-row>
         </div>
-        <div class="main-slide-bot">
-          <el-row :gutter="5">
-            <el-col :span="4">
-              <div class="grid-content bg-purple">
-                <el-tree
-                  :data="data"
-                  :props="defaultProps"
-                  :accordion="true"
-                  @node-click="handleNodeClick"/>
-              </div>
-            </el-col>
-            <el-col :span="20">
-              <div class="grid-content bg-purple-light">
-                <el-table
-                  ref="filterTable"
-                  :data="tableData"
-                  tooltip-effect="dark"
-                  style="width: 100%"
-                  @selection-change="handleSelectionChange">
-                  <el-table-column
-                    type="selection"/>
-                  <el-table-column
-                    fixed
-                    prop="UserCode"
-                    label="人员编号"/>
-                  <el-table-column
-                    prop="userid"
-                    label="考勤号"
-                    sortable
-                    width="90"/>
-                  <el-table-column
-                    prop="Cardnum"
-                    label="卡号"
-                    show-overflow-tooltip/>
-                  <el-table-column
-                    prop="Name"
-                    label="姓名"
-                    show-overflow-tooltip/>
-                  <el-table-column
-                    prop="EmployDate"
-                    label="聘用日期"
-                    show-overflow-tooltip
-                    width="100"/>
-                  <el-table-column
-                    prop="address"
-                    label="所在机器"
-                    show-overflow-tooltip/>
-                  <el-table-column
-                    prop="address"
-                    label="指纹1"
-                    show-overflow-tooltip/>
-                  <el-table-column
-                    prop="address"
-                    label="指纹2"
-                    show-overflow-tooltip/>
-                  <el-table-column
-                    prop="address"
-                    label="面部"
-                    show-overflow-tooltip/>
-                  <el-table-column
-                    prop="address"
-                    label="虹膜"
-                    show-overflow-tooltip/>
-                  <el-table-column
-                    prop="Sex"
-                    label="性别"
-                    show-overflow-tooltip/>
-                  <el-table-column
-                    prop="Duty"
-                    label="职务"
-                    show-overflow-tooltip/>
-                  <el-table-column
-                    prop="Birthday"
-                    label="出生日期"
-                    show-overflow-tooltip
-                    width="100"/>
-                  <el-table-column
-                    prop="Mobile"
-                    label="联系电话"
-                    show-overflow-tooltip
-                    width="120"/>
-                  <el-table-column
-                    prop="Address"
-                    label="联系地址"
-                    show-overflow-tooltip
-                    width="170"/>
-                  <el-table-column
-                    prop="Pwd"
-                    label="密码"
-                    show-overflow-tooltip/>
-                  <el-table-column
-                    prop="address"
-                    label="管理员组"
-                    show-overflow-tooltip/>
-                  <el-table-column label="操作" fixed="right" width="170">
-                    <template slot-scope="scope">
-                      <el-button @click="handleEdit(scope.$index, scope.row)"><i class="icon-modify el-icon--left icon-size"/>编辑</el-button>
-                      <el-button @click="handleDelete(scope.$index, scope.row)"><i class="icon-trashcan el-icon--left icon-size"/>删除</el-button>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
       </div>
-      <addDialog ref="addDialog" :rowdata="rowdata" @userlist="userlist"/>
+      <Dialog ref="Dialog" :device_list="device_list" :de_data="de_data" @Terminal_list="Terminal_list"/>
     </el-main>
-    <el-footer height="auto" class="footer">
-      <el-pagination
-        :current-page="currentPage"
-        :page-sizes="[15, 30, 50]"
-        :page-size="15"
-        :total="total"
-        layout="total, sizes, prev, pager, next, jumper"
-        @current-change="current_change"/>
-    </el-footer>
   </el-container>
 </template>
 <style scoped src="@/styles/list-top.scss"></style>
 <script>
-import addDialog from '../components/Dialog/add'
+import Dialog from '../components/Dialog/edit'
 // const id = 1000
 var timestamp = Date.parse(new Date()) / 1000
 export default {
   name: 'DeviceManagement',
   components: {
-    addDialog
+    Dialog
   },
   data() {
     return {
@@ -215,36 +102,20 @@ export default {
         value2: '',
         Deptid: ''
       },
+      details: {},
+      ClientNumbers: null,
+      de_data: null,
       group_list: [],
+      device_list: [],
       isactive: 0,
       devicegroupid: null,
       terminal_active: 0,
       terminal_list: [],
       clientid: null,
-      userids: null,
-      tableData: [],
-      multipleSelection: [],
-      total: 10,
-      currentPage: 1,
-      data: [],
-      list: [],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      },
-      Deptid: null,
-      rowdata: {}
-      // data: JSON.parse(JSON.stringify(dept_data))
+      Deptid: null
     }
   },
   computed: {
-    user_id_list() {
-      const userid = []
-      this.multipleSelection.forEach(item => {
-        userid.push(item.userid)
-      })
-      return userid
-    },
     // 部门列表计算
     treeData() {
       const treeData = []
@@ -255,128 +126,9 @@ export default {
     }
   },
   mounted: function() {
-    this.userlist(1)
-    this.depart_list()
     this.All_groups_list()
   },
   methods: {
-    // 人员列表
-    userlist(page) {
-      this.$store.dispatch('interactive/userList', { page: this.page, Deptid: this.Deptid }).then(response => {
-        this.tableData = response.userinfo_list.data
-        this.total = response.userinfo_list.total
-      }).catch(() => {
-      })
-    },
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.filterTable.toggleRowSelection(row)
-        })
-      } else {
-        this.$refs.filterTable.clearSelection()
-      }
-    },
-    handleSelectionChange(val) {
-      this.multipleSelection = val
-    },
-    Adduser() {
-      this.$refs.addDialog.Adduser()
-    },
-    // 删除人员
-    Delete() {
-      if (this.user_id_list.length === 0) {
-        this.$message({
-          message: '请选择人员',
-          type: 'warning'
-        })
-      } else {
-        this.$confirm('是否确认要删除?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$store.dispatch('interactive/userDelete', this.user_id_list.join(',')).then(response => {
-            this.userlist()
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-          }).catch(() => {
-          })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
-      }
-    },
-    // 修改人员
-    handleEdit(index, row) {
-      setTimeout(() => {
-        this.$refs.addDialog.handleEdit()
-      }, 0)
-      this.rowdata = Object.assign({}, row)
-    },
-    // 删除人员
-    handleDelete(index, rows) {
-      this.$confirm('是否确认要删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$store.dispatch('interactive/userDelete', rows.userid).then(response => {
-          this.userlist()
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-        }).catch(() => {
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-    },
-    // 人员查询
-    query() {
-      console.log('人员查询')
-    },
-    // 部门列表
-    depart_list() {
-      this.$store.dispatch('interactive/Depart_list', {}).then(response => {
-        this.list = response.dept
-        this.data = this.Tree(this.treeData, 0)
-        this.Deptid = response.dept_tree[0].Deptid
-      }).catch(error => {
-        console.log(error)
-      })
-    },
-    // 部门列表无限循环
-    Tree(data, parentId = '') {
-      const tree = []
-      let temp
-      data.forEach((item, index) => {
-        if (data[index].SupDeptid === parentId) {
-          const obj = data[index]
-          temp = this.Tree(data, data[index].Deptid)
-          if (temp.length > 0) {
-            obj.children = temp
-          }
-          tree.push(obj)
-        }
-      })
-      return tree
-    },
-    // 部门列表点击
-    handleNodeClick(data) {
-      console.log(data)
-      this.Deptid = data.Deptid
-      this.userlist()
-    },
     getConfigResult(res) {
       // 接收回调函数返回数据的方法
       console.log(res.ret)
@@ -418,6 +170,9 @@ export default {
         this.group_list = response.DeviceGroup
         this.devicegroupid = response.DeviceGroup[0].devicegroupid
         this.Terminal_list()
+        this.group_list.forEach((v, k) => {
+          this.device_list.push({ value: v.devicegroupid, label: '' + v.devicegroupname + '' })
+        })
       }).catch(() => {
         console.log('error')
       })
@@ -428,12 +183,15 @@ export default {
       this.devicegroupid = this.group_list[index].devicegroupid
       this.group_title = this.group_list[index].devicegroupname
       this.isactive = index
+      this.Terminal_list()
     },
     // 终端列表
     Terminal_list() {
       this.$store.dispatch('interactive/Terminal_list', { Floorid: this.devicegroupid }).then(response => {
         this.terminal_list = response.FingerClient
         this.clientid = response.FingerClient[0].Clientid
+        this.details = response.FingerClient[0]
+        this.ClientNumbers = response.FingerClient[0].ClientNumber
       }).catch(() => {
         console.log('error')
       })
@@ -442,10 +200,46 @@ export default {
     terminal(index) {
       this.terminal_active = index
       this.clientid = this.terminal_list[index].Clientid
+      this.details = this.terminal_list[index]
+      this.ClientNumbers = this.terminal_list[index].ClientNumber
     },
     // 新增终端
     Adddevice() {
-      this.$refs.addDialog.centerDialogVisible = true
+      this.$refs.Dialog.centerDialogVisible = true
+      this.$refs.Dialog.dialogtitle = '新增终端'
+      this.de_data = 1
+    },
+    // 修改终端
+    editdevice() {
+      this.$refs.Dialog.centerDialogVisible = true
+      this.de_data = 0
+      this.$refs.Dialog.dialogtitle = '修改终端'
+      this.$refs.Dialog.form = this.details
+      this.$refs.Dialog.Prohibit = true
+    },
+    // 删除终端
+    deletedevice() {
+      this.$confirm('是否确定删除此部门?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        console.log(this.ClientNumbers)
+        this.$store.dispatch('interactive/Device_delete', { ClientNumbers: this.ClientNumbers }).then(response => {
+          this.Terminal_list()
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        }).catch((error) => {
+          console.log(error)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
     // 读取指定记录
     query() {
@@ -454,18 +248,6 @@ export default {
         this.total = response.userinfo_list.total
       }).catch(() => {
       })
-    },
-    // 页码
-    current_change: function(currentPage) {
-      this.currentPage = currentPage
-      this.form.page = currentPage
-      this.userlist(currentPage)
-    },
-    renderContent(h, { node, data, store }) {
-      return (
-        <span class='custom-tree-node'>
-          <span>{node.label}</span>
-        </span>)
     }
   }
 }
@@ -476,12 +258,7 @@ export default {
   }
   .main-slide-top{
     margin-bottom: 5px;
-    height: 30%;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-  .main-slide-bot{
-    height: 69%;
+    height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
   }
@@ -526,12 +303,12 @@ export default {
   .el-carousel__item{
     height: 100%;
     display: flex;
-    align-items: center;
     border-bottom: 1px solid #EBEBEBFF;
     .device-list{
       width: 14%;
       max-width: 128px;
       height: 160px;
+      margin-top: 15px;
       margin-right: 1%;
       margin-left: 1%;
       border-radius:4px;
@@ -551,9 +328,5 @@ export default {
   .main-slide{
     width: 100%;
     height: 100%;
-  }
-  .footer{
-    display: flex;
-    justify-content:space-between;
   }
 </style>
