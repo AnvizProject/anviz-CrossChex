@@ -1,36 +1,82 @@
 {
-      
-      "Dashboard":"系统设置" ,
-      "Device_Management":"设备管理",
-      "User_Management":"用户管理",
-      "User_List" : "人员列表",
-      "Equipment_Group":"设备组",
-      "Data_Management":"数据管理",
-      "Forget_Attendance":"忘记考勤",
-      "Public_Leave":"公出请假",
-      "Late":"迟到早退",
-      "Outdated_Data":"过期数据",
-      "Log_Record":"日志记录",
-      "Admin_Log":"管理员日志",
-      "System_Setup":"系统设置",
-      "Database_Settings":"数据库设置",
-      "Basic_Setup":"基本设置",
-      "Attendance_Parameters":"考勤参数",
-      "Department_Management":"部门管理",
-      "Attendance_Status":"考勤状态",
-      "Fake_Settings":"假类设置",
-      "Work_Settings":"工种设置",
-      "Holiday_Settings":"节假日设置",
-      "Workforce_Management":"排班管理",
-      "Access_Control":"门禁管理",
-      "Time_Sync":"时间同步",
-      "Device_Parameters":"设备参数",
-      "Ring_Setting":"打铃设置",
-      "Device_List":"设备列表",
-      "Record_Management":"记录管理",
-      "Attendance_Management":"考勤管理",
-      "Sign-Out":"退出系统",
-      "Modify-Password":"修改密码",
-      "English":"英文",
-      "Chinese":"中文"
+  "Top_Nav": {
+    "System_Settings":"系统设置",
+    "Organization_Management":"组织管理",
+    "Device_Management":"设备管理",
+    "Attendance_Management":"考勤管理",
+    "Statistical_Report":"统计报表"
+  },
+  "System_Settings":{
+    "Database_Settings":"数据库设置",
+    "Basic_Parameters":"基本参数",
+    "Admin_Management":"管理员管理",
+    "Rights_Groups":"权限组管理"
+  },
+  "Organization_Management":{
+    "People_List":"人员列表",
+    "Department_Setting":"部门设置"
+  },
+  "Device_Management":{
+    "Device_List":"设备列表",
+    "Device_Group":"设备组管理",
+    "Access_Control":"门禁管理"
+  },
+  "Attendance_Management":{
+    "Attendance_Configuration":"考勤配置",
+    "Attendance_Parameters":"考勤参数", 
+    "Attendance_Status":"考勤状态", 
+    "Leave_Settings":"假类设置", 
+    "Job_Settings":"工种设置", 
+    "Holiday_Settings":"节假日设置",
+    "Schedule_Setting":"排班设置",
+    "Time_Period_Setting":"时间段设置",
+    "Shift_Setting":"班次设置",
+    "Staff_Scheduling":"人员排班",
+    "Attendance_Setting":"考勤管理",
+    "Leave_Work":"公出请假", 
+    "Forget_Attendance":"忘记考勤", 
+    "Late_Leave":"迟到早退", 
+    "Clear_Date":"清理过期数据"
+  },
+  "Statistical_Report":{
+    "Attendance_Record":"考勤记录",
+    "Statistical_Table":"统计报表"
+  },
+  
+
+
+
+
+
+
+
+
+
+  "User_Management":"用户管理",
+  "User_List" : "人员列表",
+  "Equipment_Group":"设备组",
+  "Data_Management":"数据管理",
+  "Forget_Attendance":"忘记考勤",
+  "Public_Leave":"公出请假",
+  "Late":"迟到早退",
+  "Outdated_Data":"过期数据",
+  "Log_Record":"日志记录",
+  "Admin_Log":"管理员日志",
+  "Basic_Setup":"基本设置",
+  "Attendance_Parameters":"考勤参数",
+  "Department_Management":"部门管理",
+  "Attendance_Status":"考勤状态",
+  "Fake_Settings":"假类设置",
+  "Work_Settings":"工种设置",
+  "Holiday_Settings":"节假日设置",
+  "Workforce_Management":"排班管理",
+  "Access_Control":"门禁管理",
+  "Time_Sync":"时间同步",
+  "Device_Parameters":"设备参数",
+  "Ring_Setting":"打铃设置",
+  "Device_List":"设备列表",
+  "Sign-Out":"退出系统",
+  "Modify-Password":"修改密码",
+  "English":"英文",
+  "Chinese":"中文"
 }

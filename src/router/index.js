@@ -8,6 +8,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '../views/layout/Layout'
+import Delimiter from '../views/layout/Delimiter'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -25,103 +26,61 @@ import Layout from '../views/layout/Layout'
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
-  { path: '/', redirect: '/systemSetup', component: Layout, hidden: true },
+  { path: '/', redirect: '/systemSettings', component: Layout, hidden: true },
   {
-    path: '/systemSetup',
+    path: '/systemSettings',
     component: Layout,
-    redirect: '/systemSetup/databaseSettings',
-    name: 'systemSetup',
+    redirect: '/systemSettings/databaseSettings',
+    name: 'systemSettings',
     meta: {
-      title: 'System_Setup',
+      title: 'Top_Nav.System_Settings',
       icon: 'icon-changed'
     },
     children: [
       {
-        path: '/systemSetup/databaseSettings',
-        component: () => import('@/views/systemSetup/databaseSettings/index'), // Parent router-view
+        path: '/systemSettings/databaseSettings',
+        component: () => import('@/views/systemSettings/databaseSettings/index'),
         name: 'Database Settings',
-        meta: { title: 'Database_Settings', icon: 'icon-change' }
+        meta: { title: 'System_Settings.Database_Settings', icon: 'icon-change' }
       },
       {
-        path: '/systemSetup/basicSetup',
-        component: () => import('@/views/systemSetup/basicSetup/index'),
-        name: 'Basic Setup',
-        meta: { title: 'Basic_Setup', icon: 'icon-period' }
+        path: '/systemSettings/basicParameters',
+        component: () => import('@/views/systemSettings/basicParameters/index'),
+        name: 'Basic Parameters',
+        meta: { title: 'System_Settings.Basic_Parameters', icon: 'icon-period' }
       },
       {
-        path: '/systemSetup/attendanceParameters',
-        component: () => import('@/views/systemSetup/attendanceParameters/index'),
-        name: 'Attendance Parameters',
-        meta: { title: 'Attendance_Parameters', icon: 'icon-period' }
+        path: '/systemSettings/adminManagement',
+        component: () => import('@/views/systemSettings/adminManagement/index'),
+        name: 'Admin Management',
+        meta: { title: 'System_Settings.Admin_Management', icon: 'icon-period' }
       },
       {
-        path: '/systemSetup/departmentManagement',
-        component: () => import('@/views/systemSetup/departmentManagement/index'),
-        name: 'Department Management',
-        meta: { title: 'Department_Management', icon: 'icon-period' }
-      },
-      {
-        path: '/systemSetup/attendanceStatus',
-        component: () => import('@/views/systemSetup/attendanceStatus/index'),
-        name: 'Attendance Status',
-        meta: { title: 'Attendance_Status', icon: 'icon-period' }
-      },
-      {
-        path: '/systemSetup/fakeSettings',
-        component: () => import('@/views/systemSetup/fakeSettings/index'),
-        name: 'Fake Settings',
-        meta: { title: 'Fake_Settings', icon: 'icon-period' }
-      },
-      {
-        path: '/systemSetup/workSettings',
-        component: () => import('@/views/systemSetup/workSettings/index'),
-        name: 'Work Settings',
-        meta: { title: 'Work_Settings', icon: 'icon-period' }
-      },
-      {
-        path: '/systemSetup/holidaySettings',
-        component: () => import('@/views/systemSetup/holidaySettings/index'),
-        name: 'Holiday Settings',
-        meta: { title: 'Holiday_Settings', icon: 'icon-period' }
-      },
-      {
-        path: '/systemSetup/workforceManagement',
-        component: () => import('@/views/systemSetup/workforceManagement/index'),
-        name: 'Workforce Management',
-        meta: { title: 'Workforce_Management', icon: 'icon-period' }
-      },
-      {
-        path: '/systemSetup/accessControl',
-        component: () => import('@/views/systemSetup/accessControl/index'),
-        name: 'Access Control',
-        meta: { title: 'Access_Control', icon: 'icon-period' }
-      },
-      {
-        path: '/systemSetup/userManagement',
-        component: () => import('@/views/systemSetup/userManagement/index'),
-        name: 'User Management',
-        meta: { title: 'User_Management', icon: 'icon-period' }
+        path: '/systemSettings/rightsGroups',
+        component: () => import('@/views/systemSettings/rightsGroups/index'),
+        name: 'Rights Groups',
+        meta: { title: 'System_Settings.Rights_Groups', icon: 'icon-period' }
       }
     ]
   },
   {
-    path: '/userManagement',
+    path: '/organizationManagement',
     component: Layout,
-    redirect: '/userManagement/userList',
-    name: 'userManagement',
-    meta: { title: 'User_Management', icon: 'icon-admin-hover' },
+    redirect: '/organizationManagement/peopleList',
+    name: 'organizationManagement',
+    meta: { title: 'Top_Nav.Organization_Management', icon: 'icon-admin-hover' },
     children: [
       {
-        path: '/userManagement/userList',
-        name: 'User List',
-        component: () => import('@/views/userManagement/userList/index'),
-        meta: { title: 'User_List', icon: 'icon-admin' }
+        path: '/organizationManagement/peopleList',
+        name: 'People List',
+        component: () => import('@/views/organizationManagement/peopleList/index'),
+        meta: { title: 'Organization_Management.People_List', icon: 'icon-admin' }
       },
       {
-        path: '/userManagement/equipmentGroup',
-        name: 'Equipment Group',
-        component: () => import('@/views/userManagement/equipmentGroup/index'),
-        meta: { title: 'Equipment_Group', icon: 'icon-ac' }
+        path: '/organizationManagement/departmentSetting',
+        name: 'Department Setting',
+        component: () => import('@/views/organizationManagement/departmentSetting/index'),
+        meta: { title: 'Organization_Management.Department_Setting', icon: 'icon-ac' }
       }
     ]
   },
@@ -129,124 +88,154 @@ export const constantRouterMap = [
     path: '/deviceManagement',
     component: Layout,
     redirect: '/deviceManagement/deviceList',
-    name: 'deviceManagement',
-    meta: { title: 'Device_Management', icon: 'icon-ac' },
+    name: 'Device Management',
+    meta: { title: 'Top_Nav.Device_Management', icon: 'icon-ac' },
     children: [
-      {
-        path: '/deviceManagement/timeSync',
-        name: 'Time Sync',
-        component: () => import('@/views/deviceManagement/timeSync/index'),
-        meta: { title: 'Time_Sync', icon: 'icon-ac' }
-      },
-      {
-        path: '/deviceManagement/deviceParameters',
-        name: 'Device Parameters',
-        component: () => import('@/views/deviceManagement/deviceParameters/index'),
-        meta: { title: 'Device_Parameters', icon: 'icon-ac' }
-      },
-      {
-        path: '/deviceManagement/ringSetting',
-        name: 'Ring Setting',
-        component: () => import('@/views/deviceManagement/ringSetting/index'),
-        meta: { title: 'Ring_Setting', icon: 'icon-ac' }
-      },
       {
         path: '/deviceManagement/deviceList',
         name: 'Device List',
         component: () => import('@/views/deviceManagement/deviceList/index'),
-        meta: { title: 'Device_List', icon: 'icon-admin' }
-      }
-    ]
-  },
-
-  {
-    path: '/recordManagement',
-    component: Layout,
-    redirect: '/recordManagement',
-    name: 'recordManagement',
-    meta: { title: 'Record_Management', icon: 'icon-ac' },
-    children: [
+        meta: { title: 'Device_Management.Device_List', icon: 'icon-admin' }
+      },
       {
-        path: '/recordManagement',
-        component: () => import('@/views/recordManagement/index'),
-        meta: { title: 'Record_Management', icon: 'icon-ac' }
+        path: '/deviceManagement/deviceGroup',
+        name: 'Device Group',
+        component: () => import('@/views/deviceManagement/deviceGroup/index'),
+        meta: { title: 'Device_Management.Device_Group', icon: 'icon-ac' }
+      },
+      {
+        path: '/deviceManagement/accessControl',
+        name: 'Access Control',
+        component: () => import('@/views/deviceManagement/accessControl/index'),
+        meta: { title: 'Device_Management.Access_Control', icon: 'icon-ac' }
       }
     ]
   },
   {
     path: '/attendanceManagement',
     component: Layout,
-    redirect: '/attendanceManagement',
-    name: 'attendanceManagement',
-    meta: { title: 'Attendance_Management', icon: 'icon-ac' },
+    redirect: '/attendanceParameters/attendanceParameters',
+    name: 'Attendance Management',
+    meta: { title: 'Top_Nav.Attendance_Management', icon: 'icon-ac' },
     children: [
       {
-        path: '/attendanceManagement',
-        component: () => import('@/views/attendanceManagement/index'),
-        meta: { title: 'Attendance_Management', icon: 'icon-ac' }
+        path: '/attendanceConfiguration',
+        component: Delimiter,
+        redirect: '/attendanceParameters/attendanceParameters',
+        meta: { title: 'Attendance_Management.Attendance_Configuration', icon: 'icon-ac' },
+        children: [
+          {
+            path: 'attendanceParameters',
+            component: () => import('@/views/attendanceManagement/attendanceParameters/index'),
+            name: 'Attendance Parameters',
+            meta: { title: 'Attendance_Management.Attendance_Parameters', icon: 'icon-ac' }
+          },
+          {
+            path: 'attendanceStatus',
+            component: () => import('@/views/attendanceManagement/attendanceStatus/index'),
+            name: 'Attendance Status',
+            meta: { title: 'Attendance_Management.Attendance_Status', icon: 'icon-ac' }
+          },
+          {
+            path: 'leaveSettings',
+            component: () => import('@/views/attendanceManagement/leaveSettings/index'),
+            name: 'Leave Settings',
+            meta: { title: 'Attendance_Management.Leave_Settings', icon: 'icon-ac' }
+          },
+          {
+            path: 'jobSettings',
+            component: () => import('@/views/attendanceManagement/jobSettings/index'),
+            name: 'Job Settings',
+            meta: { title: 'Attendance_Management.Job_Settings', icon: 'icon-ac' }
+          },
+          {
+            path: 'holidaySettings',
+            component: () => import('@/views/attendanceManagement/holidaySettings/index'),
+            name: 'Holiday Settings',
+            meta: { title: 'Attendance_Management.Holiday_Settings', icon: 'icon-ac' }
+          }
+        ]
+      },
+      {
+        path: '/scheduleSetting',
+        component: Delimiter,
+        redirect: '/scheduleSetting/timeSetting',
+        meta: { title: 'Attendance_Management.Schedule_Setting', icon: 'icon-ac' },
+        children: [
+          {
+            path: 'timeSetting',
+            component: () => import('@/views/attendanceManagement/timeSetting/index'),
+            name: 'Time Setting',
+            meta: { title: 'Attendance_Management.Time_Period_Setting', icon: 'icon-ac' }
+          },
+          {
+            path: 'shiftSetting',
+            component: () => import('@/views/attendanceManagement/shiftSetting/index'),
+            name: 'Shift Setting',
+            meta: { title: 'Attendance_Management.Shift_Setting', icon: 'icon-ac' }
+          },
+          {
+            path: 'staffScheduling',
+            component: () => import('@/views/attendanceManagement/staffScheduling/index'),
+            name: 'Staff Scheduling',
+            meta: { title: 'Attendance_Management.AttendanStaff_Schedulingce_Parameters', icon: 'icon-ac' }
+          }
+        ]
+      },
+      {
+        path: '/attendanceSetting',
+        component: Delimiter,
+        redirect: '/attendanceSetting/leaveWork',
+        meta: { title: 'Attendance_Management.Attendance_Setting', icon: 'icon-ac' },
+        children: [
+          {
+            path: 'leaveWork',
+            component: () => import('@/views/attendanceManagement/leaveWork/index'),
+            name: 'Leave Work',
+            meta: { title: 'Attendance_Management.Leave_Work', icon: 'icon-ac' }
+          },
+          {
+            path: 'forgetAttendance',
+            component: () => import('@/views/attendanceManagement/forgetAttendance/index'),
+            name: 'Forget Attendance',
+            meta: { title: 'Attendance_Management.Forget_Attendance', icon: 'icon-ac' }
+          },
+          {
+            path: 'lateLeave',
+            component: () => import('@/views/attendanceManagement/lateLeave/index'),
+            name: 'Late Leave',
+            meta: { title: 'Attendance_Management.Late_Leave', icon: 'icon-ac' }
+          },
+          {
+            path: 'clearDate',
+            component: () => import('@/views/attendanceManagement/clearDate/index'),
+            name: 'Clear Date',
+            meta: { title: 'Attendance_Management.Clear_Date', icon: 'icon-ac' }
+          }
+        ]
       }
     ]
   },
-
   {
-    path: '/dataManagement',
+    path: '/statisticalReport',
     component: Layout,
-    redirect: '/dataManagement/forgetAttendance',
-    name: 'dataManagement',
-    meta: {
-      title: 'Data_Management',
-      icon: 'icon-cloud'
-    },
+    redirect: '/statisticalReport/attendanceRecord',
+    name: 'attendanceRecord',
+    meta: { title: 'Top_Nav.Statistical_Report', icon: 'icon-ac' },
     children: [
       {
-        path: '/dataManagement/forgetAttendance',
-        component: () => import('@/views/dataManagement/forgetAttendance/index'), // Parent router-view
-        name: 'Forget Attendance',
-        meta: { title: 'Forget_Attendance', icon: 'icon-change' }
+        path: '/attendanceRecord',
+        component: () => import('@/views/statisticalReport/attendanceRecord/index'),
+        name: 'Attendance Record',
+        meta: { title: 'Statistical_Report.Attendance_Record', icon: 'icon-ac' }
       },
       {
-        path: '/dataManagement/publicLeave',
-        component: () => import('@/views/dataManagement/publicLeave/index'),
-        name: 'Public Leave',
-        meta: { title: 'Public_Leave', icon: 'icon-period' }
-      },
-      {
-        path: '/dataManagement/Late',
-        component: () => import('@/views/dataManagement/Late/index'),
-        name: 'Late',
-        meta: { title: 'Late', icon: 'icon-period' }
-      },
-      {
-        path: '/dataManagement/outdatedData',
-        component: () => import('@/views/dataManagement/outdatedData/index'),
-        name: 'Outdated Data',
-        meta: { title: 'Outdated_Data', icon: 'icon-period' }
-      },
-      {
-        path: '/dataManagement/logRecord',
-        component: () => import('@/views/dataManagement/logRecord/index'),
-        name: 'Log Record',
-        meta: { title: 'Log_Record', icon: 'icon-period' }
-      },
-      {
-        path: '/dataManagement/adminLog',
-        component: () => import('@/views/dataManagement/adminLog/index'),
-        name: 'Admin Log',
-        meta: { title: 'Admin_Log', icon: 'icon-period' }
+        path: '/statisticalTable',
+        component: () => import('@/views/statisticalReport/statisticalTable/index'),
+        name: 'Statistical Table',
+        meta: { title: 'Statistical_Report.Statistical_Table', icon: 'icon-ac' }
       }
     ]
-  },
-  {
-    path: '/dashboard',
-    component: Layout,
-    redirect: '/dashboard',
-    name: 'dashboard',
-    meta: { title: 'Dashboard', icon: 'icon-nav-dashboard' },
-    children: [{
-      path: '/dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'icon-nav-dashboard' }
-    }]
   },
   { path: '*', redirect: '/404', hidden: true }
 ]
