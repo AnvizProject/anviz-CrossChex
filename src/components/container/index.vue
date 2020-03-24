@@ -1,6 +1,6 @@
 <template>
   <el-container class="main-body">
-    <el-header><slot name="header">header111</slot></el-header>
+    <el-header><slot name="header">header</slot></el-header>
     <el-main><slot name="main">mian</slot></el-main>
     <el-footer><slot name="footer">footer</slot></el-footer>
   </el-container>
@@ -15,11 +15,7 @@
     overflow: auto !important;
     background: #FFF !important;
     .el-header,.el-footer{
-      height: 40px !important;
-      display:flex;
-      justify-content: space-between;
-      text-align: left;
-      align-items: center;
+      height: 40px !important
     }
   }
 </style>
