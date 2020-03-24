@@ -21,16 +21,34 @@
         <i class="el-icon-location"/>
         <span>{{ $t(parentRputer.meta.title) }}</span>
       </template> -->
-      <app-link v-for="(v, k) in menuList" :key="k" :to="v.path">
-        <el-tooltip :content="$i18n.t(v.meta.title)" :disabled="!isCollapse" effect="dark" placement="right">
-          <el-menu-item :index="v.path.split('/')[2]">
-            <!-- <template slot="title"> -->
-            <span :class="v.meta.icon" class="icon"/>
-            <span v-if="!isCollapse" slot="title">{{ $t(v.meta.title) }}</span>
-            <!-- </template> -->
-          </el-menu-item>
-        </el-tooltip>
-      </app-link>
+      <div v-if="menuList[0].children">
+        <div v-for="(v,k) in menuList" :key="k">
+          <el-divider content-position="left">{{ $i18n.t(v.meta.title) }}</el-divider>
+          <app-link v-for="(v, k) in v.children" :key="k" :to="v.path">
+            <!-- <pre>{{ v }}</pre> -->
+            <el-tooltip :content="$i18n.t(v.meta.title)" :disabled="!isCollapse" effect="dark" placement="right">
+              <el-menu-item :index="v.path.split('/')[2]">
+                <!-- <template slot="title"> -->
+                <span :class="v.meta.icon" class="icon"/>
+                <span v-if="!isCollapse" slot="title">{{ $t(v.meta.title) }}</span>
+                <!-- </template> -->
+              </el-menu-item>
+            </el-tooltip>
+          </app-link>
+        </div>
+      </div>
+      <div v-else>
+        <app-link v-for="(v, k) in menuList" :key="k" :to="v.path">
+          <el-tooltip :content="$i18n.t(v.meta.title)" :disabled="!isCollapse" effect="dark" placement="right">
+            <el-menu-item :index="v.path.split('/')[2]">
+              <!-- <template slot="title"> -->
+              <span :class="v.meta.icon" class="icon"/>
+              <span v-if="!isCollapse" slot="title">{{ $t(v.meta.title) }}</span>
+              <!-- </template> -->
+            </el-menu-item>
+          </el-tooltip>
+        </app-link>
+      </div>
     </el-menu>
   </div>
 </template>
@@ -57,13 +75,22 @@ export default {
       let menu = []
       route.forEach((v, k) => {
         if (v.children !== undefined) {
-          if (v.name === routeParent) {
-            menu = v.children
-          }
+          v.children.forEach((val, key) => {
+            if (val.children) {
+              if (val.name === routeParent) {
+                menu.push(val)
+              }
+            } else {
+              if (v.name === routeParent) {
+                menu = v.children
+              }
+            }
+          })
         } else {
           return true
         }
       })
+      console.log(menu)
       return menu
     },
     ...mapGetters([

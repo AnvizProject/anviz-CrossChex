@@ -492,7 +492,7 @@ export default {
         Nmae: '',
         UserCode: '',
         Deptid: '',
-        date2: ''
+        date2: null
       },
       tableData: [],
       multipleSelection: [],

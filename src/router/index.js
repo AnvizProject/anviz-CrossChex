@@ -27,14 +27,14 @@ export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
   { path: '/', redirect: '/systemSettings', component: Layout, hidden: true },
+  // 系统设置
   {
     path: '/systemSettings',
     component: Layout,
     redirect: '/systemSettings/databaseSettings',
     name: 'systemSettings',
     meta: {
-      title: 'Top_Nav.System_Settings',
-      icon: 'icon-changed'
+      title: 'Top_Nav.System_Settings'
     },
     children: [
       {
@@ -63,33 +63,35 @@ export const constantRouterMap = [
       }
     ]
   },
+  // 组织管理
   {
     path: '/organizationManagement',
     component: Layout,
     redirect: '/organizationManagement/peopleList',
     name: 'organizationManagement',
-    meta: { title: 'Top_Nav.Organization_Management', icon: 'icon-admin-hover' },
+    meta: { title: 'Top_Nav.Organization_Management' },
     children: [
       {
         path: '/organizationManagement/peopleList',
         name: 'People List',
         component: () => import('@/views/organizationManagement/peopleList/index'),
-        meta: { title: 'Organization_Management.People_List', icon: 'icon-admin' }
+        meta: { title: 'Organization_Management.People_List', icon: 'icon-user' }
       },
       {
         path: '/organizationManagement/departmentSetting',
         name: 'Department Setting',
         component: () => import('@/views/organizationManagement/departmentSetting/index'),
-        meta: { title: 'Organization_Management.Department_Setting', icon: 'icon-ac' }
+        meta: { title: 'Organization_Management.Department_Setting', icon: 'icon-department' }
       }
     ]
   },
+  // 设备管理
   {
     path: '/deviceManagement',
     component: Layout,
     redirect: '/deviceManagement/deviceList',
-    name: 'Device Management',
-    meta: { title: 'Top_Nav.Device_Management', icon: 'icon-ac' },
+    name: 'deviceManagement',
+    meta: { title: 'Top_Nav.Device_Management' },
     children: [
       {
         path: '/deviceManagement/deviceList',
@@ -111,45 +113,47 @@ export const constantRouterMap = [
       }
     ]
   },
+  // 考勤管理
   {
     path: '/attendanceManagement',
     component: Layout,
-    redirect: '/attendanceParameters/attendanceParameters',
-    name: 'Attendance Management',
-    meta: { title: 'Top_Nav.Attendance_Management', icon: 'icon-ac' },
+    redirect: '/attendanceConfiguration',
+    name: 'attendanceManagement',
+    meta: { title: 'Top_Nav.Attendance_Management' },
     children: [
       {
         path: '/attendanceConfiguration',
         component: Delimiter,
-        redirect: '/attendanceParameters/attendanceParameters',
-        meta: { title: 'Attendance_Management.Attendance_Configuration', icon: 'icon-ac' },
+        redirect: '/attendanceManagement/attendanceConfiguration/attendanceParameters',
+        name: 'attendanceManagement',
+        meta: { title: 'Attendance_Management.Attendance_Configuration' },
         children: [
           {
-            path: 'attendanceParameters',
+            path: '/attendanceManagement/attendanceConfiguration/attendanceParameters',
             component: () => import('@/views/attendanceManagement/attendanceParameters/index'),
             name: 'Attendance Parameters',
             meta: { title: 'Attendance_Management.Attendance_Parameters', icon: 'icon-ac' }
           },
           {
-            path: 'attendanceStatus',
+            path: '/attendanceManagement/attendanceConfiguration/attendanceStatus',
             component: () => import('@/views/attendanceManagement/attendanceStatus/index'),
             name: 'Attendance Status',
             meta: { title: 'Attendance_Management.Attendance_Status', icon: 'icon-ac' }
           },
           {
-            path: 'leaveSettings',
+            path: '/attendanceManagement/attendanceConfiguration/leaveSettings',
             component: () => import('@/views/attendanceManagement/leaveSettings/index'),
             name: 'Leave Settings',
             meta: { title: 'Attendance_Management.Leave_Settings', icon: 'icon-ac' }
           },
           {
-            path: 'jobSettings',
+            path: '/attendanceManagement/attendanceConfiguration/jobSettings',
             component: () => import('@/views/attendanceManagement/jobSettings/index'),
             name: 'Job Settings',
             meta: { title: 'Attendance_Management.Job_Settings', icon: 'icon-ac' }
           },
           {
-            path: 'holidaySettings',
+            path: '/attendanceManagement/attendanceConfiguration/holidaySettings',
             component: () => import('@/views/attendanceManagement/holidaySettings/index'),
             name: 'Holiday Settings',
             meta: { title: 'Attendance_Management.Holiday_Settings', icon: 'icon-ac' }
@@ -159,26 +163,27 @@ export const constantRouterMap = [
       {
         path: '/scheduleSetting',
         component: Delimiter,
-        redirect: '/scheduleSetting/timeSetting',
-        meta: { title: 'Attendance_Management.Schedule_Setting', icon: 'icon-ac' },
+        redirect: '/attendanceManagement/scheduleSetting/timeSetting',
+        name: 'attendanceManagement',
+        meta: { title: 'Attendance_Management.Schedule_Setting' },
         children: [
           {
-            path: 'timeSetting',
+            path: '/attendanceManagement/scheduleSetting/timeSetting',
             component: () => import('@/views/attendanceManagement/timeSetting/index'),
             name: 'Time Setting',
             meta: { title: 'Attendance_Management.Time_Period_Setting', icon: 'icon-ac' }
           },
           {
-            path: 'shiftSetting',
+            path: '/attendanceManagement/scheduleSetting/shiftSetting',
             component: () => import('@/views/attendanceManagement/shiftSetting/index'),
             name: 'Shift Setting',
             meta: { title: 'Attendance_Management.Shift_Setting', icon: 'icon-ac' }
           },
           {
-            path: 'staffScheduling',
+            path: '/attendanceManagement/scheduleSetting/staffScheduling',
             component: () => import('@/views/attendanceManagement/staffScheduling/index'),
             name: 'Staff Scheduling',
-            meta: { title: 'Attendance_Management.AttendanStaff_Schedulingce_Parameters', icon: 'icon-ac' }
+            meta: { title: 'Attendance_Management.Staff_Scheduling', icon: 'icon-ac' }
           }
         ]
       },
@@ -186,28 +191,29 @@ export const constantRouterMap = [
         path: '/attendanceSetting',
         component: Delimiter,
         redirect: '/attendanceSetting/leaveWork',
-        meta: { title: 'Attendance_Management.Attendance_Setting', icon: 'icon-ac' },
+        name: 'attendanceManagement',
+        meta: { title: 'Attendance_Management.Attendance_Setting' },
         children: [
           {
-            path: 'leaveWork',
+            path: '/attendanceManagement/attendanceSetting/leaveWork',
             component: () => import('@/views/attendanceManagement/leaveWork/index'),
             name: 'Leave Work',
             meta: { title: 'Attendance_Management.Leave_Work', icon: 'icon-ac' }
           },
           {
-            path: 'forgetAttendance',
+            path: '/attendanceManagement/attendanceSetting/forgetAttendance',
             component: () => import('@/views/attendanceManagement/forgetAttendance/index'),
             name: 'Forget Attendance',
             meta: { title: 'Attendance_Management.Forget_Attendance', icon: 'icon-ac' }
           },
           {
-            path: 'lateLeave',
+            path: '/attendanceManagement/attendanceSetting/lateLeave',
             component: () => import('@/views/attendanceManagement/lateLeave/index'),
             name: 'Late Leave',
             meta: { title: 'Attendance_Management.Late_Leave', icon: 'icon-ac' }
           },
           {
-            path: 'clearDate',
+            path: '/attendanceManagement/attendanceSetting/clearDate',
             component: () => import('@/views/attendanceManagement/clearDate/index'),
             name: 'Clear Date',
             meta: { title: 'Attendance_Management.Clear_Date', icon: 'icon-ac' }
@@ -220,24 +226,24 @@ export const constantRouterMap = [
     path: '/statisticalReport',
     component: Layout,
     redirect: '/statisticalReport/attendanceRecord',
-    name: 'attendanceRecord',
-    meta: { title: 'Top_Nav.Statistical_Report', icon: 'icon-ac' },
+    name: 'statisticalReport',
+    meta: { title: 'Top_Nav.Statistical_Report' },
     children: [
       {
-        path: '/attendanceRecord',
+        path: '/statisticalReport/attendanceRecord',
         component: () => import('@/views/statisticalReport/attendanceRecord/index'),
         name: 'Attendance Record',
         meta: { title: 'Statistical_Report.Attendance_Record', icon: 'icon-ac' }
       },
       {
-        path: '/statisticalTable',
+        path: '/statisticalReport/statisticalTable',
         component: () => import('@/views/statisticalReport/statisticalTable/index'),
         name: 'Statistical Table',
         meta: { title: 'Statistical_Report.Statistical_Table', icon: 'icon-ac' }
       }
     ]
-  },
-  { path: '*', redirect: '/404', hidden: true }
+  }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 export default new Router({

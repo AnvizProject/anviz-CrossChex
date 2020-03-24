@@ -2,8 +2,10 @@
 @import './mixin.scss';
 @import './transition.scss';
 @import './element-ui.scss';
+@import './public.scss';
+
 @import './sidebar.scss';
-@import './font.css';
+@import './font-icon.css';
 @import './card.scss';
 @import './components/form.scss';
 @import './components/main.scss';
@@ -75,16 +77,6 @@ a:hover {
     height: 0;
   }
 }
-
-//main-container全局样式
-.app-container {
-  width: calc(100vw - 230px);
-  height: calc(100vh - 112px);
-  padding: 10px;
-  background: rgba(255,255,255,0.8);
-  overflow: auto;
-}
-
 
 // loading
 

@@ -2,8 +2,8 @@
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
     <div class="logo">
-      <span class="icon-number" @click="openside"/>
-      <span><img src="@/assets/logo/login.png" alt=""></span>
+      <!-- <span class="icon-number" @click="openside"/> -->
+      <span class="icon-crosschex-logo"/>
       <span>CrossChex</span>
     </div>
     <el-menu
@@ -53,7 +53,7 @@ export default {
       'sidebar'
     ]),
     routes() {
-      // console.log(this.$router.options.routes)
+      console.log(this.$router.options.routes)
       return this.$router.options.routes
     },
     variables() {
@@ -77,7 +77,7 @@ export default {
       }).catch(() => {
       })
     },
-    // 左边导航栏
+    // 左边导航栏开关
     openside() {
       this.$store.commit('leftmenu')
     },

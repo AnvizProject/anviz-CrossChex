@@ -12,13 +12,12 @@
       height: 100%;
       display: flex;
       align-items: center;
-      padding: 0 31px 0 15px;
+      padding: 0 40px 0;
       span{
         display: block;
         width: auto;
         height: 100%;
         color:$color-ff;
-        font-weight: 600;
         display: flex;
         align-items: center;
         &:first-child{
