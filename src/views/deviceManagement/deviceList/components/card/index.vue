@@ -2,7 +2,9 @@
   <el-card class="card-select">
     <div slot="header" class="header clearfix" title="123" @click="drawer">
       <div class="left">
-        <img src="./c2slim.png" alt="">
+        <div :style="{backgroundImage:'url('+coverImage+')'}" class="image">
+          <!-- <img src="./c2slim.png" alt=""> -->
+        </div>
       </div>
       <div class="middle">
         <div class="department">研发部</div>
@@ -53,7 +55,8 @@ export default {
   data() {
     return {
       radio: 1,
-      selected: false
+      selected: false,
+      coverImage: require('./c2slim.png')
     }
   },
   methods: {
@@ -84,10 +87,18 @@ export default {
     }
     .left{
       border-right: 1px #F3F3F3 solid;
-      img{
-        width: 90px;
-        height: 90px;
-      }
+
+        .image{
+          text-align: center;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: contain;
+          height: 90px;
+        }
+      // img{
+      //   width: 90px;
+      //   height: 90px;
+      // }
     }
     .middle{
       padding: 6px 13px;

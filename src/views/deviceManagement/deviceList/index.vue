@@ -19,7 +19,10 @@ export default {
       data: [
         { key: 1, val: 'aaa' },
         { key: 2, val: 'aaa' },
-        { key: 3, val: 'aaa' }
+        { key: 3, val: 'aaa' },
+        { key: 4, val: 'aaa' },
+        { key: 5, val: 'aaa' },
+        { key: 6, val: 'aaa' }
       ],
       selected: {},
       selectedList: []
@@ -46,10 +49,8 @@ export default {
 
 <style scoped>
 .main {
-  display: flex;
-  justify-content: space-between;
-}
-.card {
-  width: 24%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px 10px;
 }
 </style>
