@@ -4,7 +4,7 @@
     <Container :total="total" @per_page="people_list">
       <span slot="header" class="con-item">
         <div class="header-item">
-          <el-button type="info" size="mini" @click="Adduser">增加</el-button>
+          <el-button type="primary" size="mini" @click="Adduser">增加</el-button>
           <el-button type="info" size="mini" disabled>修改</el-button>
           <el-dropdown>
             <el-button type="info" size="mini">更多操作<i class="el-icon-arrow-down el-icon--right"/></el-button>
