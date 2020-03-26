@@ -1,12 +1,18 @@
 <template>
   <div class="search">
-    <el-input v-model="input" size="mini" placeholder="请输入内容">
+    <el-input v-model="input" :placeholder="search" size="mini">
       <el-button slot="append" size="mini" type="primary">查询</el-button>
     </el-input>
   </div>
 </template>
 <script>
 export default {
+  props: {
+    search: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       input: ''

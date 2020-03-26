@@ -23,7 +23,8 @@ const userManagement = {
     // 人员列表
     userList({ commit }, search_value) {
       search_value.access_token = store.getters.token
-      search_value.per_page = 13
+      search_value.page = 1
+      console.log(search_value)
       return new Promise((resolve, reject) => {
         userlist(search_value).then(response => {
           resolve(response)

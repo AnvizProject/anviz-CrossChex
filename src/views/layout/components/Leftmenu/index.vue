@@ -90,7 +90,7 @@ export default {
           return true
         }
       })
-      console.log(menu)
+      // console.log(menu)
       return menu
     },
     ...mapGetters([

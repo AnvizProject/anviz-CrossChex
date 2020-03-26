@@ -34,7 +34,7 @@ service.interceptors.response.use(
     const res = response.data
     if (res.error_code !== 0) {
       Message({
-        message: res.message,
+        message: res.error_reason,
         type: 'error',
         duration: 5 * 1000
       })
