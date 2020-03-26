@@ -2,7 +2,8 @@
   <container>
     <div slot="header">header</div>
     <div slot="main" class="main">
-      <card-select v-for="(v,k) in 4" :key="k" :val="k" :select="selected" class="card" @radio="radio" />
+      <card-select v-for="(v,k) in data" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox" />
+      <!-- <el-button @click="getSelectedList">test</el-button> -->
     </div>
     <div slot="footer">footer</div>
   </container>
@@ -15,24 +16,38 @@ export default {
   components: { container, cardSelect },
   data() {
     return {
-      data: [],
-      selected: null
+      data: [
+        { key: 1, val: 'aaa' },
+        { key: 2, val: 'aaa' },
+        { key: 3, val: 'aaa' }
+      ],
+      selected: {},
+      selectedList: []
     }
   },
   methods: {
-    radio(data) {
-      this.selected = data
+    checkbox(data) {
+      console.log(data)
+      this.selected[data.key] = data.checked
+      console.log(this.selected)
+    },
+    getSelectedList() {
+      this.selectedList = []
+      for (const key in this.selected) {
+        if (this.selected[key] === true) {
+          this.selectedList.push(key)
+        }
+      }
+      console.log(this.selectedList)
     }
   }
-
 }
 </script>
 
 <style scoped>
 .main {
-  padding: 17px 3px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 .card {
   width: 24%;

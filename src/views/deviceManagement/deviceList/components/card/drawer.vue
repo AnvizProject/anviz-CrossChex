@@ -1,8 +1,6 @@
 <template>
   <el-drawer
     :visible.sync="drawer"
-    :direction="direction"
-    :before-close="handleClose"
     :with-header = "false">
     <div class="drawer">
       <div class="header">

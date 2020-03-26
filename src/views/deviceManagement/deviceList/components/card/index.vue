@@ -11,7 +11,7 @@
       </div>
       <div class="right">
         <div @click.stop="stop">
-          <el-radio v-model="selected" :label="val" class="radio" @change="change"/>
+          <el-checkbox v-model="selected" :label="index" class="radio" @change="change"/>
         </div>
       </div>
     </div>
@@ -45,18 +45,15 @@ export default {
       type: Object,
       default: () => {}
     },
-    key: {
-      type: Number,
-      default: null
-    },
-    selected: {
+    index: {
       type: Number,
       default: null
     }
   },
   data() {
     return {
-      radio: 1
+      radio: 1,
+      selected: false
     }
   },
   methods: {
@@ -64,7 +61,7 @@ export default {
       this.$refs.drawer.drawer = true
     },
     change() {
-      this.$emit('radio', this.radio)
+      this.$emit('checkbox', { key: this.index, checked: this.selected })
     },
     stop() {
       // 阻止点击单选按钮事件冒泡的空函数
@@ -129,25 +126,16 @@ export default {
       padding: 12px;
       line-height: unset;
     }
-    .el-radio__inner{
-      background: #FFF !important;
+    .el-checkbox__inner{
+      // background: #0DA387 !important;
       width: 25px;
       height: 25px;
-    }
-    .el-radio{
-      &.is-checked{
-        position: relative;
-        & .el-radio__input:after {
-          content: "";
-          display: block;
-          height: 25px;
-          width: 25px;
-          background-image: url('../../../../../assets/checkbox.png');
-          background-size: 100%;
-          position: absolute;
-          right:0px;
-          top:0;
-        }
+      border-radius: 50%;
+      &::after{
+        left: 8px;
+        top:3px;
+        height: 11px;
+        width: 5px;
       }
     }
     .el-card__body{
