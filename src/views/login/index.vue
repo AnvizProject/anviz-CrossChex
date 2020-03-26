@@ -55,8 +55,8 @@ export default {
     }
     return {
       loginForm: {
-        OPName: '',
-        OPPwd: '',
+        OPName: 'Admin',
+        OPPwd: '123456',
         check: false
       },
       loginRules: {
