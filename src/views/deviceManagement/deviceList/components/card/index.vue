@@ -4,12 +4,17 @@
       <div class="left">
         <div :style="{backgroundImage:'url('+coverImage+')'}" class="image">
           <!-- <img src="./c2slim.png" alt=""> -->
+          <div class="name">
+            123
+          </div>
         </div>
       </div>
       <div class="middle">
-        <div class="department">研发部</div>
-        <div class="ip">192.168.60.107</div>
-        <div class="group">Anviz 设备组</div>
+        <div class="box">
+          <div class="department">研发部</div>
+          <div class="ip">192.168.60.107</div>
+          <div class="group">Anviz 设备组</div>
+        </div>
       </div>
       <div class="right">
         <div @click.stop="stop">
@@ -88,13 +93,23 @@ export default {
     .left{
       border-right: 1px #F3F3F3 solid;
 
-        .image{
-          text-align: center;
-          background-repeat: no-repeat;
-          background-position: center;
-          background-size: contain;
-          height: 90px;
+      .image{
+        text-align: center;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        height: 90px;
+        position: relative;
+        .name{
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          display: block;
+          background: #0EA48B;
+          padding: 1px 10px;
+          color: #FFF;
         }
+      }
       // img{
       //   width: 90px;
       //   height: 90px;
@@ -104,9 +119,19 @@ export default {
       padding: 6px 13px;
       font-size: 12px;
       color: #AAA;
-      .department{
-        font-size: 18px;
-        color: #58585A;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+
+      .box{
+        .department{
+          font-size: 18px;
+          color: #58585A;
+          margin-bottom: 10px;
+        }
+        .ip,.group{
+          line-height: 15px;
+        }
       }
     }
   }
