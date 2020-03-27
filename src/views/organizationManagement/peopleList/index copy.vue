@@ -286,6 +286,7 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
+      console.log(val, 'table')
     },
     Adduser() {
       this.$refs.addDialog.Adduser()

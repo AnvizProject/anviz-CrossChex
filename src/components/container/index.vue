@@ -6,7 +6,7 @@
       <el-pagination
         :current-page="currentPage1"
         :page-sizes="[15, 30, 50]"
-        :page-size="10"
+        :page-size="pageSize"
         :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange"
@@ -24,16 +24,18 @@ export default {
   },
   data() {
     return {
-      currentPage1: 1
+      currentPage1: 1,
+      pageSize: 15
     }
   },
   methods: {
     handleSizeChange(val) {
-      this.$emit('per_page', val)
-      console.log(val)
+      console.log(val, '子组件1')
+      this.$emit('per_page', { perPage: val, page: 1 })
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`)
+      console.log(val, '子组件2')
+      this.$emit('page', { perPage: this.pageSize, page: val })
     }
   }
 }

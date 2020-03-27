@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div class="organization">
     <search :search="search"/>
-    <Container :total="total" @per_page="people_list">
-      <span slot="header" class="con-item">
+    <Container :total="total" @per_page="people_list" @page="people_list">
+      <div slot="header" class="con-item">
         <div class="header-item">
           <el-button type="primary" size="mini" @click="Adduser">增加</el-button>
-          <el-button type="info" size="mini" disabled>修改</el-button>
+          <el-button :disabled="multipleSelection.length<=0" :type="multipleSelection.length>0?'danger':'info'" size="mini" @click="handleDelete">删除</el-button>
           <el-dropdown>
-            <el-button type="info" size="mini">更多操作<i class="el-icon-arrow-down el-icon--right"/></el-button>
+            <el-button :disabled="multipleSelection.length<=0" type="info" size="mini">更多操作<i class="el-icon-arrow-down el-icon--right"/></el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>调动部门</el-dropdown-item>
               <el-dropdown-item>人员离职</el-dropdown-item>
@@ -56,8 +56,8 @@
             </div>
           </Dropdown>
         </div>
-      </span>
-      <span slot="main">
+      </div>
+      <div slot="main">
         <el-table
           ref="multipleTable"
           :data="tableData"
@@ -69,14 +69,25 @@
             type="selection"/>
           <el-table-column
             prop="UserCode"
+            sortable
+            width="100px"
             label="工号"/>
           <el-table-column
-            prop="Name"
             label="姓名"
-            width="120"/>
+            width="120">
+            <template slot-scope="scope">
+              <div>{{ scope.row.Name }}</div>
+              <div>
+                <span type="primary">主要按钮</span>
+                <span type="info">信息按钮</span>
+                <span type="warning">警告按钮</span>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column
             prop="Sex"
             label="性别"
+            width="100px"
             show-overflow-tooltip/>
           <el-table-column
             prop="Duty"
@@ -88,15 +99,17 @@
             show-overflow-tooltip/>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <span class="icon-edit"/>
-              <span class="icon-recycle"/>
-              <span>查看更多</span>
+              <div class="operating">
+                <el-button type="text" size="mini" class="icon icon-edit" @click="handleEdit(scope.$index, scope.row)"/>
+                <el-button type="text" size="mini" class="icon icon-recycle" @click="handleDelete(scope.$index, scope.row)"/>
+                <el-button type="text" size="mini">查看更多</el-button>
+              </div>
             </template>
           </el-table-column>
         </el-table>
-      </span>
+      </div>
     </Container>
-    <editDialog ref="editDialog"/>
+    <editDialog ref="editDialog" :rowdata="rowdata"/>
   </div>
 </template>
 
@@ -105,6 +118,13 @@ import Search from '@/components/search'
 import Container from '@/components/container'
 import Dropdown from '@/components/Dropdown'
 import editDialog from '../components/Dialog/EDIT'
+function check() {
+  if (document.getElementById('check1').checked === true) {
+    return true
+  } else {
+    return false
+  }
+}
 export default {
   components: {
     Search,
@@ -120,14 +140,30 @@ export default {
       group_list: [],
       dep_list: [],
       tableData: [],
+      rowdata: {},
       total: null,
+      per_page: {
+        page: 1,
+        perPage: 15
+      },
+      user_id: [],
+      checked: true,
       multipleSelection: []
+    }
+  },
+  computed: {
+    user_id_list() {
+      const userid = []
+      this.multipleSelection.forEach(item => {
+        userid.push(item.userid)
+      })
+      return userid
     }
   },
   mounted: function() {
     this.All_groups_list()
     this.depart_list()
-    this.people_list(1)
+    this.people_list()
   },
   methods: {
     // 增加人员
@@ -153,7 +189,11 @@ export default {
     },
     // 人员列表
     people_list(per_page) {
-      this.$store.dispatch('interactive/userList', { per_page: per_page, Deptid: this.Deptid }).then(response => {
+      if (per_page !== undefined) {
+        this.per_page = per_page
+      }
+      console.log(this.per_page, '111')
+      this.$store.dispatch('interactive/userList', { per_page: this.per_page.perPage, Deptid: this.Deptid, page: this.per_page.page }).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
         console.log(response)
@@ -161,8 +201,46 @@ export default {
         console.log(error)
       })
     },
+    // 修改人员
+    handleEdit(index, row) {
+      setTimeout(() => {
+        this.$refs.editDialog.handleEdit()
+      }, 0)
+      this.rowdata = Object.assign({}, row)
+    },
+
+    handleDelete(index, rows) {
+      this.user_id.push(rows.userid)
+      this.Delete()
+    },
+
+    // 删除人员
+    Delete() {
+      this.$confirm('<div>123</div><div><input id="check1" type="checkbox" checked="checked" value="">456</div>', '提示', {
+        dangerouslyUseHTMLString: true,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        console.log(check())
+        this.$store.dispatch('interactive/userDelete', { userid: this.user_id.join(',') }).then(response => {
+          this.people_list()
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        }).catch(() => {
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
     // 表格数据
     handleSelectionChange(val) {
+      console.log(val, 'table')
       this.multipleSelection = val
     }
   }
@@ -177,9 +255,7 @@ export default {
       align-items: center;
       .el-dropdown {
         vertical-align: top;
-      }
-      .el-dropdown + .el-dropdown {
-        margin-left: 15px;
+        margin-left: 10px;
       }
     }
     .secondary{
@@ -187,6 +263,24 @@ export default {
       .sec-title{
         white-space: nowrap;
         margin-right: 15px;
+      }
+    }
+  }
+  .el-main{
+    .icon{
+      font-size: 24px;
+      &.icon-edit{
+        color:#FA6400;
+      }
+      &.icon-recycle{
+        color:#D0021B;
+      }
+    }
+    .operating{
+      height: 28px;
+      display: flex;
+      .el-button{
+        padding: 0px;
       }
     }
   }

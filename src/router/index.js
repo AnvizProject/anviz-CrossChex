@@ -97,19 +97,19 @@ export const constantRouterMap = [
         path: '/deviceManagement/deviceList',
         name: 'Device List',
         component: () => import('@/views/deviceManagement/deviceList/index'),
-        meta: { title: 'Device_Management.Device_List', icon: 'icon-admin' }
+        meta: { title: 'Device_Management.Device_List', icon: 'icon-a350' }
       },
       {
         path: '/deviceManagement/deviceGroup',
         name: 'Device Group',
         component: () => import('@/views/deviceManagement/deviceGroup/index'),
-        meta: { title: 'Device_Management.Device_Group', icon: 'icon-ac' }
+        meta: { title: 'Device_Management.Device_Group', icon: 'icon-accesses' }
       },
       {
         path: '/deviceManagement/accessControl',
         name: 'Access Control',
         component: () => import('@/views/deviceManagement/accessControl/index'),
-        meta: { title: 'Device_Management.Access_Control', icon: 'icon-ac' }
+        meta: { title: 'Device_Management.Access_Control', icon: 'icon-door-setting' }
       }
     ]
   },

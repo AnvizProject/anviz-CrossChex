@@ -255,7 +255,7 @@ export default {
     }
   },
   methods: {
-    // 添加设备
+    // 新增人员
     Adduser() {
       this.centerDialogVisible = true
       this.dialogtitle = '增加人员'
@@ -282,7 +282,7 @@ export default {
         EmployDate: ''
       }
     },
-    // 修改设备
+    // 修改人员
     handleEdit() {
       this.centerDialogVisible = true
       this.dialogtitle = '修改人员'
@@ -299,7 +299,11 @@ export default {
       }
       this.$store.dispatch(action, this.userform).then(response => {
         this.centerDialogVisible = false
-        this.$emit('userlist')
+        this.$message({
+          type: 'success',
+          message: '新增成功!'
+        })
+        this.$emit('people_list')
       }).catch(() => {
         console.log('error')
       })
