@@ -1,10 +1,10 @@
 <template>
   <el-card class="card-select">
-    <div slot="header" class="header clearfix" title="123" @click="drawer">
+    <div slot="header" class="header" title="123" @click="drawer">
       <div class="left">
         <div :style="{backgroundImage:'url('+coverImage+')'}" class="image">
           <!-- <img src="./c2slim.png" alt=""> -->
-          <div class="name">
+          <div id="box" class="name">
             123
           </div>
         </div>
@@ -78,17 +78,21 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .header{
     display: flex;
+    justify-content: space-between;
     cursor: pointer;
     .left,.right,.middle{
       width: 33%;
     }
-    .right>div{
-      width: 33px;
-      overflow: hidden;
-      margin: 0 0 0 auto;
+    .right{
+      width: 10%;
+      >div{
+        width: 33px;
+        overflow: hidden;
+        margin: 0 0 0 auto;
+      }
     }
     .left{
       border-right: 1px #F3F3F3 solid;
@@ -99,21 +103,15 @@ export default {
         background-position: center;
         background-size: contain;
         height: 90px;
-        position: relative;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
         .name{
-          position: absolute;
-          bottom: 0;
-          width: 100%;
-          display: block;
-          background: #0EA48B;
-          padding: 1px 10px;
+          padding: 0px 10px;
+          background: rgba(14, 164, 139,0.8);
           color: #FFF;
         }
       }
-      // img{
-      //   width: 90px;
-      //   height: 90px;
-      // }
     }
     .middle{
       padding: 6px 13px;

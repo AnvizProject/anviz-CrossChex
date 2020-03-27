@@ -6,6 +6,9 @@
       <div class="header">
         <div :style="{backgroundImage:'url('+coverImage+')'}" class="image">
           <!-- <img src="@/assets/c2slim.png" alt=""> -->
+          <div id="drawer-box" class="name">
+            222
+          </div>
         </div>
         <div class="info">
           <div class="box">
@@ -104,7 +107,7 @@ export default {
       padding: 25px 0;
       border-bottom: 1px #ddd solid;
       display: flex;
-      div{
+      >div{
         width: 50%;
         &.image{
           text-align: center;
@@ -112,6 +115,15 @@ export default {
           background-position: center;
           background-size: contain;
           height: 150px;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          .name{
+            padding: 0px 10px;
+            font-size: 18px;
+            background: rgba(14, 164, 139,0.8);
+            color: #FFF;
+          }
         }
         &.info{
           color: #58585A;
