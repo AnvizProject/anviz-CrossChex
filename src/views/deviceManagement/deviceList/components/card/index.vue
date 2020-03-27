@@ -11,9 +11,9 @@
       </div>
       <div class="middle">
         <div class="box">
-          <div class="department">研发部</div>
-          <div class="ip">192.168.60.107</div>
-          <div class="group">Anviz 设备组</div>
+          <div class="department" >研发部</div>
+          <div class="ip" >192.168.60.107</div>
+          <div class="group" >Anviz 设备组</div>
         </div>
       </div>
       <div class="right">
@@ -26,16 +26,17 @@
       <span class="icon-cursor icon-psd-lock display"/>
       <!-- <span class="icon-cursor icon-psd-open open"/> -->
       <span class="icon-cursor icon-data-import"/>
-      <el-dropdown :hide-on-click="false" trigger="click">
+      <el-dropdown :hide-on-click="true">
         <span class="el-dropdown-link">
           <span class="icon-cursor icon-setting"/><i class="el-icon-arrow-down el-icon--right"/>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>黄金糕</el-dropdown-item>
-          <el-dropdown-item>狮子头</el-dropdown-item>
-          <el-dropdown-item>螺蛳粉</el-dropdown-item>
-          <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-          <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+          <el-dropdown-item>设置网络参数</el-dropdown-item>
+          <el-dropdown-item>终端信息</el-dropdown-item>
+          <el-dropdown-item>消息管理</el-dropdown-item>
+          <el-dropdown-item>清除管理员</el-dropdown-item>
+          <el-dropdown-item>设置机器号</el-dropdown-item>
+          <el-dropdown-item>自动切换考勤状态设置</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -78,7 +79,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .header{
     display: flex;
     justify-content: space-between;
@@ -135,13 +136,16 @@ export default {
   }
   .icon{
     font-size: 32px;
+    height: 100%;
     display: flex;
     justify-content: space-around;
-    .icon-cursor {
+    .el-dropdown-link{
+      display: block;
+      height: 100%;
       cursor: pointer;
-    }
-    .el-dropdown-link>span{
-      font-size: 32px;
+      >span{
+        font-size: 32px;
+      }
     }
     .display{
       color: #dedbdc;
@@ -174,6 +178,7 @@ export default {
     }
     .el-card__body{
       padding: 3px 0;
+    background: #F4F4F4;
     }
   }
 </style>

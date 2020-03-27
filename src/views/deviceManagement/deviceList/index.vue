@@ -10,16 +10,13 @@
           <el-dropdown>
             <el-button :disabled="getSelectedList.length<=0" type="info" size="mini">更多操作<i class="el-icon-arrow-down el-icon--right"/></el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>调动部门</el-dropdown-item>
-              <el-dropdown-item>人员离职</el-dropdown-item>
-              <el-dropdown-item>设置权限</el-dropdown-item>
-              <el-dropdown-item>复制权限</el-dropdown-item>
-              <el-dropdown-item>导入人员</el-dropdown-item>
-              <el-dropdown-item>导出人员</el-dropdown-item>
-              <el-dropdown-item>下载人员</el-dropdown-item>
-              <el-dropdown-item>上传人员</el-dropdown-item>
-              <el-dropdown-item>下载模板</el-dropdown-item>
-              <el-dropdown-item>上传模板</el-dropdown-item>
+              <el-dropdown-item>同步时间</el-dropdown-item>
+              <el-dropdown-item>终端参数</el-dropdown-item>
+              <el-dropdown-item>打铃设置</el-dropdown-item>
+              <el-dropdown-item>读取新记录</el-dropdown-item>
+              <el-dropdown-item>读取全部记录</el-dropdown-item>
+              <el-dropdown-item>备份人员</el-dropdown-item>
+              <el-dropdown-item>恢复人员</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>

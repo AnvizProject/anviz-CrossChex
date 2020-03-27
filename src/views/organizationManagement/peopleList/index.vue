@@ -64,6 +64,7 @@
           tooltip-effect="dark"
           style="width: 100%"
           border
+          class="elTable"
           @selection-change="handleSelectionChange">
           <el-table-column
             type="selection"/>
@@ -71,31 +72,36 @@
             prop="UserCode"
             sortable
             width="100px"
+            align="center"
             label="工号"/>
           <el-table-column
             label="姓名"
+            align="center"
             width="120">
             <template slot-scope="scope">
               <div>{{ scope.row.Name }}</div>
               <div>
-                <span type="primary">主要按钮</span>
-                <span type="info">信息按钮</span>
-                <span type="warning">警告按钮</span>
+                <span class="mini-icon icon-enroll"/>
+                <span class="mini-icon icon-face"/>
+                <span class="mini-icon icon-see"/>
               </div>
             </template>
           </el-table-column>
           <el-table-column
             prop="Sex"
             label="性别"
+            align="center"
             width="100px"
             show-overflow-tooltip/>
           <el-table-column
             prop="Duty"
             label="职务"
+            align="center"
             show-overflow-tooltip/>
           <el-table-column
             prop="Mobile"
             label="联系电话"
+            align="center"
             show-overflow-tooltip/>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -282,6 +288,12 @@ export default {
       .el-button{
         padding: 0px;
       }
+    }
+    .elTable td{
+      height: 50px;
+    }
+    .mini-icon{
+      font-size: 20px;
     }
   }
 </style>

@@ -6,3 +6,17 @@
 ul{
   list-style: none;
 }
+
+.el-table{
+  .has-gutter{
+    th{
+      padding: 0;
+      height: 48px;
+      background: #f6f6f6;
+    }
+  }
+  td{
+    padding: 0;
+    height: 52px;
+  }
+}

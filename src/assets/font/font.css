@@ -22,3 +22,23 @@
   font-weight: normal;
   font-style: normal;
 }
+
+
+#app{
+  @font-face {
+    font-family: "Bold";
+    src: url('Montserrat-Bold/Montserrat-Bold.ttf');
+    font-weight: normal;
+    font-style: normal;
+  }
+}
+
+
+.xi{
+  @font-face {
+    font-family: "Regular";
+    src: url('Montserrat-Regular/Montserrat-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+  }
+}
