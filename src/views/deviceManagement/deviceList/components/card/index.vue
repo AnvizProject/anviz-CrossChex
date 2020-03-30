@@ -139,10 +139,12 @@ export default {
     height: 100%;
     display: flex;
     justify-content: space-around;
+    .icon-cursor, .el-dropdown-link{
+      cursor: pointer;
+    }
     .el-dropdown-link{
       display: block;
       height: 100%;
-      cursor: pointer;
       >span{
         font-size: 32px;
       }

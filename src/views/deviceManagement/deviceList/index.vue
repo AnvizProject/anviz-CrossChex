@@ -39,7 +39,7 @@
         </div>
       </div>
       <div slot="main" class="main">
-        <card-select v-for="(v,k) in 5" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox"/>
+        <card-select v-for="(v,k) in terminal_list" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox"/>
       <!-- <el-button @click="getSelectedList">test</el-button> -->
       </div>
     </container>
@@ -112,9 +112,7 @@ export default {
       this.$store.dispatch('interactive/Terminal_list', { Floorid: floorId }).then(response => {
         console.log(response.FingerClient)
         this.terminal_list = response.FingerClient
-        // this.clientid = response.FingerClient[0].Clientid
         this.details = response.FingerClient[0]
-        // this.ClientNumbers = response.FingerClient[0].ClientNumber
       }).catch(() => {
         console.log('error')
       })
@@ -196,7 +194,7 @@ export default {
 .main {
   display: grid;
   // grid-template-columns: repeat(4, 1fr);
-  grid-template-columns: repeat( auto-fit, minmax(330px, 1fr) );
+  grid-template-columns: repeat( auto-fill, minmax(330px, 1fr) );
   grid-gap: 10px 10px;
 }
 </style>
