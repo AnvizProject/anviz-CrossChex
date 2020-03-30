@@ -1,6 +1,6 @@
 <template>
   <el-card class="card-select">
-    <div slot="header" class="header" title="123" @click="drawer">
+    <div slot="header" class="header" title="查看详情" @click="drawer">
       <div class="left">
         <div :style="{backgroundImage:'url('+coverImage+')'}" class="image">
           <!-- <img src="./c2slim.png" alt=""> -->
@@ -11,8 +11,8 @@
       </div>
       <div class="middle">
         <div class="box">
-          <div class="department" >研发部</div>
-          <div class="ip" >192.168.60.107</div>
+          <div class="department" >{{ val.ClientName }}</div>
+          <div class="ip" >{{ val.ipaddress }}</div>
           <div class="group" >Anviz 设备组</div>
         </div>
       </div>
@@ -40,7 +40,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <drawer ref="drawer"/>
+    <drawer ref="drawer" :val="val"/>
   </el-card>
 </template>
 
@@ -70,7 +70,7 @@ export default {
       this.$refs.drawer.drawer = true
     },
     change() {
-      this.$emit('checkbox', { key: this.index, checked: this.selected })
+      this.$emit('checkbox', { key: this.val.Clientid, checked: this.selected })
     },
     stop() {
       // 阻止点击单选按钮事件冒泡的空函数

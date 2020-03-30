@@ -13,7 +13,7 @@
         <div class="info">
           <div class="box">
             <div class="department">研发部</div>
-            <div class="ip">192.168.60.107</div>
+            <div class="ip">{{ val.ipaddress }}</div>
             <div class="group">Anviz 设备组</div>
           </div>
         </div>
@@ -49,7 +49,7 @@
           <div class="title">分类</div>
           <div class="main">
             <div class="block">
-              <span class="value">192.168.60.107</span><br>
+              <span class="value">{{ val.ipaddress }}</span><br>
               <span class="key">IP</span>
             </div>
             <div class="block">
@@ -69,7 +69,7 @@
               <span class="key">ServerIP</span>
             </div>
             <div class="block">
-              <span class="value">8000</span><br>
+              <span class="value">{{ val.CommPort }}</span><br>
               <span class="key">Port</span>
             </div>
           </div>
@@ -91,6 +91,12 @@
 
 <script>
 export default {
+  props: {
+    val: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     return {
       drawer: false,
