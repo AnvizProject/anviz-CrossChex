@@ -91,7 +91,9 @@ export default {
   },
   mounted: function() {
     this.All_groups_list()
-    this.Terminal_list(0)
+    setTimeout(() => {
+      this.Terminal_list(0)
+    })
   },
   methods: {
     checkbox(data) {
@@ -110,8 +112,15 @@ export default {
     Terminal_list(floorId) {
       this.floorId = floorId
       this.$store.dispatch('interactive/Terminal_list', { Floorid: floorId }).then(response => {
-        console.log(response.FingerClient)
         this.terminal_list = response.FingerClient
+        for (let i = 0; i < this.terminal_list.length; i++) {
+          for (let j = 0; j < this.group_list.length; j++) {
+            if (this.terminal_list[i].Floorid === this.group_list[j].devicegroupid) {
+              this.terminal_list[i].groupName = this.group_list[j].devicegroupname
+            }
+          }
+        }
+        console.log(this.terminal_list)
         this.details = response.FingerClient[0]
       }).catch(() => {
         console.log('error')
