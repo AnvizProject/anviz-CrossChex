@@ -1,6 +1,6 @@
 <template>
   <span class="filter-box">
-    <el-button size="mini" @mouseover.native="move" @mouseleave.native="leave">{{ value }}<i :class="ok ? 'icon-under' : 'icon-up'"/></el-button>
+    <el-button :style="{'color':fontColor}" size="mini" @mouseover.native="move" @mouseleave.native="leave">{{ value }}<i :class="ok ? 'icon-under' : 'icon-up'"/></el-button>
     <slot/>
   </span>
 </template>
@@ -14,7 +14,8 @@ export default {
   },
   data() {
     return {
-      ok: true
+      ok: true,
+      fontColor: '#58585A'
     }
   },
   methods: {
@@ -40,7 +41,7 @@ export default {
       height: auto;
       .el-button{
         position: relative;
-        z-index:2;
+        z-index:3;
       }
       &:last-child{
         margin-left: 10px;
@@ -57,6 +58,7 @@ export default {
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
         width: 370px;
+        z-index: 2;
         display: none;
         .filter-all{
           margin-bottom:10px;
@@ -75,13 +77,17 @@ export default {
             width: auto;
             margin-right:10px;
             white-space: nowrap;
-            color:#3CA060;
+            color:#0EA58A;
             margin-bottom:3px;
             cursor: pointer;
             &:hover{
               color:#8ed6a7
             }
           }
+        }
+        .hint{
+          font-size: 14px;
+          color:#c8c9cc
         }
       }
     }
@@ -95,8 +101,8 @@ export default {
     }
   }
   .el-button:focus, .el-button:hover{
-    color: #3CA060;
+    color: #3CA060 !important;
     border-color: #ddd;
-    background-color: #fff;
+    background-color: #fff !important;
   }
 </style>

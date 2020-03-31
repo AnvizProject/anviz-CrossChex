@@ -1,7 +1,7 @@
 <template>
   <el-container class="main-body">
     <el-header><slot name="header">header</slot></el-header>
-    <el-main><slot name="main">mian</slot></el-main>
+    <el-main><slot name="main">main</slot></el-main>
     <el-footer height="auto" class="footer">
       <el-pagination
         :current-page="currentPage1"
@@ -53,7 +53,7 @@ export default {
       height: 40px !important;
     }
     .el-main{
-      padding: 15px;
+      padding: 15px 15px 0;
     }
     .el-footer{
       padding: 0 15px;

@@ -248,11 +248,13 @@ export default {
   }
   .fun-btn{
     text-align: right;
+    margin-bottom:15px;
   }
   .business-card{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
     .business-card-item{
-      float:left;
-      width: 23.5%;
       display: flex;
       margin-right: 2%;
       margin-bottom: 2%;
@@ -262,9 +264,6 @@ export default {
       border:1px solid rgba(170,188,184,1);
       padding:5px 10px;
       align-items: center;
-      &:nth-child(4n){
-        margin-right: 0;
-      }
       .block{
         width: 70px;
         height: 70px;

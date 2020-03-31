@@ -23,7 +23,12 @@
       </template> -->
       <div v-if="menuList[0].children">
         <div v-for="(v,k) in menuList" :key="k">
-          <el-divider content-position="left">{{ $i18n.t(v.meta.title) }}</el-divider>
+          <div class="order">
+            <span class="line"/>
+            <span class="txt">{{ $i18n.t(v.meta.title) }}</span>
+            <span class="line"/>
+          </div>
+          <!-- <el-divider content-position="left">{{ $i18n.t(v.meta.title) }}</el-divider> -->
           <app-link v-for="(v, k) in v.children" :key="k" :to="v.path">
             <!-- <pre>{{ v }}</pre> -->
             <el-tooltip :content="$i18n.t(v.meta.title)" :disabled="!isCollapse" effect="dark" placement="right">
@@ -134,5 +139,29 @@ export default {
     width: 230px;
      width: 230px;
     height: calc(100vh - 70px);
+  }
+  .order {
+    height: 40px;
+    display: flex;
+    align-items: center;
+  }
+  .order{
+    .line:first-child{
+      display: inline-block;
+      width: 20%;
+      border-top: 1px solid #fff;
+    }
+    .line:last-child{
+      display: inline-block;
+      width: 40%;
+      border-top: 1px solid #fff;
+    }
+  }
+  .order{
+    .txt {
+      width: 40%;
+      color: #fff;
+      text-align: center;
+    }
   }
 </style>

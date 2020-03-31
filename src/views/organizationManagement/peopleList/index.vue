@@ -23,14 +23,14 @@
           </el-dropdown>
         </div>
         <div class="header-item">
-          <Dropdown :value="value1">
+          <Dropdown ref="Dropdown" :value="value1">
             <div class="filter-con">
-              <p class="filter-all">所有部门</p>
+              <p class="filter-all">所有组</p>
               <div v-for="(item, index) in group_list" :key="index">
                 <p class="filter-title">{{ item.devicegroupname }}</p>
                 <ul>
-                  <li v-if="item.FingerClient.length===0">暂无终端</li>
-                  <li v-for ="(t_item, index) in item.FingerClient" :key="index" @click="aa(bbb)">
+                  <p v-if="item.FingerClient.length===0" class="hint">暂无终端</p>
+                  <li v-for ="(t_item, index) in item.FingerClient" :key="index" @click="list(t_item.ClientName)">
                     {{ t_item.ClientName }}
                   </li>
                 </ul>
@@ -38,7 +38,7 @@
 
             </div>
           </Dropdown>
-          <Dropdown :value="value2">
+          <Dropdown ref="dept_Dropdown" :value="value2">
             <div class="filter-con">
               <p class="filter-all">所有部门</p>
               <div v-for="(item, index) in dep_list" :key="index">
@@ -47,8 +47,8 @@
                   <span class="sec-title">{{ item.DeptName }}</span>
                   <span>
                     <ul>
-                      <li v-if="item.SubDept.length===0">暂无部门</li>
-                      <li v-for="(item, index) in item.SubDept" :key="index">{{ item.DeptName }}</li>
+                      <p v-if="item.SubDept.length===0" class="hint">暂无部门</p>
+                      <li v-for="(item, index) in item.SubDept" :key="index" @click="dept_list(item.DeptName)">{{ item.DeptName }}</li>
                     </ul>
                   </span>
                 </div>
@@ -57,7 +57,7 @@
           </Dropdown>
         </div>
       </div>
-      <div slot="main">
+      <div slot="main" class="main-item">
         <el-table
           ref="multipleTable"
           :data="tableData"
@@ -71,6 +71,7 @@
           <el-table-column
             prop="UserCode"
             sortable
+            fixed
             width="100px"
             align="center"
             label="工号"/>
@@ -103,12 +104,51 @@
             label="联系电话"
             align="center"
             show-overflow-tooltip/>
-          <el-table-column label="操作">
+          <el-table-column
+            prop="Cardnum"
+            label="考勤号"
+            align="center"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="UserCode"
+            label="卡号"
+            align="center"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="EmployDate"
+            label="聘用日期"
+            align="center"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="ClientNumbers"
+            label="所在机器"
+            align="center"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="Birthday"
+            label="出生日期"
+            align="center"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="Address"
+            label="联系地址"
+            align="center"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="Pwd"
+            label="密码"
+            align="center"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="admingroupid"
+            label="管理员组"
+            align="center"
+            show-overflow-tooltip/>
+          <el-table-column fixed="right" label="操作">
             <template slot-scope="scope">
               <div class="operating">
                 <el-button type="text" size="mini" class="icon icon-edit" @click="handleEdit(scope.$index, scope.row)"/>
                 <el-button type="text" size="mini" class="icon icon-recycle" @click="handleDelete(scope.$index, scope.row)"/>
-                <el-button type="text" size="mini">查看更多</el-button>
               </div>
             </template>
           </el-table-column>
@@ -184,14 +224,23 @@ export default {
         console.log('error')
       })
     },
+    // 组列表点击
+    dept_list(DeptName) {
+      this.value2 = DeptName
+      this.$refs.dept_Dropdown.fontColor = '#3CA060'
+    },
     // 部门列表
     depart_list() {
       this.$store.dispatch('interactive/Depart_list', {}).then(response => {
         this.dep_list = response.dept_tree
-        // console.log(response)
       }).catch(error => {
         console.log(error)
       })
+    },
+    // 部门列表点击
+    list(ClientName) {
+      this.value1 = ClientName
+      this.$refs.Dropdown.fontColor = '#3CA060'
     },
     // 人员列表
     people_list(per_page) {
@@ -294,6 +343,12 @@ export default {
     }
     .mini-icon{
       font-size: 20px;
+    }
+    .main-item{
+      height: 100%;
+      .el-table{
+        height: 100%;
+      }
     }
   }
 </style>
