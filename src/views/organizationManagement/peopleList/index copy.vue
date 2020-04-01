@@ -1,5 +1,5 @@
 <template>
-  <el-container class="userlist app-container">
+  <el-container class="userlist main-content">
     <el-header height="auto">
       <div class="top">
         <div class="top-item">

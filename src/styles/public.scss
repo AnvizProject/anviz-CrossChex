@@ -7,6 +7,73 @@ ul {
   list-style: none;
 }
 
+// 全局样式
+.main-content {
+  margin: 10px;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  background: #fff;
+  border-radius: 5px;
+  overflow: auto;
+  // 外部布局(container)
+  .el-container {
+    height: 100%;
+    overflow: visible;
+    .el-header {
+      background-color: #ffffff;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: center;
+      padding: 0 15px;
+      height: 40px !important;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      .con-item{
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+    .el-main {
+      padding: 15px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      .icon{
+        font-size: 24px;
+        &.icon-edit{
+          color:#FA6400;
+        }
+        &.icon-recycle{
+          color:#D0021B;
+        }
+      }
+    }
+    .el-tabs--border-card {
+      border: none;
+      box-shadow: none;
+    }
+    .el-footer {
+      background: #fff;
+      padding: 15px;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+// 表格内删除修改按钮
+.main-body{
+  .el-main{
+    .icon{
+      font-size: 24px;
+      &.icon-edit{
+        color:#FA6400;
+      }
+      &.icon-recycle{
+        color:#D0021B;
+      }
+    }
+  }
+}
+// 表格
 .el-table {
   th {
     padding: 0;
@@ -22,6 +89,7 @@ ul {
 
 .el-table--scrollable-x {
   .el-table__body-wrapper {
+
     /*修改滚动条样式*/
     &::-webkit-scrollbar {
       width: 10px;
@@ -34,10 +102,35 @@ ul {
     }
   }
 }
-.el-table__fixed, .el-table__fixed-right{
+
+.el-table__fixed,
+.el-table__fixed-right {
   height: calc(100%) !important;
   z-index: 1;
 }
-.el-table__body-wrapper{
+
+.el-table__body-wrapper {
   height: calc(100% - 48px) !important;
+}
+
+// Dialog
+.dialog-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// 人员设置的Dialog
+.el-dialog {
+  min-width: 600px;
+  background: #f6f6f6;
+}
+
+.el-dialog__header {
+  padding: 10px;
+  background: #fff;
+}
+
+.el-dialog__body {
+  padding: 10px;
 }

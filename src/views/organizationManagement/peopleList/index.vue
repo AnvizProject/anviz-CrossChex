@@ -23,38 +23,8 @@
           </el-dropdown>
         </div>
         <div class="header-item">
-          <Dropdown ref="Dropdown" :value="value1">
-            <div class="filter-con">
-              <p class="filter-all">所有组</p>
-              <div v-for="(item, index) in group_list" :key="index">
-                <p class="filter-title">{{ item.devicegroupname }}</p>
-                <ul>
-                  <p v-if="item.FingerClient.length===0" class="hint">暂无终端</p>
-                  <li v-for ="(t_item, index) in item.FingerClient" :key="index" @click="list(t_item.ClientName)">
-                    {{ t_item.ClientName }}
-                  </li>
-                </ul>
-              </div>
-
-            </div>
-          </Dropdown>
-          <Dropdown ref="dept_Dropdown" :value="value2">
-            <div class="filter-con">
-              <p class="filter-all">所有部门</p>
-              <div v-for="(item, index) in dep_list" :key="index">
-                <p class="filter-title" >{{ item.DeptName }}</p>
-                <div v-for="(item, index) in item.SubDept" :key="index" class="secondary">
-                  <span class="sec-title">{{ item.DeptName }}</span>
-                  <span>
-                    <ul>
-                      <p v-if="item.SubDept.length===0" class="hint">暂无部门</p>
-                      <li v-for="(item, index) in item.SubDept" :key="index" @click="dept_list(item.DeptName)">{{ item.DeptName }}</li>
-                    </ul>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </Dropdown>
+          <Devicegroup/>
+          <Departmentgroup/>
         </div>
       </div>
       <div slot="main" class="main-item">
@@ -162,8 +132,9 @@
 <script>
 import Search from '@/components/search'
 import Container from '@/components/container'
-import Dropdown from '@/components/Dropdown'
-import editDialog from '../components/Dialog/EDIT'
+import Departmentgroup from '@/components/Departmentgroup'
+import Devicegroup from '@/components/Devicegroup'
+import editDialog from '../components/Dialog/edit'
 function check() {
   if (document.getElementById('check1').checked === true) {
     return true
@@ -175,16 +146,14 @@ export default {
   components: {
     Search,
     Container,
-    Dropdown,
+    Departmentgroup,
+    Devicegroup,
     editDialog
   },
   data() {
     return {
       search: '工号、姓名',
-      value1: '设备组',
-      value2: '部门组',
       group_list: [],
-      dep_list: [],
       tableData: [],
       rowdata: {},
       total: null,
@@ -207,8 +176,6 @@ export default {
     }
   },
   mounted: function() {
-    this.All_groups_list()
-    this.depart_list()
     this.people_list()
   },
   methods: {
@@ -216,38 +183,11 @@ export default {
     Adduser() {
       this.$refs.editDialog.Adduser()
     },
-    // 所有组列表
-    All_groups_list() {
-      this.$store.dispatch('interactive/All_groups_list', {}).then(response => {
-        this.group_list = response.DeviceGroup
-      }).catch(() => {
-        console.log('error')
-      })
-    },
-    // 组列表点击
-    dept_list(DeptName) {
-      this.value2 = DeptName
-      this.$refs.dept_Dropdown.fontColor = '#3CA060'
-    },
-    // 部门列表
-    depart_list() {
-      this.$store.dispatch('interactive/Depart_list', {}).then(response => {
-        this.dep_list = response.dept_tree
-      }).catch(error => {
-        console.log(error)
-      })
-    },
-    // 部门列表点击
-    list(ClientName) {
-      this.value1 = ClientName
-      this.$refs.Dropdown.fontColor = '#3CA060'
-    },
     // 人员列表
     people_list(per_page) {
       if (per_page !== undefined) {
         this.per_page = per_page
       }
-      console.log(this.per_page, '111')
       this.$store.dispatch('interactive/userList', { per_page: this.per_page.perPage, Deptid: this.Deptid, page: this.per_page.page }).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
@@ -313,24 +253,8 @@ export default {
         margin-left: 10px;
       }
     }
-    .secondary{
-      display: flex;
-      .sec-title{
-        white-space: nowrap;
-        margin-right: 15px;
-      }
-    }
   }
   .el-main{
-    .icon{
-      font-size: 24px;
-      &.icon-edit{
-        color:#FA6400;
-      }
-      &.icon-recycle{
-        color:#D0021B;
-      }
-    }
     .operating{
       height: 28px;
       display: flex;

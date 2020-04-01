@@ -144,23 +144,19 @@ export default {
     height: 40px;
     display: flex;
     align-items: center;
-  }
-  .order{
     .line:first-child{
       display: inline-block;
-      width: 20%;
-      border-top: 1px solid #fff;
+      width: 15%;
+      border-top: 1px solid #ccc;
     }
     .line:last-child{
       display: inline-block;
-      width: 40%;
-      border-top: 1px solid #fff;
+      width: 45%;
+      border-top: 1px solid #ccc;
     }
-  }
-  .order{
     .txt {
       width: 40%;
-      color: #fff;
+      color: #ccc;
       text-align: center;
     }
   }

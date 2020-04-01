@@ -29,7 +29,6 @@ export default {
     align-items: center;
     justify-content: flex-end;
     background: rgba(250,250,250,0.9);
-    margin-bottom: 10px;
     box-shadow:0px 15px 10px -15px #ccc;
     .el-input{
       width: 400px;

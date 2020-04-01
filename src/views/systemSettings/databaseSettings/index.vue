@@ -1,5 +1,5 @@
 <template >
-  <div class="data-base app-container">
+  <div class="data-base main-content">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>数据库设置</span>

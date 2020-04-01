@@ -1,5 +1,5 @@
 <template >
-  <div class="workforce app-container">
+  <div class="workforce main-content">
     <el-tabs type="border-card">
       <el-tab-pane label="时间段设置">
         <el-row :gutter="20" class="time-slot">

@@ -1,5 +1,5 @@
 <template >
-  <div class="attendance app-container">
+  <div class="attendance main-content">
     <el-tabs type="border-card">
       <el-tab-pane label="考勤">
         <el-card class="box-card">

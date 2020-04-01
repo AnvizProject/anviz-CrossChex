@@ -1,5 +1,5 @@
 <template >
-  <div class="department app-container">
+  <div class="department main-content">
     <el-row :gutter="10">
       <el-col :span="4">
         <div class="grid-content bg-purple">

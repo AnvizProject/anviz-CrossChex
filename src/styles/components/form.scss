@@ -207,44 +207,6 @@ form {
   }
 }
 
-// 人员设置的Dialog
-.user-dialog {
-  .el-dialog {
-    max-width: 600px;
-    min-width: 600px;
-    background: #f2f2f2;
-  }
-
-  .el-dialog__header {
-    padding: 10px;
-    background: #fff;
-  }
-
-  .el-dialog__body {
-    padding: 10px;
-  }
-}
-
-// 人员列表
-.userlist {
-
-  .el-table td,
-  .el-table th {
-    padding: 5px 0;
-  }
-
-  .main-left {
-    .el-button--mini {
-      padding: 0 0;
-      border: none;
-    }
-
-    .tree_button {
-      margin-left: 25px;
-    }
-  }
-}
-
 // 记录管理
 .record {
   .el-input__inner {

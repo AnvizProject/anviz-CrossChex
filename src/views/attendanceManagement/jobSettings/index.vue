@@ -1,5 +1,5 @@
 <template >
-  <div class="worksettings app-container">
+  <div class="worksettings main-content">
     <el-row :gutter="10">
       <el-col :span="4">
         <div class="grid-content bg-purple">

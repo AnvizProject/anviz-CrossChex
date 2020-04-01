@@ -6,9 +6,9 @@
       width="50%"
       center>
       <span slot="title" class="dialog-header">
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
         <div>{{ dialogtitle }}</div>
-        <el-button type="primary" @click="save">确 定</el-button>
+        <el-button size="mini" type="primary" @click="save">确 定</el-button>
       </span>
       <el-tabs v-model="activeName">
         <el-tab-pane label="基本资料" name="first">
@@ -312,82 +312,74 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-      .user-dialog .dialog-header{
+  .parameter{
+    display: flex;
+  }
+  .parameter-item{
+    background:rgba(255,255,255,1);
+    box-shadow:0px 2px 7px 0px rgba(0,0,0,0.13);
+    border-radius:5px;
+    padding: 0 10px 10px;
+    &:first-child{
+      width: 60%;
+      margin-right: 1%;
+    }
+    &:last-child{
+      width: 38%;
+      margin-left: 1%;
+    }
+    h4{
+      border-bottom:1px solid #bdbdbd;
+      margin: 0 0 20px 0;
+      padding: 12px 0;
+      color:#47a369;
+    }
+  }
+
+  .custom{
+    background:rgba(255,255,255,1);
+    box-shadow:0px 2px 7px 0px rgba(0,0,0,0.13);
+    border-radius:5px;
+    padding: 0 10px 10px;
+    h4{
+      border-bottom:1px solid #bdbdbd;
+      margin: 0 0 20px 0;
+      padding: 12px 0;
+      color:#47a369;
+    }
+  }
+  .net-input-item{
+        width: 100%;
+        height: 46px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        .el-button{
-          padding: 6px 10px;
-        }
-      }
-      .parameter{
-        display: flex;
-      }
-      .parameter-item{
-        background:rgba(255,255,255,1);
-        box-shadow:0px 2px 7px 0px rgba(0,0,0,0.13);
-        border-radius:5px;
-        padding: 0 10px 10px;
-        &:first-child{
-          width: 60%;
-          margin-right: 1%;
-        }
-        &:last-child{
-          width: 38%;
-          margin-left: 1%;
-        }
-        h4{
-          border-bottom:1px solid #bdbdbd;
-          margin: 0 0 20px 0;
-          padding: 12px 0;
-          color:#47a369;
-        }
-      }
-
-      .custom{
-        background:rgba(255,255,255,1);
-        box-shadow:0px 2px 7px 0px rgba(0,0,0,0.13);
-        border-radius:5px;
-        padding: 0 10px 10px;
-        h4{
-          border-bottom:1px solid #bdbdbd;
-          margin: 0 0 20px 0;
-          padding: 12px 0;
-          color:#47a369;
-        }
-      }
-      .net-input-item{
-            width: 100%;
-            height: 46px;
-            display: flex;
-            align-items: center;
-            border-bottom:1px solid #999
-      }
-      .parameter-item-wrap{
-        display: flex;
-        align-content: center;
-        width: 100%;
-        margin-bottom: 10px;
-        &:last-child{
-          margin-bottom: 0;
-        }
-      }
-      .parameter-item-center{
-        width: 48%;
-        &:first-child{
-          margin-right: 2%;
-        }
-        &:last-child{
-          margin-left: 2%;
-        }
-        >div:first-child{
-          font-weight: 600;
-        }
-      }
-      .attendance,.scheduling{
-        width: auto;
-        height: auto;
-        margin: 0 30px;
-      }
+        border-bottom:1px solid #999
+  }
+  .parameter-item-wrap{
+    display: flex;
+    align-content: center;
+    width: 100%;
+    margin-bottom: 10px;
+    &:last-child{
+      margin-bottom: 0;
+    }
+  }
+  .parameter-item-center{
+    width: 48%;
+    &:first-child{
+      margin-right: 2%;
+    }
+    &:last-child{
+      margin-left: 2%;
+    }
+    >div:first-child{
+      font-weight: 600;
+    }
+  }
+  .attendance,.scheduling{
+    width: auto;
+    height: auto;
+    margin: 0 30px;
+  }
 
 </style>

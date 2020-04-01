@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <div class="icon">
+    <div class="device-icon">
       <span class="icon-cursor icon-psd-lock display"/>
       <!-- <span class="icon-cursor icon-psd-open open"/> -->
       <span class="icon-cursor icon-data-import"/>
@@ -134,7 +134,7 @@ export default {
       }
     }
   }
-  .icon{
+  .device-icon{
     font-size: 32px;
     height: 100%;
     display: flex;

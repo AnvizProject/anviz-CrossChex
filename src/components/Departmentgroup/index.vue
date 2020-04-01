@@ -1,22 +1,35 @@
 <template>
   <span class="filter-box">
     <el-button :style="{'color':fontColor}" size="mini" @mouseover.native="move" @mouseleave.native="leave">{{ value }}<i :class="ok ? 'icon-under' : 'icon-up'"/></el-button>
-    <slot/>
+    <div class="filter-con">
+      <p class="filter-all">所有部门</p>
+      <div v-for="(item, index) in dep_list" :key="index">
+        <p class="filter-title" >{{ item.DeptName }}</p>
+        <div v-for="(item, index) in item.SubDept" :key="index" class="secondary">
+          <span class="sec-title">{{ item.DeptName }}</span>
+          <span>
+            <ul>
+              <p v-if="item.SubDept.length===0" class="hint">暂无部门</p>
+              <li v-for="(item, index) in item.SubDept" :key="index" @click="list(item.DeptName)">{{ item.DeptName }}</li>
+            </ul>
+          </span>
+        </div>
+      </div>
+    </div>
   </span>
 </template>
 <script>
 export default {
-  props: {
-    value: {
-      type: String,
-      default: ''
-    }
-  },
   data() {
     return {
       ok: true,
+      value: '部门组',
+      dep_list: [],
       fontColor: '#58585A'
     }
+  },
+  mounted: function() {
+    this.depart_list()
   },
   methods: {
     move() {
@@ -25,8 +38,18 @@ export default {
     leave() {
       this.ok = true
     },
-    aa() {
-      console.log(111)
+    // 部门列表
+    depart_list() {
+      this.$store.dispatch('interactive/Depart_list', {}).then(response => {
+        this.dep_list = response.dept_tree
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    // 部门列表点击
+    list(DeptName) {
+      this.value = DeptName
+      this.fontColor = '#3CA060'
     }
   }
 }
@@ -88,6 +111,13 @@ export default {
         .hint{
           font-size: 14px;
           color:#c8c9cc
+        }
+      }
+      .secondary{
+        display: flex;
+        .sec-title{
+          white-space: nowrap;
+          margin-right: 15px;
         }
       }
     }

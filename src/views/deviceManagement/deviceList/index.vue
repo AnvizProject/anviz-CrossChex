@@ -21,20 +21,7 @@
           </el-dropdown>
         </div>
         <div class="header-item">
-          <Dropdown :value="value1">
-            <div class="filter-con">
-              <p class="filter-all">所有设备</p>
-              <div v-for="(item, index) in group_list" :key="index">
-                <p class="filter-title">{{ item.devicegroupname }}</p>
-                <ul>
-                  <li v-if="item.FingerClient.length===0">暂无设备</li>
-                  <li v-for ="(t_item, index) in item.FingerClient" :key="index" @click="Terminal_list(t_item.Floorid)">
-                    {{ t_item.ClientName }}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </Dropdown>
+          <Devicegroup/>
           <Dialog ref="Dialog"/>
         </div>
       </div>
@@ -45,15 +32,14 @@
     </container>
   </div>
 </template>
-
 <script>
 import Search from '@/components/search'
 import container from '@/components/container'
 import cardSelect from './components/card'
-import Dropdown from '@/components/Dropdown'
+import Devicegroup from '@/components/Devicegroup'
 import Dialog from '../components/Dialog/edit'
 export default {
-  components: { Search, container, cardSelect, Dropdown, Dialog },
+  components: { Search, container, cardSelect, Devicegroup, Dialog },
   data() {
     return {
       disabled: true,
@@ -87,24 +73,14 @@ export default {
         return false
       }
     }
-
   },
   mounted: function() {
-    this.All_groups_list()
     this.Terminal_list(0)
   },
   methods: {
     checkbox(data) {
       this.selected[data.key] = data.checked
       this.selected = Object.assign({}, this.selected)
-    },
-    // 所有组列表
-    All_groups_list() {
-      this.$store.dispatch('interactive/All_groups_list', {}).then(response => {
-        this.group_list = response.DeviceGroup
-      }).catch(() => {
-        console.log('error')
-      })
     },
     // 终端列表
     Terminal_list(floorId) {

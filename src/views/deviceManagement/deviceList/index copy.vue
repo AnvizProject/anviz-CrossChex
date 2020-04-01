@@ -1,5 +1,5 @@
 <template>
-  <el-container class="device-manage  app-container">
+  <el-container class="device-manage  main-content">
     <el-header height="auto">
       <div class="top">
         <div class="top-item">
