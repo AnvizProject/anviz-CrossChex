@@ -13,7 +13,7 @@
         <div class="box">
           <div class="department" >{{ val.ClientName }}</div>
           <div class="ip" >{{ val.ipaddress }}</div>
-          <div class="group" >Anviz 设备组</div>
+          <div class="group" >{{ val.groupName }} 设备组</div>
         </div>
       </div>
       <div class="right">
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import drawer from './drawer'
+import drawer from '../drawer'
 export default {
   components: { drawer },
   props: {
@@ -62,7 +62,7 @@ export default {
     return {
       radio: 1,
       selected: false,
-      coverImage: require('./c2slim.png')
+      coverImage: require('../images/c2slim.png')
     }
   },
   methods: {
@@ -84,8 +84,8 @@ export default {
     display: flex;
     justify-content: space-between;
     cursor: pointer;
-    .left,.right,.middle{
-      width: 33%;
+    .left{
+      width: 30%;
     }
     .right{
       width: 10%;
@@ -118,9 +118,10 @@ export default {
       padding: 6px 13px;
       font-size: 12px;
       color: #AAA;
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
+      width: 60%;
+      // display: flex;
+      // justify-content: center;
+      // flex-direction: column;
 
       .box{
         .department{

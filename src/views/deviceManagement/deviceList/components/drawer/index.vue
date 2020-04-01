@@ -14,7 +14,7 @@
           <div class="box">
             <div class="department">研发部</div>
             <div class="ip">{{ val.ipaddress }}</div>
-            <div class="group">Anviz 设备组</div>
+            <div class="group">{{ val.groupName }} 设备组</div>
           </div>
         </div>
       </div>
@@ -27,15 +27,15 @@
               <span class="key">序列号</span>
             </div>
             <div class="block">
-              <span class="value">Anviz 设备组</span><br>
+              <span class="value">{{ val.ClientName }}</span><br>
               <span class="key">设备名称</span>
             </div>
             <div class="block">
-              <span class="value">170507</span><br>
+              <span class="value">{{ val.ClientNumber }}</span><br>
               <span class="key">机器号</span>
             </div>
             <div class="block">
-              <span class="value">Anviz 设备组</span><br>
+              <span class="value">{{ val.groupName }} 设备组</span><br>
               <span class="key">设备组</span>
             </div>
             <div class="block">
@@ -100,7 +100,7 @@ export default {
   data() {
     return {
       drawer: false,
-      coverImage: require('./c2slim.png')
+      coverImage: require('../images/c2slim.png')
     }
   }
 }
