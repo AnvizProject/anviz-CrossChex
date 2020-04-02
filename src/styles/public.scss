@@ -134,3 +134,10 @@ ul {
 .el-dialog__body {
   padding: 10px;
 }
+
+// el-card
+.el-card{
+  &.is-always-shadow{
+    box-shadow: none;
+  }
+}
