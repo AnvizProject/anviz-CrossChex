@@ -119,9 +119,6 @@ export default {
       font-size: 12px;
       color: #AAA;
       width: 60%;
-      // display: flex;
-      // justify-content: center;
-      // flex-direction: column;
 
       .box{
         .department{
@@ -168,7 +165,6 @@ export default {
       line-height: unset;
     }
     .el-checkbox__inner{
-      // background: #0DA387 !important;
       width: 25px;
       height: 25px;
       border-radius: 50%;
@@ -181,7 +177,7 @@ export default {
     }
     .el-card__body{
       padding: 3px 0;
-    background: #F4F4F4;
+      background: #F4F4F4;
     }
   }
 </style>

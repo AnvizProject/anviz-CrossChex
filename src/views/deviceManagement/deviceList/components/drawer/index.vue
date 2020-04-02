@@ -2,90 +2,92 @@
   <el-drawer
     :visible.sync="drawer"
     :with-header = "false">
-    <div class="drawer">
-      <div class="header">
-        <div :style="{backgroundImage:'url('+coverImage+')'}" class="image">
-          <!-- <img src="@/assets/c2slim.png" alt=""> -->
-          <div id="drawer-box" class="name">
-            222
+    <el-scrollbar style="height:100%">
+      <div class="drawer">
+        <!-- <pre>{{ val }}</pre> -->
+        <div class="header">
+          <div :style="{backgroundImage:'url('+coverImage+')'}" class="image">
+            <div id="drawer-box" class="name">
+              222
+            </div>
+          </div>
+          <div class="info">
+            <div class="box">
+              <div class="department">{{ val.ClientName }}</div>
+              <div class="ip">{{ val.ipaddress }}</div>
+              <div class="group">{{ val.groupName }} 设备组</div>
+            </div>
           </div>
         </div>
-        <div class="info">
-          <div class="box">
-            <div class="department">研发部</div>
-            <div class="ip">{{ val.ipaddress }}</div>
-            <div class="group">{{ val.groupName }} 设备组</div>
+        <div class="main">
+          <div class="classify">
+            <div class="title">分类</div>
+            <div class="main">
+              <div class="block">
+                <span class="value">E1021457825442</span><br>
+                <span class="key">序列号</span>
+              </div>
+              <div class="block">
+                <span class="value">{{ val.ClientName }}</span><br>
+                <span class="key">设备名称</span>
+              </div>
+              <div class="block">
+                <span class="value">{{ val.ClientNumber }}</span><br>
+                <span class="key">机器号</span>
+              </div>
+              <div class="block">
+                <span class="value">{{ val.groupName }} 设备组</span><br>
+                <span class="key">设备组</span>
+              </div>
+              <div class="block">
+                <span class="value" v-text="val.DeviceType === 0 ? 'facepass' : 'facepass pro'">指纹/卡</span><br>
+                <span class="key">设备类型</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="classify">
+            <div class="title">分类</div>
+            <div class="main">
+              <div class="block">
+                <span class="value">{{ val.ipaddress }}</span><br>
+                <span class="key">IP</span>
+              </div>
+              <div class="block">
+                <span class="value">255.255.255.255</span><br>
+                <span class="key">Mask</span>
+              </div>
+              <div class="block">
+                <span class="value">192.168.60.1</span><br>
+                <span class="key">Gate</span>
+              </div>
+              <div class="block">
+                <span class="value">A4:34:F1:87:38:56</span><br>
+                <span class="key">Mac</span>
+              </div>
+              <div class="block">
+                <span class="value">192.168.30.24</span><br>
+                <span class="key">ServerIP</span>
+              </div>
+              <div class="block">
+                <span class="value">{{ val.CommPort }}</span><br>
+                <span class="key">Port</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="classify">
+            <div class="title">分类</div>
+            <div class="main">
+              <div class="block">
+                <span class="value">V 4.2</span><br>
+                <span class="key">固件版本</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="main">
-        <div class="classify">
-          <div class="title">分类</div>
-          <div class="main">
-            <div class="block">
-              <span class="value">E1021457825442</span><br>
-              <span class="key">序列号</span>
-            </div>
-            <div class="block">
-              <span class="value">{{ val.ClientName }}</span><br>
-              <span class="key">设备名称</span>
-            </div>
-            <div class="block">
-              <span class="value">{{ val.ClientNumber }}</span><br>
-              <span class="key">机器号</span>
-            </div>
-            <div class="block">
-              <span class="value">{{ val.groupName }} 设备组</span><br>
-              <span class="key">设备组</span>
-            </div>
-            <div class="block">
-              <span class="value">指纹/卡</span><br>
-              <span class="key">设备类型</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="classify">
-          <div class="title">分类</div>
-          <div class="main">
-            <div class="block">
-              <span class="value">{{ val.ipaddress }}</span><br>
-              <span class="key">IP</span>
-            </div>
-            <div class="block">
-              <span class="value">255.255.255.255</span><br>
-              <span class="key">Mask</span>
-            </div>
-            <div class="block">
-              <span class="value">192.168.60.1</span><br>
-              <span class="key">Gate</span>
-            </div>
-            <div class="block">
-              <span class="value">A4:34:F1:87:38:56</span><br>
-              <span class="key">Mac</span>
-            </div>
-            <div class="block">
-              <span class="value">192.168.30.24</span><br>
-              <span class="key">ServerIP</span>
-            </div>
-            <div class="block">
-              <span class="value">{{ val.CommPort }}</span><br>
-              <span class="key">Port</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="classify">
-          <div class="title">分类</div>
-          <div class="main">
-            <div class="block">
-              <span class="value">V 4.2</span><br>
-              <span class="key">固件版本</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </el-scrollbar>
   </el-drawer>
 </template>
 
@@ -180,4 +182,13 @@ export default {
       }
     }
   }
+</style>
+
+<style>
+.el-drawer{
+  margin-right: -17px;
+}
+.el-scrollbar__wrap{
+  overflow-x: hidden;
+}
 </style>

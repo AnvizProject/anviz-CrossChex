@@ -26,7 +26,7 @@
         </div>
       </div>
       <div slot="main" class="main">
-        <card-select v-for="(v,k) in terminal_list" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox"/>
+        <card-select v-for="(v, k) in terminal_list" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox"/>
       <!-- <el-button @click="getSelectedList">test</el-button> -->
       </div>
     </container>
@@ -173,4 +173,10 @@ export default {
   grid-template-columns: repeat( auto-fill, minmax(330px, 1fr) );
   grid-gap: 10px 10px;
 }
+</style>
+
+<style>
+  .el-drawer__body{
+    overflow-y: scroll;
+  }
 </style>
