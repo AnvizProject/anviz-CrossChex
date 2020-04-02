@@ -510,3 +510,11 @@ export default {
     }
   }
 </style>
+
+<style lang="scss">
+.attendance.main-content{
+  .el-card__header{
+    box-shadow: none;
+  }
+}
+</style>

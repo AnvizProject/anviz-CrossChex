@@ -94,13 +94,9 @@ export default {
       })
     },
     add() {
-      if (this.floorId <= 0) {
-        alert('请选择设备组')
-      } else {
-        this.$refs.Dialog.centerDialogVisible = true
-        this.$refs.Dialog.dialogtitle = '新增终端'
-        this.de_data = 1
-      }
+      this.$refs.Dialog.centerDialogVisible = true
+      this.$refs.Dialog.dialogtitle = '新增终端'
+      this.de_data = 1
     },
     edit() {
       this.$refs.Dialog.centerDialogVisible = true
