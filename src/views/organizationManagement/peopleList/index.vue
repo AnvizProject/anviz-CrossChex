@@ -13,12 +13,12 @@
               <el-dropdown-item>人员离职</el-dropdown-item>
               <el-dropdown-item>设置权限</el-dropdown-item>
               <el-dropdown-item>复制权限</el-dropdown-item>
-              <el-dropdown-item>导入人员</el-dropdown-item>
-              <el-dropdown-item>导出人员</el-dropdown-item>
-              <el-dropdown-item>下载人员</el-dropdown-item>
-              <el-dropdown-item>上传人员</el-dropdown-item>
-              <el-dropdown-item>下载模板</el-dropdown-item>
-              <el-dropdown-item>上传模板</el-dropdown-item>
+              <el-dropdown-item @click="import_personnel">导入人员</el-dropdown-item>
+              <el-dropdown-item @click="export_personnel">导出人员</el-dropdown-item>
+              <el-dropdown-item @click="update_status">下载人员</el-dropdown-item>
+              <el-dropdown-item @click="upload_user">上传人员</el-dropdown-item>
+              <el-dropdown-item @click="download_template">下载模板</el-dropdown-item>
+              <el-dropdown-item @click="upload_template">上传模板</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -237,6 +237,33 @@ export default {
     handleSelectionChange(val) {
       console.log(val, 'table')
       this.multipleSelection = val
+    },
+
+    // 导出人员
+    export_personnel() {
+      const userid = []
+      this.multipleSelection.forEach(item => {
+        userid.push(item.userid)
+      })
+      if (userid.length === 0) {
+        this.$message({
+          message: '请选择人员',
+          type: 'warning'
+        })
+      }
+    },
+    // 导入人员
+    import_personnel() {
+      const userid = []
+      this.multipleSelection.forEach(item => {
+        userid.push(item.userid)
+      })
+      if (userid.length === 0) {
+        this.$message({
+          message: '请选择人员',
+          type: 'warning'
+        })
+      }
     }
   }
 }

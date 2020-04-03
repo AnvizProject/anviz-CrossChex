@@ -10,6 +10,24 @@
         <div>{{ dialogtitle }}</div>
         <el-button type="primary" @click="add_device">确 定</el-button>
       </span>
+      <el-row>
+        <el-col :span="24">
+          <div class="grid-content bg-purple-dark">
+            <h4>设备类型</h4>
+            <div class="net-input-item">
+              <span class="icon-size icon-nav-network"/>
+              <span>
+                <selectbox :options="device_options.value1" v-model="form.DeviceType"/>
+              </span>
+            </div>
+            <!-- treeSelect -->
+            <div>
+              <select-input :options="options"/>
+            </div>
+
+          </div>
+        </el-col>
+      </el-row>
       <div class="parameter">
         <span class="parameter-item">
           <h4>设备类型</h4>
@@ -181,9 +199,11 @@
 <script>
 import selectbox from '@/components/select'
 import options from '@/components/mixin/device'
+import selectInput from '@/components/selectInput'
 export default {
   components: {
-    selectbox
+    selectbox,
+    selectInput
   },
   mixins: [options],
   props: {
@@ -194,6 +214,10 @@ export default {
     de_data: {
       type: Number,
       default: null
+    },
+    options: {
+      type: Array,
+      default: () => {}
     }
   },
   data() {

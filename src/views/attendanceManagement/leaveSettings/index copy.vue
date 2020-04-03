@@ -9,8 +9,8 @@
               <span class="vacatin-title">请假</span>
               <span class="el-icon-error"/>
             </li>
-            <li>123</li>
-            <li>123</li>
+            <li v-for="(v,k) in leaveList" :key="k" @click="show(k)">{{ v.Classname }}</li>
+            <!-- <li>123</li> -->
           </ul>
         </div>
       </el-col>
@@ -22,20 +22,20 @@
             </div>
             <div class="text item">
               <p class="fun-btn mg15-bot">
-                <el-button type="primary" size="mini">新增</el-button>
-                <el-button type="primary" size="mini">修改</el-button>
-                <el-button type="danger" size="mini">删除</el-button>
+                <el-button type="primary" size="mini" @click="add">新增</el-button>
+                <el-button type="primary" size="mini" @click="edit">修改</el-button>
+                <el-button type="danger" size="mini" @click="del">删除</el-button>
               </p>
               <div class="day">
                 <div class="day-top">假类信息</div>
                 <div class="day-list">
                   <el-form ref="form" :inline="true" :model="form" label-width="80px">
                     <el-form-item label="假类名称">
-                      <el-input v-model="form.num"/>
+                      <el-input v-model="form.Classname"/>
                     </el-form-item>
                     <el-form-item label="表示颜色">
                       <el-color-picker
-                        v-model="color"
+                        v-model="form.ViewColor"
                         :predefine="predefineColors"
                         show-alpha/>
                     </el-form-item>
@@ -51,13 +51,12 @@
                         <p>单位设定</p>
                         <el-form ref="form" :model="form" label-width="80px">
                           <el-form-item label="单位名称">
-                            <el-select v-model="form.region" placeholder="请选择活动区域">
-                              <el-option label="区域一" value="shanghai"/>
-                              <el-option label="区域二" value="beijing"/>
+                            <el-select v-model="form.Units" placeholder="请选择活动区域">
+                              <el-option v-for="(v,k) in units" :key="k" :label="v.label" :value="v.value"/>
                             </el-select>
                           </el-form-item>
                           <el-form-item label="最小单位">
-                            <el-input v-model="form.name"/>
+                            <el-input v-model="form.MinUnit"/>
                           </el-form-item>
                         </el-form>
                       </div>
@@ -68,22 +67,16 @@
                         <div class="el-form option-wrap">
                           <el-row :gutter="20" class="option">
                             <el-col :span="12">
-                              <div class="option-but">
-                                <el-radio v-model="radio" label="1">向下舍弃</el-radio>
-                              </div>
-                              <div class="option-but">
-                                <el-radio v-model="radio" label="1">备选项</el-radio>
-                              </div>
-                              <div class="option-but">
-                                <el-radio v-model="radio" label="1">备选项</el-radio>
+                              <div v-for="(v, k) in SRControl" :key="k" class="option-but">
+                                <el-radio v-model="form.SRControl" :label="v.label">{{ v.value }}</el-radio>
                               </div>
                             </el-col>
                             <el-col :span="12">
                               <div class="option-but">
-                                <el-checkbox v-model="checked">备选项</el-checkbox>
+                                <el-checkbox v-model="form.IsTimes" :true-label="1" :false-label="0">累计后进行舍入</el-checkbox>
                               </div>
                               <div class="option-but">
-                                <el-checkbox v-model="checked">备选项</el-checkbox>
+                                <el-checkbox v-model="form.IsAddup" :true-label="1" :false-label="0">按次进行计算</el-checkbox>
                               </div>
                             </el-col>
                           </el-row>
@@ -94,11 +87,11 @@
                   <div class="day-bot">
                     <el-form ref="form" :inline="true" :model="form" label-width="150px">
                       <el-form-item label="在报表中表示字符">
-                        <el-input v-model="form.num"/>
+                        <el-input v-model="form.Showas"/>
                       </el-form-item>
                     </el-form>
                     <div class="footer">
-                      <el-checkbox v-model="checked">计为请假</el-checkbox>
+                      <el-checkbox v-model="form.IsLeave">计为请假</el-checkbox>
                     </div>
                   </div>
                 </div>
@@ -110,6 +103,111 @@
     </el-row>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      form: {
+        ViewColor: '',
+        Showas: '',
+        Units: 0,
+        MinUnit: 0,
+        SRControl: 2,
+        IsTimes: 1,
+        IsAddup: 0,
+        IsLeave: 0
+      },
+      color: '#cf0318',
+      predefineColors: [
+        '#FF0000',
+        '#FF7F00',
+        '#FFFF00',
+        '#00FF00',
+        '#00FFFF',
+        '#0000FF',
+        '#8B00FF',
+        '#47a369',
+        '#000000',
+        '#999999'
+      ],
+      units: [
+        {
+          value: 0,
+          label: '分钟'
+        },
+        {
+          value: 1,
+          label: '小时'
+        },
+        {
+          value: 2,
+          label: '工作日'
+        }
+      ],
+      SRControl: [
+        {
+          value: '向下舍弃',
+          label: 0
+        },
+        {
+          value: '向上进位',
+          label: 1
+        },
+        {
+          value: '四舍五入',
+          label: 2
+        }
+      ],
+      leaveList: []
+    }
+  },
+  mounted() {
+    this.getLeaveList()
+  },
+  methods: {
+    getLeaveList() {
+      this.$store.dispatch('interactive/getLeaveList', {}).then(response => {
+        console.log(response.LeaveClass)
+        this.leaveList = response.LeaveClass
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    add() {
+      this.$store.dispatch('interactive/createLeave', this.form).then(response => {
+        console.log(response)
+        this.getLeaveList()
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    show(key) {
+      console.log(key)
+      console.log(this.leaveList[key])
+      this.form = Object.assign({}, this.leaveList[key])
+    },
+    edit() {
+      this.$store.dispatch('interactive/updateLeave', this.form).then(response => {
+        console.log(response)
+        this.getLeaveList()
+      }).then(error => {
+        console.log(error)
+      })
+    },
+    del() {
+      this.$store.dispatch('interactive/delLeave', { Classid: this.form.Classid }).then(response => {
+        console.log(response)
+        this.show(0)
+        this.getLeaveList()
+      }).then(error => {
+        console.log(error)
+      })
+    }
+  }
+}
+</script>
+
 <style lang="scss" scoped>
   .el-row{
     display: flex;
@@ -195,36 +293,3 @@
     margin-bottom: 40px;
   }
 </style>
-<script>
-export default {
-  data() {
-    return {
-      form: {
-        num: '',
-        name: '',
-        region: ''
-      },
-      radio: '1',
-      checked: true,
-      color: '#cf0318',
-      predefineColors: [
-        '#FF0000 ',
-        '#FF7F00',
-        '#FFFF00 ',
-        '#00FF00 ',
-        '#00FFFF',
-        '#0000FF',
-        '#8B00FF',
-        '#47a369',
-        '#000000',
-        '#999999'
-      ]
-    }
-  },
-  methods: {
-    onSubmit() {
-      console.log('submit!')
-    }
-  }
-}
-</script>

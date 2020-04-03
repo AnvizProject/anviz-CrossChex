@@ -21,10 +21,12 @@
           </el-dropdown>
         </div>
         <div class="header-item">
-          <Devicegroup/>
+          <Devicegroup ref="groupList" @groupList="groupList" />
+          <Dialog ref="Dialog" :options = "group_list"/>
         </div>
       </div>
       <div slot="main" class="main">
+
         <card-select v-for="(v, k) in terminal_list" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox"/>
       <!-- <el-button @click="getSelectedList">test</el-button> -->
       </div>
@@ -79,10 +81,25 @@ export default {
       }
     }
   },
+  // watch: {
+  //   group_list(newV, oldV) {
+  //     this.group_list = newV
+  //   }
+  // },
   mounted: function() {
     this.Terminal_list(0)
   },
   methods: {
+    groupList(data) {
+      // console.log(data)
+      data.forEach((v, k) => {
+        v.FingerClient.forEach((val, key) => {
+          val.devicegroupid = val.Clientid
+          val.devicegroupname = val.ClientName
+        })
+      })
+      this.group_list = data
+    },
     checkbox(data) {
       console.log(data)
       this.clientid = data.key
@@ -93,7 +110,6 @@ export default {
     Terminal_list(floorId) {
       this.floorId = floorId
       this.$store.dispatch('interactive/Terminal_list', { Floorid: floorId }).then(response => {
-        console.log(response)
         this.terminal_list = response.FingerClient
         this.details = response.FingerClient[0]
       }).catch(() => {
