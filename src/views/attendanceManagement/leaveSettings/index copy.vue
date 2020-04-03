@@ -21,7 +21,7 @@
               <span>假类设置</span>
             </div>
             <div class="text item">
-              <p class="fun-btn">
+              <p class="fun-btn mg15-bot">
                 <el-button type="primary" size="mini">新增</el-button>
                 <el-button type="primary" size="mini">修改</el-button>
                 <el-button type="danger" size="mini">删除</el-button>

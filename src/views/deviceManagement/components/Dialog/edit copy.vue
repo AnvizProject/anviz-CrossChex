@@ -10,25 +10,24 @@
         <div>{{ dialogtitle }}</div>
         <el-button type="primary" @click="add_device">确 定</el-button>
       </span>
-      <el-row>
-        <el-col :span="24">
-          <div class="grid-content bg-purple-dark">
-            <h4>设备类型</h4>
-            <div class="net-input-item">
-              <span class="icon-size icon-nav-network"/>
-              <span>
-                <selectbox :options="device_options.value1" v-model="form.DeviceType"/>
-              </span>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
       <div class="parameter">
         <span class="parameter-item">
+          <h4>设备类型</h4>
+          <div class="parameter-item-wrap">
+            <div class="parameter-item-center">
+              <div>设备类型</div>
+              <div class="net-input-item">
+                <span class="icon-size icon-nav-network"/>
+                <span>
+                  <selectbox :options="device_options.value1" v-model="form.DeviceType"/>
+                </span>
+              </div>
+            </div>
+          </div>
           <h4>通讯方式</h4>
-          <el-radio-group v-model="form.Linkmode">
-            <p><el-radio :label="1">网络设置</el-radio></p>
-            <div class="net-input">
+          <div class="parameter-item-wrap">
+            <div class="parameter-item-center">
+              <div>网络域名</div>
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
@@ -39,7 +38,9 @@
                     class="input-box"/>
                 </span>
               </div>
-              <div class="port">Port</div>
+            </div>
+            <div class="parameter-item-center">
+              <div>Port</div>
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
@@ -50,8 +51,7 @@
                 </span>
               </div>
             </div>
-            <p><el-radio :label="4">网络（客户端/客户端+DNS</el-radio></p>
-          </el-radio-group>
+          </div>
         </span>
         <span class="parameter-item">
           <h4>通讯参数</h4>

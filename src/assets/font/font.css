@@ -1,44 +1,12 @@
-@font-face {
-  font-family: "Bold";
-  src: url('Montserrat-Bold/Montserrat-Bold.ttf');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Light";
-  src: url('Montserrat-Light/Montserrat-Light.ttf');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Medium";
-  src: url('Montserrat-Medium/Montserrat-Medium.ttf');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
+.Englist {
   font-family: "Regular";
   src: url('Montserrat-Regular/Montserrat-Regular.ttf');
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
 }
 
-
-#app{
-  @font-face {
-    font-family: "Bold";
-    src: url('Montserrat-Bold/Montserrat-Bold.ttf');
-    font-weight: normal;
-    font-style: normal;
-  }
-}
-
-
-.xi{
-  @font-face {
-    font-family: "Regular";
-    src: url('Montserrat-Regular/Montserrat-Regular.ttf');
-    font-weight: normal;
-    font-style: normal;
-  }
+.Chinese{
+  font-family: "Microsoft YaHei";
+  font-weight: 400;
+  font-style: normal;
 }

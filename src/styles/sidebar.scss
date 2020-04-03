@@ -128,7 +128,7 @@
       font-size: 16px;
       &:hover{
         color:$color-main !important;
-        background-color: rgba(0,0,0,0.55) !important;
+        background-color: rgba(0,0,0,0.25) !important;
       }
       &.is-active {
         background-color: $menuHover !important;
@@ -164,7 +164,7 @@
         line-height: 40px;
         border-bottom:1px solid rgba(60,160,96,0.3);
         &:hover{
-          background-color: rgba(0,0,0,0.1) !important;
+          background-color: rgba(0,0,0,0.06) !important;
         }
         .icon{
           font-size: 30px;

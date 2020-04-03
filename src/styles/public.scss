@@ -120,10 +120,12 @@ ul {
   justify-content: space-between;
 }
 
-// 人员设置的Dialog
 .el-dialog {
   min-width: 600px;
+  height: 100%;
+  max-height: 75%;
   background: #f6f6f6;
+  overflow: hidden;
 }
 
 .el-dialog__header {
@@ -132,12 +134,17 @@ ul {
 }
 
 .el-dialog__body {
-  padding: 10px;
+  padding: 0px 10px !important;
+  margin:10px 0;
+  height:calc(100% - 68px);
+  overflow-y: auto;
+}
+.el-dialog__footer{
+  padding: 0;
 }
 
-// el-card
-.el-card{
-  &.is-always-shadow{
-    box-shadow: none;
+.device-dialog{
+  .el-dialog__body {
+    height:calc(100% - 116px);
   }
 }

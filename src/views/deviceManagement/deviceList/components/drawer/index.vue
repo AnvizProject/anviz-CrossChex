@@ -190,5 +190,6 @@ export default {
 }
 .el-scrollbar__wrap{
   overflow-x: hidden;
+  margin-bottom: 0 !important;
 }
 </style>

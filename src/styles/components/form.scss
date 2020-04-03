@@ -180,24 +180,6 @@ form {
   }
 }
 
-// 新增终端的Dialog
-.device-dialog {
-  .el-dialog {
-    max-width: 851px;
-    min-width: 851px;
-    background: #f2f2f2;
-  }
-
-  .el-dialog__header {
-    padding: 10px;
-    background: #fff;
-  }
-
-  .el-dialog__body {
-    padding: 10px;
-  }
-}
-
 // 查看详情
 .details-wrap {
   .el-input__inner {
