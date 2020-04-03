@@ -20,7 +20,6 @@
                 <selectbox :options="device_options.value1" v-model="form.DeviceType"/>
               </span>
             </div>
-
             <!-- treeSelect -->
             <div>
               <select-input :options="options"/>
@@ -31,10 +30,22 @@
       </el-row>
       <div class="parameter">
         <span class="parameter-item">
+          <h4>设备类型</h4>
+          <div class="parameter-item-wrap">
+            <div class="parameter-item-center">
+              <div>设备类型</div>
+              <div class="net-input-item">
+                <span class="icon-size icon-nav-network"/>
+                <span>
+                  <selectbox :options="device_options.value1" v-model="form.DeviceType"/>
+                </span>
+              </div>
+            </div>
+          </div>
           <h4>通讯方式</h4>
-          <el-radio-group v-model="form.Linkmode">
-            <p><el-radio :label="1">网络设置</el-radio></p>
-            <div class="net-input">
+          <div class="parameter-item-wrap">
+            <div class="parameter-item-center">
+              <div>网络域名</div>
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
@@ -45,7 +56,9 @@
                     class="input-box"/>
                 </span>
               </div>
-              <div class="port">Port</div>
+            </div>
+            <div class="parameter-item-center">
+              <div>Port</div>
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
@@ -56,8 +69,7 @@
                 </span>
               </div>
             </div>
-            <p><el-radio :label="4">网络（客户端/客户端+DNS</el-radio></p>
-          </el-radio-group>
+          </div>
         </span>
         <span class="parameter-item">
           <h4>通讯参数</h4>
@@ -136,51 +148,6 @@
           </div>
         </span>
       </div>
-      <!-- <div class="search-device">
-        <ul class="seach-list">
-          <li class="list-item">
-            <span class="main-color">当前查找到的设备</span>
-            <span>
-              <el-button type="primary">手动添加</el-button>
-            </span>
-          </li>
-          <li class="list-item">
-            <span>
-              <span>如果自动查找设备失败，可以</span><span class="main-color">手动添加设备。</span>
-            </span>
-          </li>
-          <li class="list-item">
-            <ul class="current">
-              <li class="current-list">
-                <span class="current-list-item">
-                  <span class="icon-size icon-nav-network main-color"/>
-                  <span>T5S  192.168.70.29  9C-35-8B-60-4C-D7  V 1.222 </span>
-                </span>
-                <span class="icon-size icon-step-success main-color"/>
-              </li>
-            </ul>
-          </li>
-          <li class="list-item">设备</li>
-          <li class="list-item">
-            <ul class="all">
-              <li class="all-list">
-                <span class="current-list-item">
-                  <span class="icon-size icon-nav-network"/>
-                  <span>T5S   192.168.70.29   9C-35-8B-60-4C-D7   V 1.222 </span>
-                </span>
-                <span class="icon-size icon-step-error"/>
-              </li>
-              <li class="all-list">
-                <span class="current-list-item">
-                  <span class="icon-size icon-nav-network"/>
-                  <span>T5S   192.168.70.29   9C-35-8B-60-4C-D7   V 1.222 </span>
-                </span>
-                <span icon="" class="icon-size icon-step-error"/>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div> -->
     </el-dialog>
   </div>
 </template>
@@ -228,6 +195,10 @@ export default {
       }
     }
   },
+  mounted() {
+    console.log(this.options)
+  },
+
   methods: {
     add_device() {
       console.log(this.form)

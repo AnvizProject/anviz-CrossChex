@@ -6,7 +6,7 @@
           <Devicegroup/>
         </div>
       </el-header>
-      <el-main>
+      <el-main style="padding:0px">
         <el-row class="time-slot">
           <el-col :span="24">
             <div class="grid-content bg-purple-light">

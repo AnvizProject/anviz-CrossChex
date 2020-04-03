@@ -14,7 +14,7 @@
         <el-row class="time-slot">
           <el-col :span="24">
             <div class="grid-content bg-purple-light">
-              <div class="table-title">时间段列表</div>
+              <div class="table-title mg15-bot">时间段列表</div>
               <el-table
                 ref="multipleTable"
                 :data="tableData"
