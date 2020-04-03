@@ -39,6 +39,7 @@ export default {
     All_groups_list() {
       this.$store.dispatch('interactive/All_groups_list', {}).then(response => {
         this.group_list = response.DeviceGroup
+        this.$emit('groupList', this.group_list)
       }).catch(() => {
         console.log('error')
       })

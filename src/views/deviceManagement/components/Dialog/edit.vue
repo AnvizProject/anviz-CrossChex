@@ -20,6 +20,12 @@
                 <selectbox :options="device_options.value1" v-model="form.DeviceType"/>
               </span>
             </div>
+
+            <!-- treeSelect -->
+            <div>
+              <select-input :options="options"/>
+            </div>
+
           </div>
         </el-col>
       </el-row>
@@ -181,9 +187,11 @@
 <script>
 import selectbox from '@/components/select'
 import options from '@/components/mixin/device'
+import selectInput from '@/components/selectInput'
 export default {
   components: {
-    selectbox
+    selectbox,
+    selectInput
   },
   mixins: [options],
   props: {
@@ -194,6 +202,10 @@ export default {
     de_data: {
       type: Number,
       default: null
+    },
+    options: {
+      type: Array,
+      default: () => {}
     }
   },
   data() {
