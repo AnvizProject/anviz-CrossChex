@@ -6,28 +6,10 @@
       width="60%"
       center>
       <span slot="title" class="dialog-header ">
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
         <div>{{ dialogtitle }}</div>
-        <el-button type="primary" @click="add_device">确 定</el-button>
+        <el-button size="mini" type="primary" @click="add_device">确 定</el-button>
       </span>
-      <el-row>
-        <el-col :span="24">
-          <div class="grid-content bg-purple-dark">
-            <h4>设备类型</h4>
-            <div class="net-input-item">
-              <span class="icon-size icon-nav-network"/>
-              <span>
-                <selectbox :options="device_options.value1" v-model="form.DeviceType"/>
-              </span>
-            </div>
-            <!-- treeSelect -->
-            <div>
-              <select-input :options="options"/>
-            </div>
-
-          </div>
-        </el-col>
-      </el-row>
       <div class="parameter">
         <span class="parameter-item">
           <h4>设备类型</h4>
@@ -121,7 +103,7 @@
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
-                  <selectbox :options="device_list" v-model="form.Floorid"/>
+                  <selectbox :options="device_options.value18" v-model="form.Floorid"/>
                 </span>
               </div>
             </div>
@@ -154,11 +136,9 @@
 <script>
 import selectbox from '@/components/select'
 import options from '@/components/mixin/device'
-import selectInput from '@/components/selectInput'
 export default {
   components: {
-    selectbox,
-    selectInput
+    selectbox
   },
   mixins: [options],
   props: {
@@ -196,12 +176,13 @@ export default {
     }
   },
   mounted() {
-    console.log(this.options)
+    this.device_options.value18 = this.options
   },
 
   methods: {
+    // 终端列表
+    // 增加修改终端
     add_device() {
-      console.log(this.form)
       if (this.de_data === 1) {
         this.$store.dispatch('interactive/Device_create', this.form).then(response => {
           this.$message({

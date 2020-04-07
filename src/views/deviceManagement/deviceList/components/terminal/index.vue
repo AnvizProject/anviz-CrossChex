@@ -1,14 +1,14 @@
 <template>
-  <div class="device-dialog">
+  <div class="terminal-dialog">
     <el-dialog
       :visible.sync="centerDialogVisible"
       :show-close="showClo"
       width="60%"
       center>
       <div slot="title" class="dialog-header ">
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
         <div>终端参数</div>
-        <el-button type="primary">确 定</el-button>
+        <el-button size="mini" type="primary">确 定</el-button>
       </div>
       <div class="parameter">
         <span class="parameter-item">
@@ -315,8 +315,8 @@
       </div>
       <div slot="footer">
         <el-row>
-          <el-button size="small" type="primary">清除考勤记录</el-button>
-          <el-button size="small" type="primary">初始化设备</el-button>
+          <el-button size="small" type="primary" @click="clear">清除考勤记录</el-button>
+          <el-button size="small" type="primary" @click="initialize">初始化设备</el-button>
           <el-button size="small" type="primary" @click="reset">显示默认设置</el-button>
         </el-row>
       </div>
@@ -404,7 +404,15 @@ export default {
       this.form.company_name = null
       this.form.address = null
       this.form.fax = null
+    },
+    clear(){
+      this.$emit('clear')
+    },
+    initialize(){
+      this.$emit('initialize')
     }
+    
+
   }
 }
 </script>

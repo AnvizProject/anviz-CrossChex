@@ -122,7 +122,6 @@ ul {
 
 .el-dialog {
   min-width: 600px;
-  height: 100%;
   max-height: 75%;
   background: #f6f6f6;
   overflow: hidden;
@@ -136,14 +135,22 @@ ul {
 .el-dialog__body {
   padding: 0px 10px !important;
   margin:10px 0;
-  height:calc(100% - 68px);
   overflow-y: auto;
 }
 .el-dialog__footer{
   padding: 0;
 }
 
-.device-dialog{
+// 设备管理-终端设置及打铃设置
+
+.ringing-dialog,.terminal-dialog{
+  .el-dialog {
+    min-width: 600px;
+    height: 100%;
+    max-height: 75%;
+    background: #f6f6f6;
+    overflow: hidden;
+  }
   .el-dialog__body {
     height:calc(100% - 116px);
   }

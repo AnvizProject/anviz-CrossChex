@@ -238,7 +238,68 @@ export default {
       console.log(val, 'table')
       this.multipleSelection = val
     },
-
+    getConfigResult(res) {
+      // 接收回调函数返回数据的方法
+      console.log(res.ret)
+      if (res.ret === '0') {
+        this.$message({
+          message: '连接成功',
+          type: 'warning'
+        })
+        this.userlist()
+        this.depart_list()
+        this.All_groups_list()
+        return
+      } else {
+        this.$message({
+          message: '连接失败',
+          type: 'warning'
+        })
+      }
+      console.log(res)
+    },
+    // 下载人员
+    update_status() {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"download_user", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
+    },
+    // 下载模板
+    download_template() {
+      if (this.user_id_list.length === 0) {
+        this.$message({
+          message: '请选择人员',
+          type: 'warning'
+        })
+        return
+      }
+      console.log('{"cmd":"download_template", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '","userids": "' + this.user_id_list.join(',') + '" }}')
+      this.socketApi.sendSock(JSON.parse('{"cmd":"download_template", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '","userids": "' + this.user_id_list.join(',') + '" }}'), this.getConfigResult)
+    },
+    // 上传人员
+    upload_user() {
+      if (this.user_id_list.length === 0) {
+        this.$message({
+          message: '请选择人员',
+          type: 'warning'
+        })
+        return
+      }
+      this.socketApi.sendSock(JSON.parse('{"cmd":"upload_user", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '","userids": "' + this.user_id_list.join(',') + '" }}'), this.getConfigResult)
+    },
+    // 上传模板
+    upload_template() {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
+    },
+    // 从设备删除人员
+    delete_from_device() {
+      if (this.user_id_list.length === 0) {
+        this.$message({
+          message: '请选择人员',
+          type: 'warning'
+        })
+        return
+      }
+      this.socketApi.sendSock(JSON.parse('{"cmd":"delete_from_device", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '","userids": "' + this.user_id_list.join(',') + '" }}'), this.getConfigResult)
+    },
     // 导出人员
     export_personnel() {
       const userid = []

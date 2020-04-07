@@ -202,6 +202,8 @@ export default{
             value: 1,
             label: '12小时制'
           }
+        ],
+        value18: [
         ]
       }
     }

@@ -25,7 +25,7 @@
     <div class="device-icon">
       <span class="icon-cursor icon-psd-lock display"/>
       <!-- <span class="icon-cursor icon-psd-open open"/> -->
-      <span class="icon-cursor icon-data-import"/>
+      <span class="icon-cursor icon-data-import"  @click="read_new_record"/>
       <el-dropdown :hide-on-click="true">
         <span class="el-dropdown-link">
           <span class="icon-cursor icon-setting"/><i class="el-icon-arrow-down el-icon--right"/>
@@ -46,6 +46,7 @@
 
 <script>
 import drawer from '../drawer'
+var timestamp = Date.parse(new Date()) / 1000
 export default {
   components: { drawer },
   props: {
@@ -70,10 +71,33 @@ export default {
       this.$refs.drawer.drawer = true
     },
     change() {
-      this.$emit('checkbox', { key: this.val.Clientid, checked: this.selected })
+      this.$emit('checkbox', { value: this.val, checked: this.selected })
     },
     stop() {
       // 阻止点击单选按钮事件冒泡的空函数
+    },
+    // websocket接收回调函数返回数据的方法
+    getConfigResult(res) {
+      console.log(res)
+      if (res.ret === '0') {
+        this.$message({
+          message: '更新成功',
+          type: 'success'
+        })
+        return
+      } else {
+        this.$message({
+          message: '更新失败',
+          type: 'warning'
+        })
+      }
+      console.log(res)
+    },
+    // 读取新纪录
+    read_new_record(){
+      console.log(this.val.Clientid)
+      this.socketApi.sendSock(JSON.parse('{"cmd":"read_new_record", "data": {"ts":"' + timestamp + '","clientid": "' + this.val.Clientid + '"}}'), this.getConfigResult)
+      
     }
   }
 }

@@ -20,7 +20,7 @@ export default {
       default: () => {}
     },
     changeval: {
-      type: Number,
+      type: null,
       default: null
     }
   },

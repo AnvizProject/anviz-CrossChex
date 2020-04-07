@@ -1,14 +1,14 @@
 <template>
-  <div class="device-dialog">
+  <div class="ringing-dialog">
     <el-dialog
       :visible.sync="centerDialogVisible"
       :show-close="showClo"
       width="60%"
       center>
       <span slot="title" class="dialog-header ">
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
         <div>{{ dialogtitle }}</div>
-        <el-button type="primary" @click="add_device">确 定</el-button>
+        <el-button size="mini" type="primary" @click="add_device">确 定</el-button>
       </span>
       <div class="parameter">
         <span class="parameter-item">

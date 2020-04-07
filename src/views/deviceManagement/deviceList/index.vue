@@ -22,17 +22,16 @@
         </div>
         <div class="header-item">
           <Devicegroup ref="groupList" @groupList="groupList" />
-          <Dialog ref="Dialog" :options = "group_list"/>
         </div>
       </div>
       <div slot="main" class="main">
 
-        <card-select v-for="(v, k) in terminal_list" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox"/>
+        <card-select v-for="(v, k) in ter_list" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox" @read_new_record="read_new_record"/>
       <!-- <el-button @click="getSelectedList">test</el-button> -->
       </div>
     </container>
-    <Dialog ref="Dialog"/>
-    <Terminal ref="Terminal"/>
+    <Dialog ref="Dialog" :options="group_list" :de_data="de_data" @Terminal_list="Terminal_list"/>
+    <Terminal ref="Terminal" @clear="clear" @initialize="initialize"/>
     <Ringing ref="Ringing"/>
   </div>
 </template>
@@ -56,10 +55,12 @@ export default {
       group_list: [],
       selected: {},
       selectedList: [],
-      terminal_list: [],
+      ter_list: [],
       ter_para: {},
-      floorId: 0,
-      clientid: null
+      floorid: 0,
+      de_data: null,
+      clientid: null,
+      key: null
     }
   },
   computed: {
@@ -81,37 +82,32 @@ export default {
       }
     }
   },
-  // watch: {
-  //   group_list(newV, oldV) {
-  //     this.group_list = newV
-  //   }
-  // },
   mounted: function() {
     this.Terminal_list(0)
   },
   methods: {
     groupList(data) {
-      // console.log(data)
       data.forEach((v, k) => {
-        v.FingerClient.forEach((val, key) => {
-          val.devicegroupid = val.Clientid
-          val.devicegroupname = val.ClientName
-        })
+        this.group_list.push({ value: v.devicegroupid, label: v.devicegroupname })
       })
-      this.group_list = data
     },
     checkbox(data) {
       console.log(data)
-      this.clientid = data.key
-      this.selected[data.key] = data.checked
+      this.selected[data.value.Clientid] = data.checked
       this.selected = Object.assign({}, this.selected)
+      this.ter_list.forEach((v, k) => {
+        if (v.Clientid === this.getSelectedList[0]) {
+          this.key = k
+          this.clientid = v.Clientid
+        }
+      })
     },
     // 终端列表
-    Terminal_list(floorId) {
-      this.floorId = floorId
-      this.$store.dispatch('interactive/Terminal_list', { Floorid: floorId }).then(response => {
-        this.terminal_list = response.FingerClient
-        this.details = response.FingerClient[0]
+    Terminal_list(floorid) {
+      this.floorid = floorid
+      this.$store.dispatch('interactive/Terminal_list', { Floorid: floorid }).then(response => {
+        this.ter_list = response.FingerClient
+        console.log(response)
       }).catch(() => {
         console.log('error')
       })
@@ -125,8 +121,7 @@ export default {
       this.$refs.Dialog.centerDialogVisible = true
       this.de_data = 0
       this.$refs.Dialog.dialogtitle = '修改终端'
-      this.details = this.terminal_list[0]
-      this.$refs.Dialog.form = this.details
+      this.$refs.Dialog.form = this.ter_list[this.key]
       this.$refs.Dialog.Prohibit = true
     },
     del() {
@@ -151,10 +146,6 @@ export default {
         })
       })
     },
-    // 打铃设置
-    ringing_set() {
-      this.$refs.Ringing.centerDialogVisible = true
-    },
     // websocket接收回调函数返回数据的方法
     getConfigResult(res) {
       console.log(res)
@@ -169,7 +160,6 @@ export default {
             this.$refs.Terminal.form = res.data
           }
         }, 500)
-
         return
       } else {
         this.$message({
@@ -187,6 +177,11 @@ export default {
     terminal_para() {
       this.socketApi.sendSock(JSON.parse('{"cmd":"get_device_param", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
     },
+    // 打铃设置
+    ringing_set() {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"get_ring_setting", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
+      this.$refs.Ringing.centerDialogVisible = true
+    },
     // 读取新记录
     read_new_record() {
       this.socketApi.sendSock(JSON.parse('{"cmd":"read_new_record", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
@@ -202,6 +197,14 @@ export default {
     // 恢复人员
     recover_user() {
       this.socketApi.sendSock(JSON.parse('{"cmd":"recover_user", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
+    },
+    // 清除考勤记录
+    clear() {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"clean_record", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
+    },
+    // 初始化设备
+    initialize() {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"init_device", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
     }
   }
 }

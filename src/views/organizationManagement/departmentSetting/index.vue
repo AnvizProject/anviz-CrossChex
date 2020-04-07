@@ -29,68 +29,6 @@
                 <el-button type="danger" size="mini" @click="depart_del">删除</el-button>
               </p>
             </div>
-            <div class="business-card">
-              <div class="business-card-item">
-                <span>
-                  <div class="block"><el-avatar :size="70" :src="circleUrl"/></div>
-                </span>
-                <span>
-                  <div>yaobo</div>
-                  <div class="name-num">
-                    <span>研发部</span>
-                    <span>80685</span>
-                  </div>
-                </span>
-              </div>
-              <div class="business-card-item">
-                <span>
-                  <div class="block"><el-avatar :size="70" :src="circleUrl"/></div>
-                </span>
-                <span>
-                  <div>yaobo</div>
-                  <div class="name-num">
-                    <span>研发部</span>
-                    <span>80685</span>
-                  </div>
-                </span>
-              </div>
-              <div class="business-card-item">
-                <span>
-                  <div class="block"><el-avatar :size="70" :src="circleUrl"/></div>
-                </span>
-                <span>
-                  <div>yaobo</div>
-                  <div class="name-num">
-                    <span>研发部</span>
-                    <span>80685</span>
-                  </div>
-                </span>
-              </div>
-              <div class="business-card-item">
-                <span>
-                  <div class="block"><el-avatar :size="70" :src="circleUrl"/></div>
-                </span>
-                <span>
-                  <div>yaobo</div>
-                  <div class="name-num">
-                    <span>研发部</span>
-                    <span>80685</span>
-                  </div>
-                </span>
-              </div>
-              <div class="business-card-item">
-                <span>
-                  <div class="block"><el-avatar :size="70" :src="circleUrl"/></div>
-                </span>
-                <span>
-                  <div>yaobo</div>
-                  <div class="name-num">
-                    <span>研发部</span>
-                    <span>80685</span>
-                  </div>
-                </span>
-              </div>
-            </div>
           </el-card>
         </div>
       </el-col>
@@ -249,29 +187,5 @@ export default {
   .fun-btn{
     text-align: right;
     margin-bottom:15px;
-  }
-  .business-card{
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    .business-card-item{
-      display: flex;
-      margin-right: 2%;
-      margin-bottom: 2%;
-      height:80px;
-      background:rgba(215,231,228,0.33);
-      border-radius:5px;
-      border:1px solid rgba(170,188,184,1);
-      padding:5px 10px;
-      align-items: center;
-      .block{
-        width: 70px;
-        height: 70px;
-        margin-right: 20px;
-      }
-      .name-num{
-        margin-top: 5px;
-      }
-    }
   }
 </style>

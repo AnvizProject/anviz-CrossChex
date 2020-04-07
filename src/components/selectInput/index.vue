@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <treeselect :normalizer="normalizer" v-model="value" :multiple="false" :options="options" :clearable="true" @select="select" />
-    <el-input v-model="input" placeholder="请输入内容"/>
   </div>
 </template>
 
@@ -43,23 +42,4 @@ export default {
 </script>
 
 <style lang="scss">
-  #app{
-    display: flex;
-    .vue-treeselect{
-      width: 50%;
-      .vue-treeselect__control{
-        height: 100%;
-        border-top-right-radius: 0px;
-        border-bottom-right-radius: 0px;
-        .vue-treeselect__placeholder{
-          top: calc(50% - 8px);
-          line-height: unset;
-        }
-      }
-    }
-    .el-input__inner{
-      border-top-left-radius: 0px;
-      border-bottom-left-radius: 0px;
-    }
-  }
 </style>
