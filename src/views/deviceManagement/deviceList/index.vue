@@ -25,13 +25,13 @@
         </div>
       </div>
       <div slot="main" class="main">
-
-        <card-select v-for="(v, k) in ter_list" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox" @read_new_record="read_new_record"/>
+        <card-select v-for="(v, k) in ter_list" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox" @read_new_record="read_new_record" @down="progressShow"/>
       <!-- <el-button @click="getSelectedList">test</el-button> -->
       </div>
     </container>
     <Dialog ref="Dialog" :options="group_list" :de_data="de_data" @Terminal_list="Terminal_list"/>
     <Terminal ref="Terminal" @clear="clear" @initialize="initialize"/>
+      <progress-self ref="progress"/>
     <Ringing ref="Ringing"/>
   </div>
 </template>
@@ -43,9 +43,10 @@ import Terminal from './components/terminal'
 import Ringing from './components/ringing'
 import Devicegroup from '@/components/Devicegroup'
 import Dialog from '../components/Dialog/edit'
+import progressSelf from '@/components/Progress'
 var timestamp = Date.parse(new Date()) / 1000
 export default {
-  components: { Search, container, cardSelect, Devicegroup, Dialog, Terminal, Ringing },
+  components: { Search, container, cardSelect, Devicegroup, Dialog, Terminal, Ringing, progressSelf },
   data() {
     return {
       disabled: true,
@@ -86,6 +87,10 @@ export default {
     this.Terminal_list(0)
   },
   methods: {
+    progressShow() {
+      // alert(1)
+      this.$refs.progress.dialogVisible = true
+    },
     groupList(data) {
       data.forEach((v, k) => {
         this.group_list.push({ value: v.devicegroupid, label: v.devicegroupname })
