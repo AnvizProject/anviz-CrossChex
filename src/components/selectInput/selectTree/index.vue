@@ -10,29 +10,23 @@ import selectTree from './selectTree'
 export default {
   // register the component
   components: { selectTree },
+  props: {
+    options: {
+      type: Array,
+      default: () => {}
+    }
+  },
   data() {
     return {
       // define the default value
       value: null,
       // define options
-      options: [{
-        id: 'a',
-        label: 'a',
-        children: [{
-          id: 'aa',
-          label: 'aa'
-        }, {
-          id: 'ab',
-          label: 'ab'
-        }]
-      }, {
-        id: 'b',
-        label: 'b'
-      }, {
-        id: 'c',
-        label: 'c'
-      }],
-      input: ''
+      input: '',
+      defaultProps: {
+        id: 'devicegroupid',
+        children: 'FingerClient',
+        label: 'devicegroupname'
+      }
     }
   },
   methods: {

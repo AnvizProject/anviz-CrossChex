@@ -27,11 +27,12 @@
       </div>
       <div slot="main" class="main">
 
-        <card-select v-for="(v, k) in terminal_list" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox"/>
-      <!-- <el-button @click="getSelectedList">test</el-button> -->
+        <card-select v-for="(v, k) in terminal_list" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox" @down="progressShow"/>
+      <!-- <el-button @click="getSelectedList">test</el-button> --> 
+        <progress-self ref="progress"/>
       </div>
     </container>
-    <Dialog ref="Dialog"/>
+    <Dialog ref="Dialog" :options = "group_list"/>
     <Terminal ref="Terminal"/>
     <Ringing ref="Ringing"/>
   </div>
@@ -44,9 +45,10 @@ import Terminal from './components/terminal'
 import Ringing from './components/ringing'
 import Devicegroup from '@/components/Devicegroup'
 import Dialog from '../components/Dialog/edit'
+import progressSelf from '@/components/Progress'
 var timestamp = Date.parse(new Date()) / 1000
 export default {
-  components: { Search, container, cardSelect, Devicegroup, Dialog, Terminal, Ringing },
+  components: { Search, container, cardSelect, Devicegroup, Dialog, Terminal, Ringing, progressSelf },
   data() {
     return {
       disabled: true,
@@ -90,6 +92,10 @@ export default {
     this.Terminal_list(0)
   },
   methods: {
+    progressShow() {
+      // alert(1)
+      this.$refs.progress.dialogVisible = true
+    },
     groupList(data) {
       // console.log(data)
       data.forEach((v, k) => {

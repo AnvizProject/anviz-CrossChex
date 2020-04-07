@@ -25,7 +25,7 @@
     <div class="device-icon">
       <span class="icon-cursor icon-psd-lock display"/>
       <!-- <span class="icon-cursor icon-psd-open open"/> -->
-      <span class="icon-cursor icon-data-import"/>
+      <span class="icon-cursor icon-data-import" @click="down"/>
       <el-dropdown :hide-on-click="true">
         <span class="el-dropdown-link">
           <span class="icon-cursor icon-setting"/><i class="el-icon-arrow-down el-icon--right"/>
@@ -74,6 +74,9 @@ export default {
     },
     stop() {
       // 阻止点击单选按钮事件冒泡的空函数
+    },
+    down() {
+      this.$emit('down')
     }
   }
 }
