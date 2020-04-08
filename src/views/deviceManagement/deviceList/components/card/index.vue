@@ -24,7 +24,7 @@
     </div>
     <div class="device-icon">
       <span class="icon-cursor icon-psd-lock display"/>
-      <span class="icon-cursor icon-data-import"  @click="read_new_record"/>
+      <span class="icon-cursor icon-data-import" @click="read_new_record"/>
       <el-dropdown :hide-on-click="true">
         <span class="el-dropdown-link">
           <span class="icon-cursor icon-setting"/><i class="el-icon-arrow-down el-icon--right"/>
@@ -93,7 +93,7 @@ export default {
       console.log(res)
     },
     // 读取新纪录
-    read_new_record(){
+    read_new_record() {
       // this.$emit('down')
       console.log(this.val.Clientid)
       this.socketApi.sendSock(JSON.parse('{"cmd":"read_new_record", "data": {"ts":"' + timestamp + '","clientid": "' + this.val.Clientid + '"}}'), this.getConfigResult)

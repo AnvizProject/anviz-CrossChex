@@ -25,13 +25,12 @@
         </div>
       </div>
       <div slot="main" class="main">
-        <card-select v-for="(v, k) in ter_list" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox" @read_new_record="read_new_record" @down="progressShow"/>
-      <!-- <el-button @click="getSelectedList">test</el-button> -->
+        <card-select v-for="(v, k) in ter_list" ref="card_sel" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox" @read_new_record="read_new_record" @down="progressShow"/>
       </div>
     </container>
     <Dialog ref="Dialog" :options="group_list" :de_data="de_data" @Terminal_list="Terminal_list"/>
     <Terminal ref="Terminal" @clear="clear" @initialize="initialize"/>
-      <progress-self ref="progress"/>
+    <progress-self ref="progress"/>
     <Ringing ref="Ringing"/>
   </div>
 </template>
@@ -61,6 +60,7 @@ export default {
       floorid: 0,
       de_data: null,
       clientid: null,
+      ClientNumber: null,
       key: null
     }
   },
@@ -97,15 +97,19 @@ export default {
       })
     },
     checkbox(data) {
-      console.log(data)
-      this.selected[data.value.Clientid] = data.checked
+      this.selected[data.value.ClientNumber] = data.checked
       this.selected = Object.assign({}, this.selected)
       this.ter_list.forEach((v, k) => {
-        if (v.Clientid === this.getSelectedList[0]) {
+        console.log(v.ClientNumber, '1')
+        console.log(this.getSelectedList[0], '2')
+        if (v.ClientNumber === Number(this.getSelectedList[0])) {
           this.key = k
           this.clientid = v.Clientid
+          this.ClientNumber = v.ClientNumber
+          console.log(v.Clientid, '3')
         }
       })
+      console.log(this.selected)
     },
     // 终端列表
     Terminal_list(floorid) {
@@ -137,6 +141,8 @@ export default {
       }).then(() => {
         this.$store.dispatch('interactive/Device_delete', { ClientNumbers: this.getSelectedList.join(',') }).then(response => {
           this.Terminal_list()
+          this.$refs.card_sel.selected = false
+          console.log(this.$refs.card_sel.selected)
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -176,6 +182,7 @@ export default {
     },
     // 同步时间
     sync_time() {
+      console.log(this.clientid)
       this.socketApi.sendSock(JSON.parse('{"cmd":"sync_time", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
     },
     // 终端参数
