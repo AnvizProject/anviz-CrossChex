@@ -1,11 +1,12 @@
 <template>
   <el-card class="card-select">
+    <div :class="val.online_status==='online'?'':'mask'"/>
     <div slot="header" class="header" title="查看详情" @click="drawer">
       <div class="left">
         <div :style="{backgroundImage:'url('+coverImage+')'}" class="image">
           <!-- <img src="./c2slim.png" alt=""> -->
           <div id="box" class="name">
-            123
+            {{ val.device_type_name }}
           </div>
         </div>
       </div>
@@ -13,7 +14,7 @@
         <div class="box">
           <div class="department" >{{ val.ClientName }}</div>
           <div class="ip" >{{ val.ipaddress }}</div>
-          <div class="group" >{{ val.groupName }} 设备组</div>
+          <div class="group" >{{ val.devicegroupname }}</div>
         </div>
       </div>
       <div class="right">
@@ -23,7 +24,8 @@
       </div>
     </div>
     <div class="device-icon">
-      <span class="icon-cursor icon-psd-lock display"/>
+      <span v-if="close" :class="val.can_open_door===1?'icon-cursor': 'display'" class="icon-psd-lock" @click="open_door(val.can_open_door)"/>
+      <span v-else class="icon-cursor icon-psd-open open"/>
       <span class="icon-cursor icon-data-import" @click="read_new_record"/>
       <el-dropdown :hide-on-click="true">
         <span class="el-dropdown-link">
@@ -33,7 +35,6 @@
           <el-dropdown-item>设置网络参数</el-dropdown-item>
           <el-dropdown-item>终端信息</el-dropdown-item>
           <el-dropdown-item>消息管理</el-dropdown-item>
-          <el-dropdown-item>清除管理员</el-dropdown-item>
           <el-dropdown-item>设置机器号</el-dropdown-item>
           <el-dropdown-item>自动切换考勤状态设置</el-dropdown-item>
         </el-dropdown-menu>
@@ -62,7 +63,8 @@ export default {
     return {
       radio: 1,
       selected: false,
-      coverImage: require('../images/c2slim.png')
+      coverImage: require('../images/c2slim.png'),
+      close: true
     }
   },
   methods: {
@@ -92,6 +94,15 @@ export default {
       }
       console.log(res)
     },
+    // 开门
+    open_door(open) {
+      if (open === 1) {
+        this.close = false
+        setTimeout(() => {
+          this.close = true
+        }, 10000)
+      }
+    },
     // 读取新纪录
     read_new_record() {
       // this.$emit('down')
@@ -103,6 +114,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .el-card{
+    position: relative;
+    .mask{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top:0;
+      left:0%;
+      background: rgba(207, 207, 207, 0.5);
+      z-index: 1;
+      cursor:not-allowed
+    }
+  }
   .header{
     display: flex;
     justify-content: space-between;
@@ -172,6 +196,7 @@ export default {
     }
     .display{
       color: #dedbdc;
+      cursor:not-allowed
     }
     .open{
       color: #d0021b;

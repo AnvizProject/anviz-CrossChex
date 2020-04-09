@@ -40,7 +40,6 @@ export default {
   },
   mounted() {
     this.All_groups_list()
-    this.status_index()
   },
   methods: {
     // 所有组列表

@@ -2,12 +2,12 @@
   <span class="filter-box">
     <el-button :style="{'color':fontColor}" size="mini" @mouseover.native="move" @mouseleave.native="leave">{{ value }}<i :class="ok ? 'icon-under' : 'icon-up'"/></el-button>
     <div class="filter-con">
-      <p class="filter-all">所有组</p>
+      <p class="filter-all" @click="all_group">所有组</p>
       <div v-for="(item, index) in group_list" :key="index">
         <p class="filter-title">{{ item.devicegroupname }}</p>
         <ul>
           <p v-if="item.FingerClient.length===0" class="hint">暂无终端</p>
-          <li v-for ="(t_item, index) in item.FingerClient" :key="index" @click="list(t_item.ClientName)">
+          <li v-for ="(t_item, index) in item.FingerClient" :key="index" @click="list(t_item)">
             {{ t_item.ClientName }}
           </li>
         </ul>
@@ -22,7 +22,8 @@ export default {
       ok: true,
       value: '设备组',
       group_list: [],
-      fontColor: '#58585A'
+      fontColor: '#58585A',
+      floorid: 0
     }
   },
   mounted: function() {
@@ -39,15 +40,23 @@ export default {
     All_groups_list() {
       this.$store.dispatch('interactive/All_groups_list', {}).then(response => {
         this.group_list = response.DeviceGroup
-        this.$emit('groupList', this.group_list)
       }).catch(() => {
         console.log('error')
       })
     },
     // 部门列表点击
-    list(ClientName) {
-      this.value = ClientName
+    list(data) {
+      console.log(data)
+      this.value = data.ClientName
       this.fontColor = '#3CA060'
+      this.floorid = data.Floorid
+      this.$emit('Terminal_list')
+    },
+    // 所有组
+    all_group() {
+      this.floorid = 0
+      this.value = '所有组'
+      this.$emit('Terminal_list')
     }
   }
 }
@@ -84,6 +93,7 @@ export default {
         .filter-all{
           margin-bottom:10px;
           font-weight: 600;
+          cursor: pointer;
         }
         .filter-title{
           border-bottom:1px solid #ddd;

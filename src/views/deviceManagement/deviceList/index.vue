@@ -1,18 +1,19 @@
 <template>
   <div class="device">
     <search :search="search"/>
-    <container>
+    <container :total="total" @per_page="Terminal_list" @page="Terminal_list">
       <div slot="header" class="con-item">
         <div class="header-item">
           <el-button type="primary" size="mini" @click="add">增加</el-button>
           <el-button :disabled="!checked" :type="checked?'warning':'info'" size="mini" @click="edit">修改</el-button>
           <el-button :disabled="getSelectedList.length<=0" :type="getSelectedList.length>0?'danger':'info'" size="mini" @click="del">删除</el-button>
+          <el-button :disabled="!checked" :type="checked?'primary':'info'" size="mini" @click="clear_admin">清除管理员</el-button>
           <el-dropdown>
-            <el-button :disabled="getSelectedList.length<=0" type="info" size="mini">更多操作<i class="el-icon-arrow-down el-icon--right"/></el-button>
+            <el-button :disabled="!checked" type="info" size="mini">更多操作<i class="el-icon-arrow-down el-icon--right"/></el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item split-button="true" @click.native="sync_time">同步时间</el-dropdown-item>
               <el-dropdown-item @click.native="terminal_para">终端参数</el-dropdown-item>
-              <el-dropdown-item @click.native="ringing_set">打铃设置</el-dropdown-item>
+              <el-dropdown-item @click.native="get_ringing_set">打铃设置</el-dropdown-item>
               <el-dropdown-item @click.native="read_new_record">读取新记录</el-dropdown-item>
               <el-dropdown-item @click.native="read_all_record">读取全部记录</el-dropdown-item>
               <el-dropdown-item @click.native="backup_user">备份人员</el-dropdown-item>
@@ -21,17 +22,17 @@
           </el-dropdown>
         </div>
         <div class="header-item">
-          <Devicegroup ref="groupList" @groupList="groupList" />
+          <Devicegroup ref="groupList" @Terminal_list="Terminal_list"/>
         </div>
       </div>
       <div slot="main" class="main">
-        <card-select v-for="(v, k) in ter_list" ref="card_sel" :key="k" :val="v" :index="v.key" :select="selected" class="card" @checkbox="checkbox" @read_new_record="read_new_record" @down="progressShow"/>
+        <card-select v-for="(v, k) in ter_list" :key="k" :val="v" :index="v.key" :select="selected" :ref="'card_sel' + v.ClientNumber" class="card" @checkbox="checkbox" @read_new_record="read_new_record" @down="progressShow"/>
       </div>
     </container>
     <Dialog ref="Dialog" :options="group_list" :de_data="de_data" @Terminal_list="Terminal_list"/>
     <Terminal ref="Terminal" @clear="clear" @initialize="initialize"/>
     <progress-self ref="progress"/>
-    <Ringing ref="Ringing"/>
+    <Ringing ref="Ringing" :ring_data="ring_data" @ring_set="ring_set"/>
   </div>
 </template>
 <script>
@@ -51,7 +52,7 @@ export default {
       disabled: true,
       type: 'info',
       types: 'info',
-      search: '工号、姓名',
+      search: ' 机器号、设备名称',
       group_list: [],
       selected: {},
       selectedList: [],
@@ -61,7 +62,13 @@ export default {
       de_data: null,
       clientid: null,
       ClientNumber: null,
-      key: null
+      key: null,
+      ring_data: [],
+      total: null,
+      per_page: {
+        page: 1,
+        perPage: 15
+      }
     }
   },
   computed: {
@@ -84,39 +91,34 @@ export default {
     }
   },
   mounted: function() {
-    this.Terminal_list(0)
+    this.Terminal_list()
   },
   methods: {
     progressShow() {
       // alert(1)
       this.$refs.progress.dialogVisible = true
     },
-    groupList(data) {
-      data.forEach((v, k) => {
-        this.group_list.push({ value: v.devicegroupid, label: v.devicegroupname })
-      })
-    },
     checkbox(data) {
       this.selected[data.value.ClientNumber] = data.checked
       this.selected = Object.assign({}, this.selected)
       this.ter_list.forEach((v, k) => {
-        console.log(v.ClientNumber, '1')
-        console.log(this.getSelectedList[0], '2')
         if (v.ClientNumber === Number(this.getSelectedList[0])) {
           this.key = k
           this.clientid = v.Clientid
           this.ClientNumber = v.ClientNumber
-          console.log(v.Clientid, '3')
         }
       })
       console.log(this.selected)
     },
     // 终端列表
-    Terminal_list(floorid) {
-      this.floorid = floorid
-      this.$store.dispatch('interactive/Terminal_list', { Floorid: floorid }).then(response => {
+    Terminal_list(per_page) {
+      const floorid = this.$refs.groupList.floorid
+      if (per_page !== undefined) {
+        this.per_page = per_page
+      }
+      this.$store.dispatch('interactive/Terminal_list', { per_page: this.per_page.perPage, page: this.per_page.page, Floorid: floorid }).then(response => {
         this.ter_list = response.FingerClient
-        console.log(response)
+        this.total = response.FingerClientList.total
       }).catch(() => {
         console.log('error')
       })
@@ -141,7 +143,9 @@ export default {
       }).then(() => {
         this.$store.dispatch('interactive/Device_delete', { ClientNumbers: this.getSelectedList.join(',') }).then(response => {
           this.Terminal_list()
-          this.$refs.card_sel.selected = false
+          for (const key of this.getSelectedList) {
+            this.$refs['card_sel' + key][0].selected = false
+          }
           console.log(this.$refs.card_sel.selected)
           this.$message({
             type: 'success',
@@ -170,29 +174,42 @@ export default {
             this.$refs.Terminal.centerDialogVisible = true
             this.$refs.Terminal.form = res.data
           }
+          if (res.cmd === 'get_ring_setting') {
+            this.$refs.Ringing.centerDialogVisible = true
+            this.ring_data = res.data.ring_setting_list
+          }
+          if (res.cmd === 'ring_setting') {
+            this.$refs.Ringing.centerDialogVisible = false
+          }
         }, 500)
         return
       } else {
         this.$message({
-          message: '更新失败',
+          message: '失败',
           type: 'warning'
         })
       }
       console.log(res)
     },
+    // 清除管理员
+    clear_admin() {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"clear_manager", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
+    },
     // 同步时间
     sync_time() {
-      console.log(this.clientid)
       this.socketApi.sendSock(JSON.parse('{"cmd":"sync_time", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
     },
     // 终端参数
     terminal_para() {
       this.socketApi.sendSock(JSON.parse('{"cmd":"get_device_param", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
     },
-    // 打铃设置
-    ringing_set() {
+    // 获取打铃设置
+    get_ringing_set() {
       this.socketApi.sendSock(JSON.parse('{"cmd":"get_ring_setting", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
-      this.$refs.Ringing.centerDialogVisible = true
+    },
+    // 打铃设置
+    ring_set(data) {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"ring_setting", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '","ring_setting_list": [' + data + ']}}'), this.getConfigResult)
     },
     // 读取新记录
     read_new_record() {

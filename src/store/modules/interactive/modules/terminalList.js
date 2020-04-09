@@ -10,8 +10,9 @@ const terminalList = {
 
   },
   actions: {
-    // 基本参数详情
+    // 终端列表
     Terminal_list({ commit }, Terminal_list_data) {
+      console.log(Terminal_list_data)
       Terminal_list_data.access_token = store.getters.token
       return new Promise((resolve, reject) => {
         terminal_list(Terminal_list_data).then(response => {

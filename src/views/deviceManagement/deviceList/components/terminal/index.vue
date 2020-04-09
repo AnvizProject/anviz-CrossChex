@@ -405,13 +405,12 @@ export default {
       this.form.address = null
       this.form.fax = null
     },
-    clear(){
+    clear() {
       this.$emit('clear')
     },
-    initialize(){
+    initialize() {
       this.$emit('initialize')
     }
-    
 
   }
 }

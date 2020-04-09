@@ -159,7 +159,7 @@ export default {
       total: null,
       per_page: {
         page: 1,
-        perPage: 15
+        perPage: 1
       },
       user_id: [],
       checked: true,
@@ -185,6 +185,7 @@ export default {
     },
     // 人员列表
     people_list(per_page) {
+      console.log(per_page)
       if (per_page !== undefined) {
         this.per_page = per_page
       }

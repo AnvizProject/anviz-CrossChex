@@ -7,29 +7,7 @@
       </div>
       <div class="text item">
         <div class="content-part">
-          <div class="file-selection-wrap">
-            <el-form class="file-selection" auto-complete="on" label-position="left" label-width="100px">
-              <span><el-radio v-model="radio" label="1">Access文件</el-radio></span>
-              <span>
-                <el-input v-model="form.input1"/>
-              </span>
-              <span>
-                <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" accept=".mdb">
-                  <el-button size="small" type="primary">...</el-button>
-                </el-upload>
-              </span>
-            </el-form>
-          </div>
           <el-form class="data-selection" auto-complete="on" label-position="left" label-width="25%">
-            <div class="data-base-selection">
-              <span><el-radio v-model="radio" label="2">Sql Sever</el-radio></span>
-              <span>
-                <el-select v-model="form.region" placeholder="请选择">
-                  <el-option label="区域一" value="shanghai"/>
-                  <el-option label="区域二" value="beijing"/>
-                </el-select>
-              </span>
-            </div>
             <el-form-item label="服务器IP">
               <el-input v-model="form.input1"/>
             </el-form-item>
@@ -40,7 +18,10 @@
               <el-input v-model="form.input1"/>
             </el-form-item>
             <el-form-item label="数据库名">
-              <el-input v-model="form.input1"/>
+              <el-select v-model="form.region" placeholder="请选择">
+                <el-option label="区域一" value="shanghai"/>
+                <el-option label="区域二" value="beijing"/>
+              </el-select>
             </el-form-item>
           </el-form>
         </div>
@@ -149,5 +130,6 @@ export default {
 
   .box-card {
     width: 100%;
+    height: 100%;
   }
 </style>
