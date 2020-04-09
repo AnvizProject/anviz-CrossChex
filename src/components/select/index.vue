@@ -1,5 +1,5 @@
 <template>
-  <el-select :value="changeval" placeholder="请选择" @change="change">
+  <el-select :value="changeval" :disabled="disabled" placeholder="请选择" @change="change">
     <el-option
       v-for="item in options"
       :key="item.value"
@@ -22,6 +22,10 @@ export default {
     changeval: {
       type: null,
       default: null
+    },
+    disabled: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
