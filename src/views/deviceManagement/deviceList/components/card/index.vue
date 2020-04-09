@@ -25,12 +25,12 @@
     <div class="device-icon">
       <span class="icon-cursor icon-psd-lock display"/>
       <span class="icon-cursor icon-data-import" @click="read_new_record"/>
-      <el-dropdown :hide-on-click="true">
+      <el-dropdown :hide-on-click="true" @command="handleCommand">
         <span class="el-dropdown-link">
           <span class="icon-cursor icon-setting"/><i class="el-icon-arrow-down el-icon--right"/>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>设置网络参数</el-dropdown-item>
+          <el-dropdown-item command="netSetting">设置网络参数</el-dropdown-item>
           <el-dropdown-item>终端信息</el-dropdown-item>
           <el-dropdown-item>消息管理</el-dropdown-item>
           <el-dropdown-item>清除管理员</el-dropdown-item>
@@ -40,14 +40,16 @@
       </el-dropdown>
     </div>
     <drawer ref="drawer" :val="val"/>
+    <device-setting ref="setting"/>
   </el-card>
 </template>
 
 <script>
 import drawer from '../drawer'
+import deviceSetting from '../deviceSetting'
 var timestamp = Date.parse(new Date()) / 1000
 export default {
-  components: { drawer },
+  components: { drawer, deviceSetting },
   props: {
     val: {
       type: Object,
@@ -66,6 +68,11 @@ export default {
     }
   },
   methods: {
+    handleCommand(command) {
+      if (command === 'netSetting') {
+        this.$refs.setting.centerDialogVisible = true
+      }
+    },
     drawer() {
       this.$refs.drawer.drawer = true
     },
@@ -187,7 +194,7 @@ export default {
       padding: 12px;
       line-height: unset;
     }
-    .el-checkbox__inner{
+     .header>.right .el-checkbox__inner{
       width: 25px;
       height: 25px;
       border-radius: 50%;
