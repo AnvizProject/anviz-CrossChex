@@ -17,7 +17,6 @@ export function getInfo(token) {
 }
 
 export function logout(data) {
-  console.log(data)
   return request({
     url: '/api/opinfo/logout',
     method: 'post',

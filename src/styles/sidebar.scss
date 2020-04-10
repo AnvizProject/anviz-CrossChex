@@ -12,7 +12,7 @@
       height: 100%;
       display: flex;
       align-items: center;
-      padding: 0 40px 0;
+      padding: 0 40.5px 0;
       span{
         display: block;
         width: auto;
@@ -50,6 +50,8 @@
       border: none;
       display: flex;
       align-items: center;
+      overflow-x: auto;
+      margin-right: auto;
       .menu-wrapper{
         height: 100%;
       }
@@ -60,8 +62,8 @@
     }
 
     .el-dropdown{
-      margin-left: auto;
-      margin-right: 20px;
+      
+      text-align: center;
       color:$color-ff;
     }
 
@@ -225,25 +227,12 @@
   }
 }
 
-// when menu collapsed
-// .el-menu--vertical {
-//   &>.el-menu {
-//     .svg-icon {
-//       margin-right: 16px;
-//     }
-//   }
+// 导航栏右侧设置
+.user-dropdown{
+  .el-dropdown-menu__item{
+    padding: 0;
+    height: auto;
+    line-height: normal;
 
-//   .nest-menu .el-submenu>.el-submenu__title,
-//   .el-menu-item {
-//     &:hover {
-//       // You can use $subMenuHover
-//       background-color: $menuHover !important;
-//     }
-//   }
-// }
-// // 导航栏右侧设置
-// .el-dropdown-menu__item:focus,
-// .el-dropdown-menu__item:not(.is-disabled):hover {
-//     background-color: transparent;
-//     color:$color-main !important;
-// }
+  }
+}

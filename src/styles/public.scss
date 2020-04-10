@@ -12,9 +12,9 @@ ul {
   margin: 10px;
   width: calc(100% - 20px);
   height: calc(100% - 20px);
-  background: #fff;
   border-radius: 5px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   // 外部布局(container)
   .el-container {
     height: 100%;

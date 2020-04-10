@@ -8,45 +8,57 @@
         <div class="header">
           <div :style="{backgroundImage:'url('+coverImage+')'}" class="image">
             <div id="drawer-box" class="name">
-              222
+              {{ val.device_type_name }}
             </div>
           </div>
           <div class="info">
             <div class="box">
               <div class="department">{{ val.ClientName }}</div>
               <div class="ip">{{ val.ipaddress }}</div>
-              <div class="group">{{ val.groupName }} 设备组</div>
+              <div class="group">{{ val.devicegroupname }}</div>
             </div>
           </div>
         </div>
         <div class="main">
           <div class="classify">
-            <div class="title">分类</div>
+            <div class="title">终端信息</div>
             <div class="main">
               <div class="block">
-                <span class="value">E1021457825442</span><br>
-                <span class="key">序列号</span>
+                <span class="value">{{ terminal_info.user_num }}</span><br>
+                <span class="key">员工数</span>
               </div>
               <div class="block">
-                <span class="value">{{ val.ClientName }}</span><br>
-                <span class="key">设备名称</span>
+                <span class="value">{{ terminal_info.template_num }}</span><br>
+                <span class="key">模板数</span>
               </div>
               <div class="block">
-                <span class="value">{{ val.ClientNumber }}</span><br>
-                <span class="key">机器号</span>
+                <span class="value">{{ terminal_info.password_num }}</span><br>
+                <span class="key">密码数</span>
               </div>
               <div class="block">
-                <span class="value">{{ val.groupName }} 设备组</span><br>
-                <span class="key">设备组</span>
+                <span class="value">{{ terminal_info.card_num }}</span><br>
+                <span class="key">卡数</span>
               </div>
               <div class="block">
-                <span class="value" v-text="val.DeviceType === 0 ? 'facepass' : 'facepass pro'">指纹/卡</span><br>
-                <span class="key">设备类型</span>
+                <span class="value">{{ terminal_info.new_record_num }}</span><br>
+                <span class="key">新记录数</span>
+              </div>
+              <div class="block">
+                <span class="value">{{ terminal_info.all_record_num }}</span><br>
+                <span class="key">总记录数</span>
+              </div>
+              <div class="block">
+                <span class="value">{{ terminal_info.serial_number }}</span><br>
+                <span class="key">设备序列号</span>
+              </div>
+              <div class="block">
+                <span class="value">{{ terminal_info.firmware }}</span><br>
+                <span class="key">固件版本</span>
               </div>
             </div>
           </div>
 
-          <div class="classify">
+          <!-- <div class="classify">
             <div class="title">分类</div>
             <div class="main">
               <div class="block">
@@ -74,9 +86,9 @@
                 <span class="key">Port</span>
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <div class="classify">
+          <!-- <div class="classify">
             <div class="title">分类</div>
             <div class="main">
               <div class="block">
@@ -84,7 +96,7 @@
                 <span class="key">固件版本</span>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </el-scrollbar>
@@ -94,6 +106,10 @@
 <script>
 export default {
   props: {
+    terminal_info: {
+      type: Object,
+      default: () => {}
+    },
     val: {
       type: Object,
       default: () => {}

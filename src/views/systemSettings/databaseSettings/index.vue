@@ -3,24 +3,26 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>数据库设置</span>
-        <el-button type="primary" size="small" style="float: right;" @click="websocketToLogin">应用</el-button>
+        <el-button type="primary" size="small" style="float: right;" @click="request">应用</el-button>
       </div>
       <div class="text item">
         <div class="content-part">
           <el-form class="data-selection" auto-complete="on" label-position="left" label-width="25%">
             <el-form-item label="服务器IP">
-              <el-input v-model="form.input1"/>
+              <el-input v-model="form.db_host"/>
+            </el-form-item>
+            <el-form-item label="服务器端口">
+              <el-input v-model="form.db_port"/>
             </el-form-item>
             <el-form-item label="用户名称">
-              <el-input v-model="form.input1"/>
+              <el-input v-model="form.db_username"/>
             </el-form-item>
             <el-form-item label="用户密码">
-              <el-input v-model="form.input1"/>
+              <el-input v-model="form.db_password"/>
             </el-form-item>
             <el-form-item label="数据库名">
-              <el-select v-model="form.region" placeholder="请选择">
-                <el-option label="区域一" value="shanghai"/>
-                <el-option label="区域二" value="beijing"/>
+              <el-select v-model="form.db_database" placeholder="请选择">
+                <el-option v-for="(v,k) in db_name" :key="k" :label="v" :value="v"/>
               </el-select>
             </el-form-item>
           </el-form>
@@ -33,22 +35,43 @@
 export default {
   data() {
     return {
-      radio: '1',
       form: {
-        input1: ''
-      }
+        db_host: '',
+        db_port: '',
+        db_username: '',
+        db_password: '',
+        db_database: ''
+      },
+      db_name: []
     }
   },
+  mounted() {
+    this.get_db({ cmd: 'get_db' })
+    setTimeout(() => {
+      this.get_db({ cmd: 'databases', db_host: this.form.db_host, db_port: this.form.db_port, db_username: this.form.db_username, db_password: this.form.db_password })
+    }, 500)
+  },
   methods: {
-    getConfigResult(res) {
-      // alert(1)
-      // 接收回调函数返回数据的方法
-      console.log(res)
+    // 获取数据库配置
+    get_db(cmd) {
+      this.$store.dispatch('interactive/Get_db', cmd).then(response => {
+        console.log(response)
+        if (cmd.cmd === 'get_db') {
+          this.form.db_host = response.db_config.db_host
+          this.form.db_port = response.db_config.db_port
+          this.form.db_username = response.db_config.db_username
+          this.form.db_password = response.db_config.db_password
+          this.form.db_database = response.db_config.db_database
+        } else {
+          // console.log(response)
+          this.db_name = response.databases
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     },
-    websocketToLogin() {
-      // alert(2)
-      // 【agentData：发送的参数；this.getConfigResult：回调方法】
-      this.socketApi.sendSock(JSON.parse('{"cmd":"ping"}'), this.getConfigResult)
+    request() {
+      console.log(123)
     }
   }
 }

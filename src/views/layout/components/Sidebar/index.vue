@@ -93,3 +93,11 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+  .avatar-container{
+    padding: 0 10px;
+  }
+  .avatar-wrapper{
+    display: flex;
+  }
+</style>

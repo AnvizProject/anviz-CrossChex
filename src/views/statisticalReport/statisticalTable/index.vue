@@ -12,7 +12,14 @@
           <span>
             <span class="search-title">人员</span>
             <span class="net-input-item">
-              <selectbox :options="staff_options" v-model="form.date2"/>
+              <!-- <selectbox :options="staff_options" v-model="form.date2"/> -->
+              <el-select v-model="form.date2" size="mini" placeholder="请选择">
+                <el-option
+                  v-for="item in staff_options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"/>
+              </el-select>
             </span>
           </span>
           <span>
@@ -578,8 +585,8 @@ export default {
     width: 100%;
     height: 100%;
     .main-slide-left{
-      width: calc(100vw - 430px);
-      flex-basis: calc(100vw - 430px);
+      width: calc(100vw - 470px);
+      flex-basis: calc(100vw - 470px);
       flex-shrink: 0;
       overflow-x: auto;
     }

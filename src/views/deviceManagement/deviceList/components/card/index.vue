@@ -1,7 +1,7 @@
 <template>
   <el-card class="card-select">
     <div :class="val.online_status==='online'?'':'mask'"/>
-    <div slot="header" class="header" title="查看详情" @click="drawer">
+    <div slot="header" class="header" title="点击查看终端信息" @click="drawer">
       <div class="left">
         <div :style="{backgroundImage:'url('+coverImage+')'}" class="image">
           <!-- <img src="./c2slim.png" alt=""> -->
@@ -24,23 +24,22 @@
       </div>
     </div>
     <div class="device-icon">
-      <span v-if="close" :class="val.can_open_door===1?'icon-cursor': 'display'" class="icon-psd-lock" @click="open_door(val.can_open_door)"/>
+      <span v-if="close" :class="val.can_open_door===1?'icon-cursor': 'display'" title="软件开门" class="icon-psd-lock" @click="open_door(val.can_open_door)"/>
       <span v-else class="icon-cursor icon-psd-open open"/>
-      <span class="icon-cursor icon-data-import" @click="read_new_record"/>
+      <span class="icon-cursor icon-data-import" title="读取新纪录" @click="read_new_record"/>
       <el-dropdown :hide-on-click="true" @command="handleCommand">
         <span class="el-dropdown-link">
           <span class="icon-cursor icon-setting"/><i class="el-icon-arrow-down el-icon--right"/>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="netSetting">设置网络参数</el-dropdown-item>
-          <el-dropdown-item>终端信息</el-dropdown-item>
           <el-dropdown-item>消息管理</el-dropdown-item>
           <el-dropdown-item>设置机器号</el-dropdown-item>
           <el-dropdown-item>自动切换考勤状态设置</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <drawer ref="drawer" :val="val"/>
+    <drawer ref="drawer" :val="val" :terminal_info="terminal_info"/>
     <device-setting ref="setting" @set_net_param="set_net_param"/>
   </el-card>
 </template>
@@ -66,18 +65,15 @@ export default {
       radio: 1,
       selected: false,
       coverImage: require('../images/c2slim.png'),
-      close: true
+      close: true,
+      terminal_info: {}
     }
   },
   methods: {
     handleCommand(command) {
       if (command === 'netSetting') {
-        console.log(123)
         this.get_net_param()
       }
-    },
-    drawer() {
-      this.$refs.drawer.drawer = true
     },
     change() {
       this.$emit('checkbox', { value: this.val, checked: this.selected })
@@ -104,9 +100,8 @@ export default {
           type: 'success'
         })
         setTimeout(() => {
-          this.$refs.setting.centerDialogVisible = true
           if (res.cmd === 'get_net_param') {
-            console.log(res.data)
+            this.$refs.setting.centerDialogVisible = true
             this.$refs.setting.form.IP.value = res.data.ip
             this.$refs.setting.form.gate.value = res.data.gate
             this.$refs.setting.form.netMask.value = res.data.mask
@@ -116,6 +111,13 @@ export default {
             this.$refs.setting.form.serverIP.value = res.data.server_ip
             this.$refs.setting.form.serverURL.value = res.data.url
             this.$refs.setting.form.DNS.value = res.data.dns
+          }
+          if (res.cmd === 'set_net_param') {
+            this.$refs.setting.centerDialogVisible = false
+          }
+          if (res.cmd === 'device_info') {
+            this.$refs.drawer.drawer = true
+            this.terminal_info = res.data
           }
         }, 500)
         return
@@ -127,19 +129,22 @@ export default {
       }
       console.log(res)
     },
+    // 终端信息
+    drawer() {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"device_info", "data": {"ts":"' + timestamp + '","clientid": "' + this.val.Clientid + '"}}'), this.getConfigResult)
+    },
     // 读取新纪录
     read_new_record() {
       // this.$emit('down')
-      console.log(this.val.Clientid)
       this.socketApi.sendSock(JSON.parse('{"cmd":"read_new_record", "data": {"ts":"' + timestamp + '","clientid": "' + this.val.Clientid + '"}}'), this.getConfigResult)
     },
     // 获取网络参数
     get_net_param() {
       this.socketApi.sendSock(JSON.parse('{"cmd":"get_net_param", "data": {"ts":"' + timestamp + '","clientid": "' + this.val.Clientid + '"}}'), this.getConfigResult)
     },
-    // 设置终端参数
-    set_net_param() {
-      this.socketApi.sendSock(JSON.parse('{"cmd":"set_net_param", "data": {"ts":"' + timestamp + '","clientid": "' + this.val.Clientid + '"}}'), this.getConfigResult)
+    // 设置网络参数
+    set_net_param(data) {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"set_net_param", "data": {"ts":"' + timestamp + '","clientid": "' + this.val.Clientid + '","ip": "' + data.IP + '","mask": "' + data.netMask + '","gate": "' + data.gate + '","mac": "' + data.mac + '","server_ip": "' + data.serverIP + '","port": "' + data.port + '","mode": "' + data.work + '","dns": "' + data.DNS + '","url": "' + data.serverURL + '"}}'), this.getConfigResult)
     },
     // 软件开门
     open_the_door() {

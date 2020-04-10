@@ -176,6 +176,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.options)
     this.device_options.value18 = this.options
   },
 

@@ -578,8 +578,8 @@ export default {
     width: 100%;
     height: 100%;
     .main-slide-left{
-      width: calc(100vw - 430px);
-      flex-basis: calc(100vw - 430px);
+      width: calc(100vw - 470px);
+      flex-basis: calc(100vw - 470px);
       flex-shrink: 0;
       overflow-x: auto;
     }

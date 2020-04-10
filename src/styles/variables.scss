@@ -57,11 +57,13 @@ $input-fontsize: 14px !default;
 $icon-size5: 2rem !default;
 // icon size
 .icon-size{
-        font-size: 16px;
-        &:before{
-                font-size: 1.5rem;
-                vertical-align: middle;
-        }
+	font-size: 16px;
+	display: block;
+	padding: 10px 15px;
+	&:before{
+					font-size: 1.5rem;
+					vertical-align: middle;
+	}
 }
 //省略号
 .senluehao{

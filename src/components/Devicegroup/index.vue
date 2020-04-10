@@ -40,6 +40,7 @@ export default {
     All_groups_list() {
       this.$store.dispatch('interactive/All_groups_list', {}).then(response => {
         this.group_list = response.DeviceGroup
+        this.$emit('groupList', this.group_list)
       }).catch(() => {
         console.log('error')
       })
@@ -52,7 +53,7 @@ export default {
       this.floorid = data.Floorid
       this.$emit('Terminal_list')
     },
-    // 所有组
+    // 所有组点击
     all_group() {
       this.floorid = 0
       this.value = '所有组'

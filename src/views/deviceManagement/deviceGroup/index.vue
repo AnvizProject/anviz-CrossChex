@@ -111,7 +111,7 @@ export default {
       overflow: auto;
       .add-button{
         margin: 0;
-        padding: 28px 0;
+        padding: 20px 0;
         text-align: center;
         .el-button{
           background:linear-gradient(90deg,rgba(77,219,168,1) 0%,rgba(61,188,143,1) 100%);

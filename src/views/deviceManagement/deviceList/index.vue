@@ -22,7 +22,7 @@
           </el-dropdown>
         </div>
         <div class="header-item">
-          <Devicegroup ref="groupList" @Terminal_list="Terminal_list"/>
+          <Devicegroup ref="groupList" @Terminal_list="Terminal_list" @groupList="groupList" />
         </div>
       </div>
       <div slot="main" class="main">
@@ -104,6 +104,16 @@ export default {
     this.Terminal_list()
   },
   methods: {
+    groupList(data) {
+      data.forEach((v, k) => {
+        v.FingerClient.forEach((val, key) => {
+          val.devicegroupid = val.Clientid
+          val.devicegroupname = val.ClientName
+        })
+        this.group_list.push({ value: v.devicegroupid, label: v.devicegroupname })
+      })
+      this.group_list = data
+    },
     progressShow() {
       // alert(1)
       this.$refs.progress.dialogVisible = true
@@ -120,6 +130,11 @@ export default {
       })
       console.log(this.selected)
     },
+    // 设备组列表
+    device_group_list(data) {
+      console.log(data)
+      this.group_list = data
+    },
     // 终端列表
     Terminal_list(per_page) {
       const floorid = this.$refs.groupList.floorid
@@ -134,6 +149,8 @@ export default {
       })
     },
     add() {
+      this.$refs.Dialog.form = ''
+      this.$refs.Dialog.Prohibit = false
       this.$refs.Dialog.centerDialogVisible = true
       this.$refs.Dialog.dialogtitle = '新增终端'
       this.de_data = 1
