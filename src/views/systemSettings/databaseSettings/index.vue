@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>数据库设置</span>
-        <el-button type="primary" style="float: right; padding: 3px 0" @click="websocketToLogin">应用</el-button>
+        <el-button type="primary" size="small" style="float: right;" @click="websocketToLogin">应用</el-button>
       </div>
       <div class="text item">
         <div class="content-part">

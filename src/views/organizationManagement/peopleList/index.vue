@@ -159,7 +159,7 @@ export default {
       total: null,
       per_page: {
         page: 1,
-        perPage: 1
+        perPage: 15
       },
       user_id: [],
       checked: true,

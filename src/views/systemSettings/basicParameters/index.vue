@@ -13,7 +13,7 @@
                   <el-input v-model="field.word"/>
                 </el-form-item>
                 <el-form-item class="word-but">
-                  <el-button type="primary" @click="add_word">新增</el-button>
+                  <el-button type="primary" size="small" @click="add_word">新增</el-button>
                 </el-form-item>
               </el-form>
             </div>
@@ -39,7 +39,7 @@
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>通讯参数</span>
-              <el-button type="primary" style="float: right; padding: 3px 0" @click="comm_use('update_config')">应用</el-button>
+              <el-button type="primary" size="small" style="float:right" @click="comm_use('update_config')">应用</el-button>
             </div>
             <div class="text item">
               <el-form label-width="300px" label-position="left">
@@ -71,7 +71,7 @@
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>定时下载记录</span>
-              <el-button type="primary" style="float: right; padding: 3px 0" @click="timing_download_but">应用</el-button>
+              <el-button type="primary" size="small" style="float: right" @click="timing_download_but">应用</el-button>
             </div>
             <div class="text item">
               <el-row :gutter="30">

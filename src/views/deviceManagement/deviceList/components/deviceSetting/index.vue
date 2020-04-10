@@ -1,142 +1,140 @@
 <template>
-  <div class="device-dialog">
-    <el-dialog
-      :visible.sync="centerDialogVisible"
-      :show-close="showClo"
-      width="60%"
-      center>
-      <span slot="title" class="dialog-header ">
-        <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
-        <div>{{ dialogtitle }}</div>
-        <el-button size="mini" type="primary" @click="save">确 定</el-button>
+  <el-dialog
+    :visible.sync="centerDialogVisible"
+    :show-close="showClo"
+    width="50%"
+    center>
+    <span slot="title" class="dialog-header ">
+      <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
+      <div>{{ dialogtitle }}</div>
+      <el-button size="mini" type="primary" @click="save">确 定</el-button>
+    </span>
+    <div class="parameter">
+      <span class="parameter-item">
+        <h4>终端网络参数</h4>
+        <div class="parameter-item-wrap">
+          <div class="parameter-item-center">
+            <div><el-checkbox v-model="form.IP.checked">IP地址</el-checkbox></div>
+            <div class="net-input-item">
+              <span>
+                <el-input :disabled="!form.IP.checked" v-model="form.IP.value" type="text"/>
+              </span>
+            </div>
+          </div>
+          <div class="parameter-item-center">
+            <div><el-checkbox v-model="form.gate.checked">默认网关</el-checkbox></div>
+            <div class="net-input-item">
+              <span>
+                <el-input :disabled="!form.gate.checked" v-model="form.gate.value" type="text"/>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="parameter-item-wrap">
+          <div class="parameter-item-center">
+            <div><el-checkbox v-model="form.netMask.checked">子网掩码</el-checkbox></div>
+            <div class="net-input-item">
+              <span>
+                <el-input :disabled="!form.netMask.checked" v-model="form.netMask.value" type="text"/>
+              </span>
+            </div>
+          </div>
+
+          <div class="parameter-item-center">
+            <div><el-checkbox v-model="form.mac.checked">MAC地址</el-checkbox></div>
+            <div class="net-input-item">
+              <span>
+                <el-input :disabled="!form.mac.checked" v-model="form.mac.value" type="text"/>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="parameter-item-wrap">
+          <div class="parameter-item-center">
+            <div><el-checkbox v-model="form.port.checked">网络端口</el-checkbox></div>
+            <div class="net-input-item">
+              <span>
+                <el-input :disabled="!form.port.checked" v-model="form.port.value" type="text"/>
+              </span>
+            </div>
+          </div>
+
+          <div class="parameter-item-center">
+            <div><el-checkbox v-model="form.work.checked">工作方式</el-checkbox></div>
+            <div class="net-input-item">
+              <span>
+                <selectbox :disabled="!form.work.checked" :options="device_options.value19" v-model="form.work.value"/>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="parameter-item-wrap">
+          <div class="parameter-item-center">
+            <div><el-checkbox v-model="form.serverIP.checked">服务器IP</el-checkbox></div>
+            <div class="net-input-item">
+              <span>
+                <el-input :disabled="!form.serverIP.checked" v-model="form.serverIP.value" type="text"/>
+              </span>
+            </div>
+          </div>
+
+          <div class="parameter-item-center">
+            <div><el-checkbox v-model="form.serverURL.checked">Server URL</el-checkbox></div>
+            <div class="net-input-item">
+              <span>
+                <el-input :disabled="!form.serverURL.checked" v-model="form.serverURL.value" type="text"/>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="parameter-item-wrap">
+          <div class="parameter-item-center">
+            <div><el-checkbox v-model="form.DNS.checked">DNS</el-checkbox></div>
+            <div class="net-input-item">
+              <span>
+                <el-input :disabled="!form.DNS.checked" v-model="form.DNS.value" type="text"/>
+              </span>
+            </div>
+          </div>
+        </div>
+
       </span>
-      <div class="parameter">
-        <span class="parameter-item">
-          <h4>终端网络参数</h4>
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div><el-checkbox v-model="form.IP.checked">IP地址</el-checkbox></div>
-              <div class="net-input-item">
-                <span>
-                  <el-input :disabled="!form.IP.checked" v-model="form.IP.value" type="text"/>
-                </span>
-              </div>
-            </div>
-            <div class="parameter-item-center">
-              <div><el-checkbox v-model="form.gate.checked">默认网关</el-checkbox></div>
-              <div class="net-input-item">
-                <span>
-                  <el-input :disabled="!form.gate.checked" v-model="form.gate.value" type="text"/>
-                </span>
-              </div>
+      <span class="parameter-item">
+        <h4>wifi参数</h4>
+        <div class="parameter-item-wrap">
+          <div class="parameter-item-center">
+            <div>名称</div>
+            <div class="net-input-item">
+              <span>
+                <el-input
+                  v-model="form.wifiName"
+                  :disabled="Prohibit"
+                  placeholder="请输入内容"
+                  clearable
+                  class="input-box"/>
+              </span>
             </div>
           </div>
-
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div><el-checkbox v-model="form.netMask.checked">子网掩码</el-checkbox></div>
-              <div class="net-input-item">
-                <span>
-                  <el-input :disabled="!form.netMask.checked" v-model="form.netMask.value" type="text"/>
-                </span>
-              </div>
-            </div>
-
-            <div class="parameter-item-center">
-              <div><el-checkbox v-model="form.mac.checked">MAC地址</el-checkbox></div>
-              <div class="net-input-item">
-                <span>
-                  <el-input :disabled="!form.mac.checked" v-model="form.mac.value" type="text"/>
-                </span>
-              </div>
+          <div class="parameter-item-center">
+            <div>密码</div>
+            <div class="net-input-item">
+              <span>
+                <el-input
+                  v-model="form.wifiPwd"
+                  placeholder="请输入内容"
+                  clearable
+                  class="input-box"/>
+              </span>
             </div>
           </div>
-
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div><el-checkbox v-model="form.port.checked">网络端口</el-checkbox></div>
-              <div class="net-input-item">
-                <span>
-                  <el-input :disabled="!form.port.checked" v-model="form.port.value" type="text"/>
-                </span>
-              </div>
-            </div>
-
-            <div class="parameter-item-center">
-              <div><el-checkbox v-model="form.work.checked">工作方式</el-checkbox></div>
-              <div class="net-input-item">
-                <span>
-                  <selectbox :disabled="!form.work.checked" :options="device_options.value1" v-model="form.work.value"/>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div><el-checkbox v-model="form.serverIP.checked">服务器IP</el-checkbox></div>
-              <div class="net-input-item">
-                <span>
-                  <el-input :disabled="!form.serverIP.checked" v-model="form.serverIP.value" type="text"/>
-                </span>
-              </div>
-            </div>
-
-            <div class="parameter-item-center">
-              <div><el-checkbox v-model="form.serverURL.checked">Server URL</el-checkbox></div>
-              <div class="net-input-item">
-                <span>
-                  <el-input :disabled="!form.serverURL.checked" v-model="form.serverURL.value" type="text"/>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div><el-checkbox v-model="form.DNS.checked">DNS</el-checkbox></div>
-              <div class="net-input-item">
-                <span>
-                  <el-input :disabled="!form.DNS.checked" v-model="form.DNS.value" type="text"/>
-                </span>
-              </div>
-            </div>
-          </div>
-
-        </span>
-        <span class="parameter-item">
-          <h4>wifi参数</h4>
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div>名称</div>
-              <div class="net-input-item">
-                <span>
-                  <el-input
-                    v-model="form.wifiName"
-                    :disabled="Prohibit"
-                    placeholder="请输入内容"
-                    clearable
-                    class="input-box"/>
-                </span>
-              </div>
-            </div>
-            <div class="parameter-item-center">
-              <div>密码</div>
-              <div class="net-input-item">
-                <span>
-                  <el-input
-                    v-model="form.wifiPwd"
-                    placeholder="请输入内容"
-                    clearable
-                    class="input-box"/>
-                </span>
-              </div>
-            </div>
-          </div>
-        </span>
-      </div>
-    </el-dialog>
-  </div>
+        </div>
+      </span>
+    </div>
+  </el-dialog>
 </template>
 <script>
 import selectbox from '@/components/select'
@@ -147,13 +145,9 @@ export default {
   },
   mixins: [options],
   props: {
-    device_list: {
-      type: Array,
+    net_para: {
+      type: Object,
       default: () => {}
-    },
-    de_data: {
-      type: Number,
-      default: null
     },
     options: {
       type: Array,
@@ -168,31 +162,31 @@ export default {
       Prohibit: false,
       form: {
         IP: {
-          value: '192.168.60.60',
+          value: '',
           checked: false
         },
         gate: {
-          value: '192.168.60.1',
+          value: '',
           checked: false
         },
         netMask: {
-          value: '255.255.255.0',
+          value: '',
           checked: false
         },
         mac: {
-          value: '08-00-0D-20-5F-1A',
+          value: '',
           checked: false
         },
         port: {
-          value: 5010,
+          value: null,
           checked: false
         },
         work: {
-          value: 1,
+          value: 0,
           checked: false
         },
         serverIP: {
-          value: '192.222.0.97',
+          value: '',
           checked: false
         },
         serverURL: {
@@ -210,7 +204,6 @@ export default {
     }
   },
   mounted() {
-    this.device_options.value18 = this.options
   },
 
   methods: {
@@ -224,7 +217,7 @@ export default {
           this.result[i] = this.form[i]
         }
       }
-      console.log(this.result)
+      this.$emit('set_net_param', this.result)
     }
   }
 }
@@ -234,9 +227,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    .el-button{
-      padding: 6px 10px;
-    }
   }
   .el-row{
     background:#fff;

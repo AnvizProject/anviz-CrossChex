@@ -5,9 +5,9 @@
     width="50%"
     center>
     <span slot="title" class="dialog-header">
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
       <div>{{ dialogtitle }}</div>
-      <el-button type="primary" @click="submit">确 定</el-button>
+      <el-button type="primary" size="mini" @click="submit">确 定</el-button>
     </span>
     <el-form ref="form" :model="form" label-width="100px">
       <el-form-item label="部门名称">
@@ -79,9 +79,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    .el-button{
-      padding: 6px 10px;
-    }
   }
   .el-form{
     margin: 50px 0;

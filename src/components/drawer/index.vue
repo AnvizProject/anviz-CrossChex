@@ -263,9 +263,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    .el-button{
-      padding: 6px 10px;
-    }
   }
   .parameter-wrap{
     .parameter{

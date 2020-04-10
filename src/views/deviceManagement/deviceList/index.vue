@@ -26,7 +26,17 @@
         </div>
       </div>
       <div slot="main" class="main">
-        <card-select v-for="(v, k) in ter_list" :key="k" :val="v" :index="v.key" :select="selected" :ref="'card_sel' + v.ClientNumber" class="card" @checkbox="checkbox" @read_new_record="read_new_record" @down="progressShow"/>
+        <card-select
+          v-for="(v, k) in ter_list"
+          :key="k"
+          :val="v"
+          :index="v.key"
+          :select="selected"
+          :ref="'card_sel' + v.ClientNumber"
+          class="card"
+          @checkbox="checkbox"
+          @read_new_record="read_new_record"
+          @down="progressShow"/>
       </div>
     </container>
     <Dialog ref="Dialog" :options="group_list" :de_data="de_data" @Terminal_list="Terminal_list"/>
@@ -181,6 +191,9 @@ export default {
           if (res.cmd === 'ring_setting') {
             this.$refs.Ringing.centerDialogVisible = false
           }
+          if (res.cmd === 'get_net_param') {
+            this.net_para = res.data
+          }
         }, 500)
         return
       } else {
@@ -213,6 +226,7 @@ export default {
     },
     // 读取新记录
     read_new_record() {
+      console.log('{"cmd":"get_net_param", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}')
       this.socketApi.sendSock(JSON.parse('{"cmd":"read_new_record", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
     },
     // 读取全部记录

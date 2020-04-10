@@ -203,7 +203,20 @@ export default{
             label: '12小时制'
           }
         ],
-        value18: [
+        value19: [
+          {
+            value: 0,
+            label: '服务器'
+          }, {
+            value: 1,
+            label: '客户端'
+          }, {
+            value: 2,
+            label: '客户端+DNS'
+          }, {
+            value: 3,
+            label: 'Client+WIFI'
+          }
         ]
       }
     }

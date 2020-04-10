@@ -41,7 +41,7 @@
       </el-dropdown>
     </div>
     <drawer ref="drawer" :val="val"/>
-    <device-setting ref="setting"/>
+    <device-setting ref="setting" @set_net_param="set_net_param"/>
   </el-card>
 </template>
 
@@ -72,7 +72,8 @@ export default {
   methods: {
     handleCommand(command) {
       if (command === 'netSetting') {
-        this.$refs.setting.centerDialogVisible = true
+        console.log(123)
+        this.get_net_param()
       }
     },
     drawer() {
@@ -84,23 +85,6 @@ export default {
     stop() {
       // 阻止点击单选按钮事件冒泡的空函数
     },
-    // websocket接收回调函数返回数据的方法
-    getConfigResult(res) {
-      console.log(res)
-      if (res.ret === '0') {
-        this.$message({
-          message: '更新成功',
-          type: 'success'
-        })
-        return
-      } else {
-        this.$message({
-          message: '更新失败',
-          type: 'warning'
-        })
-      }
-      console.log(res)
-    },
     // 开门
     open_door(open) {
       if (open === 1) {
@@ -109,12 +93,57 @@ export default {
           this.close = true
         }, 10000)
       }
+      this.open_the_door()
+    },
+    // websocket接收回调函数返回数据的方法
+    getConfigResult(res) {
+      console.log(res)
+      if (res.ret === '0') {
+        this.$message({
+          message: '成功',
+          type: 'success'
+        })
+        setTimeout(() => {
+          this.$refs.setting.centerDialogVisible = true
+          if (res.cmd === 'get_net_param') {
+            console.log(res.data)
+            this.$refs.setting.form.IP.value = res.data.ip
+            this.$refs.setting.form.gate.value = res.data.gate
+            this.$refs.setting.form.netMask.value = res.data.mask
+            this.$refs.setting.form.mac.value = res.data.mac
+            this.$refs.setting.form.port.value = res.data.port
+            this.$refs.setting.form.work.value = Number(res.data.mode)
+            this.$refs.setting.form.serverIP.value = res.data.server_ip
+            this.$refs.setting.form.serverURL.value = res.data.url
+            this.$refs.setting.form.DNS.value = res.data.dns
+          }
+        }, 500)
+        return
+      } else {
+        this.$message({
+          message: '失败',
+          type: 'warning'
+        })
+      }
+      console.log(res)
     },
     // 读取新纪录
     read_new_record() {
       // this.$emit('down')
       console.log(this.val.Clientid)
       this.socketApi.sendSock(JSON.parse('{"cmd":"read_new_record", "data": {"ts":"' + timestamp + '","clientid": "' + this.val.Clientid + '"}}'), this.getConfigResult)
+    },
+    // 获取网络参数
+    get_net_param() {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"get_net_param", "data": {"ts":"' + timestamp + '","clientid": "' + this.val.Clientid + '"}}'), this.getConfigResult)
+    },
+    // 设置终端参数
+    set_net_param() {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"set_net_param", "data": {"ts":"' + timestamp + '","clientid": "' + this.val.Clientid + '"}}'), this.getConfigResult)
+    },
+    // 软件开门
+    open_the_door() {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"open_door", "data": {"ts":"' + timestamp + '","clientid": "' + this.val.Clientid + '"}}'), this.getConfigResult)
     }
   }
 }

@@ -4,7 +4,7 @@
       <el-tab-pane label="考勤">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <el-button type="primary" style="float: right" @click="attendance_btn">应用</el-button>
+            <el-button type="primary" size="small" style="float: right" @click="attendance_btn">应用</el-button>
           </div>
           <div class="text item">
             <el-row :gutter="20">
@@ -82,7 +82,7 @@
                 <el-card class="box-card">
                   <div slot="header" class="clearfix">
                     <span>考勤统计项目</span>
-                    <el-button type="primary" style="float: right" @click="statistics_btn">应用</el-button>
+                    <el-button type="primary" size="small" style="float: right" @click="statistics_btn">应用</el-button>
                   </div>
                   <div class="text item">
                     <el-row :gutter="20">
@@ -154,7 +154,7 @@
             <div class="grid-content bg-purple-dark">
               <el-card class="box-card">
                 <div slot="header" class="clearfix">
-                  <el-button type="primary" style="float: right" @click="overtime_btn">应用</el-button>
+                  <el-button type="primary" size="small" style="float: right" @click="overtime_btn">应用</el-button>
                 </div>
                 <div class="text item">
                   <el-row>
