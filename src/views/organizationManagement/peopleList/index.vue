@@ -1,11 +1,11 @@
 <template>
   <div class="organization">
-    <search :search="search"/>
+    <search ref="search" :search="search" @search="people_list"/>
     <Container :total="total" @per_page="people_list" @page="people_list">
       <div slot="header" class="con-item">
         <div class="header-item">
           <el-button type="primary" size="mini" @click="Adduser">增加</el-button>
-          <el-button :disabled="multipleSelection.length<=0" :type="multipleSelection.length>0?'danger':'info'" size="mini" @click="handleDelete">删除</el-button>
+          <el-button :disabled="multipleSelection.length<=0" :type="multipleSelection.length>0?'danger':'info'" size="mini" @click="deleteList">删除</el-button>
           <el-dropdown>
             <el-button :disabled="multipleSelection.length<=0" type="info" size="mini">更多操作<i class="el-icon-arrow-down el-icon--right"/></el-button>
             <el-dropdown-menu slot="dropdown">
@@ -23,8 +23,8 @@
           </el-dropdown>
         </div>
         <div class="header-item">
-          <Devicegroup/>
-          <Departmentgroup/>
+          <Devicegroup ref="DeviceGroup" @Terminal_list="people_list"/>
+          <Departmentgroup ref="DeptGroup" @Dept_list="people_list"/>
         </div>
       </div>
       <div slot="main" class="main-item">
@@ -185,11 +185,13 @@ export default {
     },
     // 人员列表
     people_list(per_page) {
-      console.log(per_page)
+      // console.log(this.$refs.search.input)
+      // console.log(this.$refs.DeviceGroup.Clientid, '10')
+      // console.log(this.$refs.DeptGroup.Deptid, '11')
       if (per_page !== undefined) {
         this.per_page = per_page
       }
-      this.$store.dispatch('interactive/userList', { per_page: this.per_page.perPage, Deptid: this.Deptid, page: this.per_page.page }).then(response => {
+      this.$store.dispatch('interactive/userList', { per_page: this.per_page.perPage, Deptid: this.$refs.DeptGroup.Deptid, page: this.per_page.page, ClientNumber: this.$refs.DeviceGroup.Clientid, search_key: this.$refs.search.input }).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
         console.log(response)
@@ -206,10 +208,20 @@ export default {
     },
 
     handleDelete(index, rows) {
+      this.user_id = []
+      console.log(index, rows)
       this.user_id.push(rows.userid)
       this.Delete()
     },
-
+    deleteList() {
+      this.user_id = []
+      console.log(this.multipleSelection)
+      this.multipleSelection.forEach((v, k) => {
+        this.user_id.push(v.userid)
+      })
+      console.log(this.user_id)
+      this.Delete()
+    },
     // 删除人员
     Delete() {
       this.$confirm('<div>123</div><div><input id="check1" type="checkbox" checked="checked" value="">456</div>', '提示', {

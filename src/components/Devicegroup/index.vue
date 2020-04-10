@@ -23,7 +23,8 @@ export default {
       value: '设备组',
       group_list: [],
       fontColor: '#58585A',
-      floorid: 0
+      floorid: 0,
+      Clientid: 0
     }
   },
   mounted: function() {
@@ -51,6 +52,7 @@ export default {
       this.value = data.ClientName
       this.fontColor = '#3CA060'
       this.floorid = data.Floorid
+      this.Clientid = data.Clientid
       this.$emit('Terminal_list')
     },
     // 所有组点击

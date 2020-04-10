@@ -10,7 +10,7 @@
           <span>
             <ul>
               <p v-if="item.SubDept.length===0" class="hint">暂无部门</p>
-              <li v-for="(item, index) in item.SubDept" :key="index" @click="list(item.DeptName)">{{ item.DeptName }}</li>
+              <li v-for="(item, index) in item.SubDept" :key="index" @click="list(item)">{{ item.DeptName }}</li>
             </ul>
           </span>
         </div>
@@ -25,7 +25,8 @@ export default {
       ok: true,
       value: '部门组',
       dep_list: [],
-      fontColor: '#58585A'
+      fontColor: '#58585A',
+      Deptid: 0
     }
   },
   mounted: function() {
@@ -47,9 +48,11 @@ export default {
       })
     },
     // 部门列表点击
-    list(DeptName) {
-      this.value = DeptName
+    list(Dept) {
+      this.Deptid = Dept.Deptid
+      this.value = Dept.DeptName
       this.fontColor = '#3CA060'
+      this.$emit('Dept_list')
     }
   }
 }
