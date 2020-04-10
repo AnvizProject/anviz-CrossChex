@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <el-input v-model="input" :placeholder="search" size="mini">
-      <el-button slot="append" size="mini" type="primary">查询</el-button>
+      <el-button slot="append" size="mini" type="primary" @click="searchKey">查询</el-button>
     </el-input>
   </div>
 </template>
@@ -16,6 +16,11 @@ export default {
   data() {
     return {
       input: ''
+    }
+  },
+  methods: {
+    searchKey() {
+      this.$emit('search')
     }
   }
 }
