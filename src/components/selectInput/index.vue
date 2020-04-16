@@ -26,9 +26,9 @@ export default {
       input: '',
       normalizer(node) {
         return {
-          id: node.devicegroupid,
-          label: node.devicegroupname,
-          children: node.FingerClient
+          id: node.Deptid,
+          label: node.DeptName,
+          children: node.SubDept
         }
       }
     }

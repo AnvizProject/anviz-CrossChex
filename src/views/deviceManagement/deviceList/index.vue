@@ -1,6 +1,6 @@
 <template>
   <div class="device">
-    <search :search="search"/>
+    <search ref="search" :search="search" @search="Terminal_list"/>
     <container :total="total" @per_page="Terminal_list" @page="Terminal_list">
       <div slot="header" class="con-item">
         <div class="header-item">
@@ -43,6 +43,7 @@
     <Terminal ref="Terminal" @clear="clear" @initialize="initialize"/>
     <progress-self ref="progress"/>
     <Ringing ref="Ringing" :ring_data="ring_data" @ring_set="ring_set"/>
+
   </div>
 </template>
 <script>
@@ -105,17 +106,18 @@ export default {
   },
   methods: {
     groupList(data) {
+      console.log(data)
       data.forEach((v, k) => {
-        v.FingerClient.forEach((val, key) => {
-          val.devicegroupid = val.Clientid
-          val.devicegroupname = val.ClientName
-        })
+        // v.FingerClient.forEach((val, key) => {
+        //   val.devicegroupid = val.Clientid
+        //   val.devicegroupname = val.ClientName
+        // })
         this.group_list.push({ value: v.devicegroupid, label: v.devicegroupname })
       })
-      this.group_list = data
+      // this.group_list = data
+      // console.log(this.group_list)
     },
     progressShow() {
-      // alert(1)
       this.$refs.progress.dialogVisible = true
     },
     checkbox(data) {
@@ -131,17 +133,17 @@ export default {
       console.log(this.selected)
     },
     // 设备组列表
-    device_group_list(data) {
-      console.log(data)
-      this.group_list = data
-    },
+    // device_group_list(data) {
+    //   console.log(data)
+    //   this.group_list = data
+    // },
     // 终端列表
     Terminal_list(per_page) {
       const floorid = this.$refs.groupList.floorid
       if (per_page !== undefined) {
         this.per_page = per_page
       }
-      this.$store.dispatch('interactive/Terminal_list', { per_page: this.per_page.perPage, page: this.per_page.page, Floorid: floorid }).then(response => {
+      this.$store.dispatch('interactive/Terminal_list', { per_page: this.per_page.perPage, page: this.per_page.page, Floorid: floorid, search_key: this.$refs.search.input }).then(response => {
         this.ter_list = response.FingerClient
         this.total = response.FingerClientList.total
       }).catch(() => {

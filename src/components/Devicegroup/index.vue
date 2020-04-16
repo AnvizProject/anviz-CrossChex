@@ -94,9 +94,9 @@ export default {
         z-index: 2;
         display: none;
         .filter-all{
+          cursor: pointer;
           margin-bottom:10px;
           font-weight: 600;
-          cursor: pointer;
         }
         .filter-title{
           border-bottom:1px solid #ddd;

@@ -32,6 +32,14 @@ export function userdelete(data) {
     data
   })
 }
+// 人员详情
+export function userdetail(data) {
+  return request({
+    url: '/api/userinfo/detail',
+    method: 'get',
+    params: data
+  })
+}
 
 // 部门列表
 export function deptlist(data) {

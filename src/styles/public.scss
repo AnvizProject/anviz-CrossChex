@@ -75,42 +75,41 @@ ul {
 }
 // 表格
 .el-table {
+  overflow: aut;
   th {
     padding: 0;
-    height: 48px;
+    height: auto;
     background: #f6f6f6;
   }
 
   td {
     padding: 0;
-    height: 52px;
+    height: auto;
+    .cell{
+      line-height: normal;
+    }
   }
 }
-
+.el-table__fixed,
+  .el-table__fixed-right {
+    height: calc(100%) !important;
+    z-index: 1;
+  }
 .el-table--scrollable-x {
   .el-table__body-wrapper {
-
+    height: calc(100% - 35px) !important;
+    overflow: auto;
     /*修改滚动条样式*/
     &::-webkit-scrollbar {
       width: 10px;
-      height: 10px;
+      height: 8px;
     }
 
     &::-webkit-scrollbar-thumb {
-      background: #cccbcb;
+      background: #e2e2e2;
       border-radius: 5px;
     }
   }
-}
-
-.el-table__fixed,
-.el-table__fixed-right {
-  height: calc(100%) !important;
-  z-index: 1;
-}
-
-.el-table__body-wrapper {
-  height: calc(100% - 48px) !important;
 }
 
 // Dialog

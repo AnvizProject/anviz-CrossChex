@@ -43,6 +43,7 @@ export default {
     depart_list() {
       this.$store.dispatch('interactive/Depart_list', {}).then(response => {
         this.dep_list = response.dept_tree
+        this.$emit('dep_list', this.dep_list)
       }).catch(error => {
         console.log(error)
       })
@@ -89,6 +90,7 @@ export default {
         .filter-all{
           margin-bottom:10px;
           font-weight: 600;
+          cursor: pointer;
         }
         .filter-title{
           border-bottom:1px solid #ddd;

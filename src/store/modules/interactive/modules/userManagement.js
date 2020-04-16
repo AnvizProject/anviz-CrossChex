@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-import { adduser, userlist, useredit, userdelete, deptlist } from '@/api/user'
+import { adduser, userlist, useredit, userdelete, userdetail, deptlist } from '@/api/user'
 import store from '../../..'
 const userManagement = {
   state: {
@@ -23,7 +23,6 @@ const userManagement = {
     // 人员列表
     userList({ commit }, search_value) {
       search_value.access_token = store.getters.token
-      console.log(search_value)
       return new Promise((resolve, reject) => {
         userlist(search_value).then(response => {
           resolve(response)
@@ -45,19 +44,33 @@ const userManagement = {
         })
       })
     },
-    // 人员删除
-    userDelete({ commit }, userDeleteInfo) {
+    // // 人员删除
+    // userDelete({ commit }, userDeleteInfo) {
+    //   // userDeleteInfo.access_token = store.getters.token
+    //   // userDeleteInfo.userid
+    //   return new Promise((resolve, reject) => {
+    //     userdelete({ access_token: store.getters.token, userid: userDeleteInfo, delete_from_device: 1 }).then(response => {
+    //       resolve()
+    //     }).catch(error => {
+    //       console.log(error)
+    //       reject(error)
+    //     })
+    //   })
+    // },
+    // 人员详情
+    userDetail({ commit }, userDetailInfo) {
       // userDeleteInfo.access_token = store.getters.token
       // userDeleteInfo.userid
       return new Promise((resolve, reject) => {
-        userdelete({ access_token: store.getters.token, userid: userDeleteInfo, delete_from_device: 1 }).then(response => {
-          resolve()
+        userdetail({ access_token: store.getters.token, userid: userDetailInfo }).then(response => {
+          resolve(response)
         }).catch(error => {
           console.log(error)
           reject(error)
         })
       })
     },
+
     // 部门列表
     deptList({ commit }) {
       return new Promise((resolve, reject) => {

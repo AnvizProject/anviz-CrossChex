@@ -13,18 +13,16 @@
               <el-dropdown-item>人员离职</el-dropdown-item>
               <el-dropdown-item>设置权限</el-dropdown-item>
               <el-dropdown-item>复制权限</el-dropdown-item>
-              <el-dropdown-item @click="import_personnel">导入人员</el-dropdown-item>
-              <el-dropdown-item @click="export_personnel">导出人员</el-dropdown-item>
-              <el-dropdown-item @click="update_status">下载人员</el-dropdown-item>
-              <el-dropdown-item @click="upload_user">上传人员</el-dropdown-item>
-              <el-dropdown-item @click="download_template">下载模板</el-dropdown-item>
-              <el-dropdown-item @click="upload_template">上传模板</el-dropdown-item>
+              <el-dropdown-item @click.native="import_personnel">导入人员</el-dropdown-item>
+              <el-dropdown-item @click.native="export_personnel">导出人员</el-dropdown-item>
+              <el-dropdown-item @click.native="upload_user">上传人员</el-dropdown-item>
+              <el-dropdown-item @click.native="upload_template">上传模板</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
         <div class="header-item">
           <Devicegroup ref="DeviceGroup" @Terminal_list="people_list"/>
-          <Departmentgroup ref="DeptGroup" @Dept_list="people_list"/>
+          <Departmentgroup ref="DeptGroup" @Dept_list="people_list" @dep_list="departList"/>
         </div>
       </div>
       <div slot="main" class="main-item">
@@ -52,9 +50,9 @@
             <template slot-scope="scope">
               <div>{{ scope.row.Name }}</div>
               <div>
-                <span class="mini-icon icon-enroll"/>
-                <span class="mini-icon icon-face"/>
-                <span class="mini-icon icon-see"/>
+                <span :class="scope.row.hasFinger===1?'have':''" class="mini-icon icon-enroll"/>
+                <span :class="scope.row.hasFace===1?'have':''" class="mini-icon icon-face"/>
+                <span :class="scope.row.hasIris===1?'have':''" class="mini-icon icon-see"/>
               </div>
             </template>
           </el-table-column>
@@ -125,7 +123,7 @@
         </el-table>
       </div>
     </Container>
-    <editDialog ref="editDialog" :rowdata="rowdata"/>
+    <editDialog ref="editDialog" :rowdata="rowdata" :option="depList" @people_list="people_list" @upload_template="upload_template"/>
   </div>
 </template>
 
@@ -142,6 +140,7 @@ function check() {
     return false
   }
 }
+var timestamp = Date.parse(new Date()) / 1000
 export default {
   components: {
     Search,
@@ -162,8 +161,9 @@ export default {
         perPage: 15
       },
       user_id: [],
-      checked: true,
-      multipleSelection: []
+      multipleSelection: [],
+      delete_from_device: 1,
+      depList: []
     }
   },
   computed: {
@@ -179,22 +179,23 @@ export default {
     this.people_list()
   },
   methods: {
+    departList(data) {
+      console.log(data)
+      this.depList = data
+    },
+
     // 增加人员
     Adduser() {
       this.$refs.editDialog.Adduser()
     },
     // 人员列表
     people_list(per_page) {
-      // console.log(this.$refs.search.input)
-      // console.log(this.$refs.DeviceGroup.Clientid, '10')
-      // console.log(this.$refs.DeptGroup.Deptid, '11')
       if (per_page !== undefined) {
         this.per_page = per_page
       }
       this.$store.dispatch('interactive/userList', { per_page: this.per_page.perPage, Deptid: this.$refs.DeptGroup.Deptid, page: this.per_page.page, ClientNumber: this.$refs.DeviceGroup.Clientid, search_key: this.$refs.search.input }).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
-        console.log(response)
       }).catch(error => {
         console.log(error)
       })
@@ -205,87 +206,65 @@ export default {
         this.$refs.editDialog.handleEdit()
       }, 0)
       this.rowdata = Object.assign({}, row)
+      this.user_id = []
+      this.user_id.push(row.userid)
     },
 
-    handleDelete(index, rows) {
+    handleDelete(index, row) {
       this.user_id = []
-      console.log(index, rows)
-      this.user_id.push(rows.userid)
+      this.user_id.push(row.userid)
       this.Delete()
     },
     deleteList() {
-      this.user_id = []
-      console.log(this.multipleSelection)
-      this.multipleSelection.forEach((v, k) => {
-        this.user_id.push(v.userid)
-      })
-      console.log(this.user_id)
+      this.user_id = this.user_id_list
       this.Delete()
+    },
+    // 表格数据
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    getConfigResult(res) {
+      // 接收回调函数返回数据的方法
+      if (res.ret === '0') {
+        this.$message({
+          message: '成功',
+          type: 'success'
+        })
+        if (res.cmd === 'delete_from_device') {
+          this.people_list()
+        }
+        if (res.cmd === 'upload_template') {
+          this.$refs.editDialog.centerDialogVisible = false
+        }
+        return
+      } else {
+        this.$message({
+          message: '失败',
+          type: 'warning'
+        })
+      }
     },
     // 删除人员
     Delete() {
-      this.$confirm('<div>123</div><div><input id="check1" type="checkbox" checked="checked" value="">456</div>', '提示', {
+      this.$confirm('<div class="del_title">确定要删除选中的员工吗？</div><div><input id="check1" type="checkbox" checked="checked" value="">同时从设备删除该人员</div>', '提示', {
         dangerouslyUseHTMLString: true,
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         console.log(check())
-        this.$store.dispatch('interactive/userDelete', { userid: this.user_id.join(',') }).then(response => {
-          this.people_list()
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-        }).catch(() => {
-        })
+        if (check() === true) {
+          this.delete_from_device = 1
+        } else {
+          this.delete_from_device = 0
+        }
+        this.socketApi.sendSock(JSON.parse('{"cmd":"delete_from_device", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id.join(',') + '","delete_from_device": "' + this.delete_from_device + '"}}'), this.getConfigResult)
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
         })
       })
-    },
-    // 表格数据
-    handleSelectionChange(val) {
-      console.log(val, 'table')
-      this.multipleSelection = val
-    },
-    getConfigResult(res) {
-      // 接收回调函数返回数据的方法
-      console.log(res.ret)
-      if (res.ret === '0') {
-        this.$message({
-          message: '连接成功',
-          type: 'warning'
-        })
-        this.userlist()
-        this.depart_list()
-        this.All_groups_list()
-        return
-      } else {
-        this.$message({
-          message: '连接失败',
-          type: 'warning'
-        })
-      }
-      console.log(res)
-    },
-    // 下载人员
-    update_status() {
-      this.socketApi.sendSock(JSON.parse('{"cmd":"download_user", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
-    },
-    // 下载模板
-    download_template() {
-      if (this.user_id_list.length === 0) {
-        this.$message({
-          message: '请选择人员',
-          type: 'warning'
-        })
-        return
-      }
-      console.log('{"cmd":"download_template", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '","userids": "' + this.user_id_list.join(',') + '" }}')
-      this.socketApi.sendSock(JSON.parse('{"cmd":"download_template", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '","userids": "' + this.user_id_list.join(',') + '" }}'), this.getConfigResult)
     },
     // 上传人员
     upload_user() {
@@ -300,18 +279,8 @@ export default {
     },
     // 上传模板
     upload_template() {
-      this.socketApi.sendSock(JSON.parse('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
-    },
-    // 从设备删除人员
-    delete_from_device() {
-      if (this.user_id_list.length === 0) {
-        this.$message({
-          message: '请选择人员',
-          type: 'warning'
-        })
-        return
-      }
-      this.socketApi.sendSock(JSON.parse('{"cmd":"delete_from_device", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '","userids": "' + this.user_id_list.join(',') + '" }}'), this.getConfigResult)
+      console.log('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}')
+      this.socketApi.sendSock(JSON.parse('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id.join(',') + '"}}'), this.getConfigResult)
     },
     // 导出人员
     export_personnel() {
@@ -364,16 +333,16 @@ export default {
       }
     }
     .elTable td{
-      height: 50px;
+      height: auto;
     }
     .mini-icon{
       font-size: 20px;
     }
     .main-item{
       height: 100%;
-      .el-table{
-        height: 100%;
-      }
     }
+  }
+  .have{
+    color:#47a369;
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="attendance">
+  <div class="organization">
     <search ref="search" :search="search" @search="people_list"/>
     <Container :total="total" @per_page="people_list" @page="people_list">
       <div slot="header" class="con-item">
@@ -146,322 +146,310 @@
             </el-row>
           </el-tab-pane>
           <el-tab-pane label="排班记录分析">
-            <el-row>
-              <el-col :span="20">
-                <div class="grid-content bg-purple">
-                  <el-table
-                    ref="filterTable"
-                    :data="tableData"
-                    tooltip-effect="dark"
-                    style="width: 100%"
-                    @selection-change="handleSelectionChange">
-                    <el-table-column
-                      type="selection"/>
-                    <el-table-column
-                      fixed
-                      prop="UserCode"
-                      label="人员编号"/>
-                    <el-table-column
-                      prop="userid"
-                      label="考勤号"
-                      sortable
-                      width="90"/>
-                    <el-table-column
-                      prop="Cardnum"
-                      label="卡号"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Name"
-                      label="姓名"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="EmployDate"
-                      label="聘用日期"
-                      show-overflow-tooltip
-                      width="100"/>
-                    <el-table-column
-                      prop="address"
-                      label="所在机器"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="指纹1"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="指纹2"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="面部"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="虹膜"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Sex"
-                      label="性别"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Duty"
-                      label="职务"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Birthday"
-                      label="出生日期"
-                      show-overflow-tooltip
-                      width="100"/>
-                    <el-table-column
-                      prop="Mobile"
-                      label="联系电话"
-                      show-overflow-tooltip
-                      width="120"/>
-                    <el-table-column
-                      prop="Address"
-                      label="联系地址"
-                      show-overflow-tooltip
-                      width="170"/>
-                    <el-table-column
-                      prop="Pwd"
-                      label="密码"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="管理员组"
-                      show-overflow-tooltip/>
-                  </el-table>
+            <div class="main-slide">
+              <span class="main-slide-left">
+                <el-table
+                  ref="filterTable"
+                  :data="tableData"
+                  tooltip-effect="dark"
+                  style="width: 100%"
+                  @selection-change="handleSelectionChange">
+                  <el-table-column
+                    type="selection"/>
+                  <el-table-column
+                    fixed
+                    prop="UserCode"
+                    label="人员编号"/>
+                  <el-table-column
+                    prop="userid"
+                    label="考勤号"
+                    sortable
+                    width="90"/>
+                  <el-table-column
+                    prop="Cardnum"
+                    label="卡号"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="Name"
+                    label="姓名"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="EmployDate"
+                    label="聘用日期"
+                    show-overflow-tooltip
+                    width="100"/>
+                  <el-table-column
+                    prop="address"
+                    label="所在机器"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="指纹1"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="指纹2"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="面部"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="虹膜"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="Sex"
+                    label="性别"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="Duty"
+                    label="职务"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="Birthday"
+                    label="出生日期"
+                    show-overflow-tooltip
+                    width="100"/>
+                  <el-table-column
+                    prop="Mobile"
+                    label="联系电话"
+                    show-overflow-tooltip
+                    width="120"/>
+                  <el-table-column
+                    prop="Address"
+                    label="联系地址"
+                    show-overflow-tooltip
+                    width="170"/>
+                  <el-table-column
+                    prop="Pwd"
+                    label="密码"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="管理员组"
+                    show-overflow-tooltip/>
+                </el-table>
+              </span>
+              <span class="main-slide-right">
+                <el-divider content-position="left">过滤记录</el-divider>
+                <div class="filter">
+                  <el-checkbox v-model="checked">正常记录</el-checkbox>
+                  <el-checkbox v-model="checked">迟到记录</el-checkbox>
+                  <el-checkbox v-model="checked">早退记录</el-checkbox>
+                  <el-checkbox v-model="checked">加班记录</el-checkbox>
+                  <el-checkbox v-model="checked">旷工记录</el-checkbox>
+                  <el-checkbox v-model="checked">请假记录</el-checkbox>
+                  <el-checkbox v-model="checked">未签到记录</el-checkbox>
+                  <el-checkbox v-model="checked">未签退记录</el-checkbox>
                 </div>
-              </el-col>
-              <el-col :span="4" class="main-slide-right">
-                <div class="grid-content bg-purple-light">
-                  <el-divider content-position="left">过滤记录</el-divider>
-                  <div class="filter">
-                    <el-checkbox v-model="checked">正常记录</el-checkbox>
-                    <el-checkbox v-model="checked">迟到记录</el-checkbox>
-                    <el-checkbox v-model="checked">早退记录</el-checkbox>
-                    <el-checkbox v-model="checked">加班记录</el-checkbox>
-                    <el-checkbox v-model="checked">旷工记录</el-checkbox>
-                    <el-checkbox v-model="checked">请假记录</el-checkbox>
-                    <el-checkbox v-model="checked">未签到记录</el-checkbox>
-                    <el-checkbox v-model="checked">未签退记录</el-checkbox>
-                  </div>
-                  <el-divider content-position="left">修正记录</el-divider>
-                  <div class="filter">
-                    <el-button type="primary" size="mini">修改为正常数据</el-button>
-                  </div>
-                  <el-divider content-position="left">管理记录</el-divider>
-                  <div class="filter">
-                    <el-button type="primary" size="mini">数据列</el-button>
-                    <el-button type="primary" size="mini">显示全部数据列</el-button>
-                    <el-button type="primary" size="mini">导出记录</el-button>
-                    <el-button type="primary" size="mini">打印预览</el-button>
-                  </div>
+                <el-divider content-position="left">修正记录</el-divider>
+                <div class="filter">
+                  <el-button type="primary" size="mini">修改为正常数据</el-button>
                 </div>
-              </el-col>
-            </el-row>
+                <el-divider content-position="left">管理记录</el-divider>
+                <div class="filter">
+                  <el-button type="primary" size="mini">数据列</el-button>
+                  <el-button type="primary" size="mini">显示全部数据列</el-button>
+                  <el-button type="primary" size="mini">导出记录</el-button>
+                  <el-button type="primary" size="mini">打印预览</el-button>
+                </div>
+              </span>
+            </div>
           </el-tab-pane>
           <el-tab-pane label="外出/请假分析">
-            <el-row>
-              <el-col :span="20">
-                <div class="grid-content bg-purple">
-                  <el-table
-                    ref="filterTable"
-                    :data="tableData"
-                    tooltip-effect="dark"
-                    style="width: 100%"
-                    @selection-change="handleSelectionChange">
-                    <el-table-column
-                      type="selection"/>
-                    <el-table-column
-                      fixed
-                      prop="UserCode"
-                      label="人员编号"/>
-                    <el-table-column
-                      prop="userid"
-                      label="考勤号"
-                      sortable
-                      width="90"/>
-                    <el-table-column
-                      prop="Cardnum"
-                      label="卡号"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Name"
-                      label="姓名"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="EmployDate"
-                      label="聘用日期"
-                      show-overflow-tooltip
-                      width="100"/>
-                    <el-table-column
-                      prop="address"
-                      label="所在机器"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="指纹1"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="指纹2"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="面部"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="虹膜"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Sex"
-                      label="性别"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Duty"
-                      label="职务"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Birthday"
-                      label="出生日期"
-                      show-overflow-tooltip
-                      width="100"/>
-                    <el-table-column
-                      prop="Mobile"
-                      label="联系电话"
-                      show-overflow-tooltip
-                      width="120"/>
-                    <el-table-column
-                      prop="Address"
-                      label="联系地址"
-                      show-overflow-tooltip
-                      width="170"/>
-                    <el-table-column
-                      prop="Pwd"
-                      label="密码"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="管理员组"
-                      show-overflow-tooltip/>
-                  </el-table>
+            <div class="main-slide">
+              <span class="main-slide-left">
+                <el-table
+                  ref="filterTable"
+                  :data="tableData"
+                  tooltip-effect="dark"
+                  style="width: 100%"
+                  @selection-change="handleSelectionChange">
+                  <el-table-column
+                    type="selection"/>
+                  <el-table-column
+                    fixed
+                    prop="UserCode"
+                    label="人员编号"/>
+                  <el-table-column
+                    prop="userid"
+                    label="考勤号"
+                    sortable
+                    width="90"/>
+                  <el-table-column
+                    prop="Cardnum"
+                    label="卡号"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="Name"
+                    label="姓名"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="EmployDate"
+                    label="聘用日期"
+                    show-overflow-tooltip
+                    width="100"/>
+                  <el-table-column
+                    prop="address"
+                    label="所在机器"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="指纹1"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="指纹2"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="面部"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="虹膜"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="Sex"
+                    label="性别"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="Duty"
+                    label="职务"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="Birthday"
+                    label="出生日期"
+                    show-overflow-tooltip
+                    width="100"/>
+                  <el-table-column
+                    prop="Mobile"
+                    label="联系电话"
+                    show-overflow-tooltip
+                    width="120"/>
+                  <el-table-column
+                    prop="Address"
+                    label="联系地址"
+                    show-overflow-tooltip
+                    width="170"/>
+                  <el-table-column
+                    prop="Pwd"
+                    label="密码"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="管理员组"
+                    show-overflow-tooltip/>
+                </el-table>
+              </span>
+              <span class="main-slide-right">
+                <el-divider content-position="left">管理记录</el-divider>
+                <div class="filter">
+                  <el-button type="primary" size="mini">数据列</el-button>
+                  <el-button type="primary" size="mini">显示全部数据列</el-button>
+                  <el-button type="primary" size="mini">导出记录</el-button>
+                  <el-button type="primary" size="mini">打印预览</el-button>
                 </div>
-              </el-col>
-              <el-col :span="4" class="main-slide-right">
-                <div class="grid-content bg-purple-light">
-                  <el-divider content-position="left">管理记录</el-divider>
-                  <div class="filter">
-                    <el-button type="primary" size="mini">数据列</el-button>
-                    <el-button type="primary" size="mini">显示全部数据列</el-button>
-                    <el-button type="primary" size="mini">导出记录</el-button>
-                    <el-button type="primary" size="mini">打印预览</el-button>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
+              </span>
+            </div>
           </el-tab-pane>
           <el-tab-pane label="考勤统计结果">
-            <el-row>
-              <el-col :span="20">
-                <div class="grid-content bg-purple">
-                  <el-table
-                    ref="filterTable"
-                    :data="tableData"
-                    tooltip-effect="dark"
-                    style="width: 100%"
-                    @selection-change="handleSelectionChange">
-                    <el-table-column
-                      type="selection"/>
-                    <el-table-column
-                      fixed
-                      prop="UserCode"
-                      label="人员编号"/>
-                    <el-table-column
-                      prop="userid"
-                      label="考勤号"
-                      sortable
-                      width="90"/>
-                    <el-table-column
-                      prop="Cardnum"
-                      label="卡号"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Name"
-                      label="姓名"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="EmployDate"
-                      label="聘用日期"
-                      show-overflow-tooltip
-                      width="100"/>
-                    <el-table-column
-                      prop="address"
-                      label="所在机器"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="指纹1"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="指纹2"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="面部"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="虹膜"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Sex"
-                      label="性别"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Duty"
-                      label="职务"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Birthday"
-                      label="出生日期"
-                      show-overflow-tooltip
-                      width="100"/>
-                    <el-table-column
-                      prop="Mobile"
-                      label="联系电话"
-                      show-overflow-tooltip
-                      width="120"/>
-                    <el-table-column
-                      prop="Address"
-                      label="联系地址"
-                      show-overflow-tooltip
-                      width="170"/>
-                    <el-table-column
-                      prop="Pwd"
-                      label="密码"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="管理员组"
-                      show-overflow-tooltip/>
-                  </el-table>
+            <div class="main-slide">
+              <span class="main-slide-left">
+                <el-table
+                  ref="filterTable"
+                  :data="tableData"
+                  tooltip-effect="dark"
+                  style="width: 100%"
+                  @selection-change="handleSelectionChange">
+                  <el-table-column
+                    type="selection"/>
+                  <el-table-column
+                    fixed
+                    prop="UserCode"
+                    label="人员编号"/>
+                  <el-table-column
+                    prop="userid"
+                    label="考勤号"
+                    sortable
+                    width="90"/>
+                  <el-table-column
+                    prop="Cardnum"
+                    label="卡号"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="Name"
+                    label="姓名"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="EmployDate"
+                    label="聘用日期"
+                    show-overflow-tooltip
+                    width="100"/>
+                  <el-table-column
+                    prop="address"
+                    label="所在机器"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="指纹1"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="指纹2"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="面部"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="虹膜"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="Sex"
+                    label="性别"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="Duty"
+                    label="职务"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="Birthday"
+                    label="出生日期"
+                    show-overflow-tooltip
+                    width="100"/>
+                  <el-table-column
+                    prop="Mobile"
+                    label="联系电话"
+                    show-overflow-tooltip
+                    width="120"/>
+                  <el-table-column
+                    prop="Address"
+                    label="联系地址"
+                    show-overflow-tooltip
+                    width="170"/>
+                  <el-table-column
+                    prop="Pwd"
+                    label="密码"
+                    show-overflow-tooltip/>
+                  <el-table-column
+                    prop="address"
+                    label="管理员组"
+                    show-overflow-tooltip/>
+                </el-table>
+              </span>
+              <span class="main-slide-right">
+                <el-divider content-position="left">管理记录</el-divider>
+                <div class="filter">
+                  <el-button type="primary" size="mini">数据列</el-button>
+                  <el-button type="primary" size="mini">显示全部数据列</el-button>
+                  <el-button type="primary" size="mini">导出记录</el-button>
+                  <el-button type="primary" size="mini">打印预览</el-button>
                 </div>
-              </el-col>
-              <el-col :span="4" class="main-slide-right">
-                <div class="grid-content bg-purple-light">
-                  <el-divider content-position="left">管理记录</el-divider>
-                  <div class="filter">
-                    <el-button type="primary" size="mini">数据列</el-button>
-                    <el-button type="primary" size="mini">显示全部数据列</el-button>
-                    <el-button type="primary" size="mini">导出记录</el-button>
-                    <el-button type="primary" size="mini">打印预览</el-button>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
+              </span>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -701,7 +689,7 @@ export default {
       }
     }
     .elTable td{
-      height: auto;
+      height: 50px;
     }
     .mini-icon{
       font-size: 20px;

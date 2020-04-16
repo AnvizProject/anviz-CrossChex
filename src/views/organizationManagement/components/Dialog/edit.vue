@@ -73,7 +73,7 @@
                 <div class="parameter-item-center">
                   <div>部门</div>
                   <div class="net-input-item">
-                    <selectbox :options="options.User_option1" v-model="userform.Deptid"/>
+                    <selectInput :options="option" :deptid ="userform.Deptid" @Deptid="dept_id"/>
                   </div>
                 </div>
               </div>
@@ -95,24 +95,30 @@
                 <div class="parameter-item-center">
                   <div>用户类型</div>
                   <div class="net-input-item">
-                    <selectbox :options="options.User_option4" v-model="data"/>
+                    <selectbox :options="options.User_option4" v-model="usertype"/>
                   </div>
                 </div>
                 <div class="parameter-item-center">
                   <div>管理员组</div>
                   <div class="net-input-item">
-                    <selectbox :options="options.User_option5" v-model="userform.admingroupid"/>
+                    <selectbox :disabled="usertype!==2?true:false" :options="options.User_option5" v-model="userform.admingroupid"/>
                   </div>
                 </div>
               </div>
             </span>
             <span class="parameter-item">
               <h4>上传头像</h4>
-              <div>头像</div>
+              <div class="select" title="点击上传头像">
+                <input id="filed" type="file" hidden="" @change="filePreview">
+                <p @click="selectImg()">
+                  <span v-if="textHide" class="icon el-icon-plus upload_img"/>
+                  <img :src="userform.Picture" >
+                </p>
+              </div>
             </span>
           </div>
           <div class="attendance">
-            <h4>考勤统计相关</h4>
+            <h4 class="mg15-up-down">考勤统计相关</h4>
             <div>
               <el-checkbox v-model="userform.IsAtt" :true-label="1" :false-label="0" label="计算考勤"/>
               <el-checkbox v-model="userform.Isovertime" :true-label="1" :false-label="0" label="计算加班"/>
@@ -120,7 +126,7 @@
             </div>
           </div>
           <div class="scheduling">
-            <h4>新增人员默认排班方式</h4>
+            <h4 class="mg15-up-down">新增人员默认排班方式</h4>
             <div>
               <el-radio-group v-model="userform.ClassFlag">
                 <el-radio :label="0">不排班</el-radio>
@@ -201,8 +207,59 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-        <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+        <el-tab-pane label="指纹登记" name="third">
+          <div class="custom">
+            <div class="register">
+              <h4>设备选择</h4>
+              <el-form ref="form" :model="userform" label-width="80px">
+                <el-form-item label="网络设备">
+                  <el-select v-model="userform.net" placeholder="请选择">
+                    <el-option v-for="(v,k) in fing" :key="k" :label="v.ClientName" :value="v.Clientid"/>
+                  </el-select>
+                </el-form-item>
+              </el-form>
+            </div>
+            <div class="register">
+              <h4>指纹登记</h4>
+              <div class="register-item">
+                <div class="register-slide">
+                  <span>第一枚指纹</span>
+                  <span :style="{color:word1_color}">{{ word1 }}</span>
+                  <span><el-button size="mini" type="primary" @click="Register(1)">登记</el-button></span>
+                </div>
+                <div class="register-slide">
+                  <span>第二枚指纹</span>
+                  <span :style="{color:word2_color}">{{ word2 }}</span>
+                  <span><el-button size="mini" type="primary" @click="Register(2)">登记</el-button></span>
+                </div>
+              </div>
+            </div>
+            {{ userform.FingerInfo }}
+            {{ fingerid }}
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="人脸登记" name="fourth">
+          <div class="custom">
+            <div class="register">
+              <h4>人脸设备选择</h4>
+              <div class="register-item">
+                <div class="register-slide">
+                  <span>
+                    <el-form ref="form" :model="userform" label-width="100px">
+                      <el-form-item label="Facepass7">
+                        <el-select v-model="userform.face" placeholder="请选择">
+                          <el-option label="区域一" value="shanghai"/>
+                          <el-option label="区域二" value="beijing"/>
+                        </el-select>
+                      </el-form-item>
+                    </el-form>
+                  </span>
+                  <span><el-button size="mini" type="primary">登记</el-button></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-tab-pane>
       </el-tabs>
     </el-dialog>
   </div>
@@ -210,9 +267,12 @@
 <script>
 import selectbox from '@/components/select'
 import options from '@/components/mixin/Options'
+import selectInput from '@/components/selectInput/selectTree'
+var timestamp = Date.parse(new Date()) / 1000
 export default {
   components: {
-    selectbox
+    selectbox,
+    selectInput
   },
   mixins: [options],
   props: {
@@ -221,6 +281,10 @@ export default {
       default: function() {
         return {}
       }
+    },
+    option: {
+      type: Array,
+      default: () => {}
     }
   },
   data() {
@@ -228,16 +292,25 @@ export default {
       centerDialogVisible: false,
       showClo: false,
       activeName: 'first',
-      data: null,
+      usertype: 1,
       dialogtitle: '增加人员',
       isAdd: true,
+      textHide: true,
+      fing: [],
+      humanFace: [],
+      word1_color: '#000',
+      word1: '未登记',
+      word2_color: '#000',
+      word2: '未登记',
+      fingerid: null,
+      two: 1,
       userform: {
         userid: '',
         UserCode: '',
         Name: '',
         Cardnum: '',
         Pwd: '',
-        Deptid: null,
+        Deptid: 1,
         Groupid: null,
         UserFlag: null,
         admingroupid: null,
@@ -250,7 +323,11 @@ export default {
         Mobile: '',
         Address: '',
         Birthday: '',
-        EmployDate: ''
+        EmployDate: '',
+        Picture: '',
+        net: '1',
+        face: null,
+        FingerInfo: {}
       }
     }
   },
@@ -260,13 +337,14 @@ export default {
       this.centerDialogVisible = true
       this.dialogtitle = '增加人员'
       this.isAdd = true
+      this.usertype = 1
       this.userform = {
         userid: '',
         UserCode: '',
         Name: '',
         Cardnum: '',
         Pwd: '',
-        Deptid: null,
+        Deptid: 1,
         Groupid: null,
         UserFlag: null,
         admingroupid: null,
@@ -282,14 +360,97 @@ export default {
         EmployDate: ''
       }
     },
+    dept_id(id) {
+      this.userform.Deptid = id
+    },
     // 修改人员
     handleEdit() {
       this.centerDialogVisible = true
       this.dialogtitle = '修改人员'
       this.isAdd = false
       this.userform = Object.assign({}, this.userform, this.rowdata)
-      console.log(this.userform)
+      if (this.userform.admingroupid > 0) {
+        this.usertype = 2
+      }
+      this.people_detail()
+      this.register_list()
     },
+    // 上传头像
+    selectImg: function() {
+      document.getElementById('filed').click()
+    },
+    filePreview(e) {
+      const _this = this
+      var files = e.target.files[0]
+      if (!e || !window.FileReader) return // 判断是否支持FileReader
+      const reader = new FileReader()
+      reader.readAsDataURL(files) // 文件转换
+      reader.onloadend = function() {
+        _this.userform.Picture = this.result
+        _this.textHide = false
+      }
+    },
+    // 人员详情
+    people_detail() {
+      this.$store.dispatch('interactive/userDetail', this.userform.userid).then(response => {
+        this.userform.Picture = response.userinfo.Picture
+        this.textHide = false
+
+        if (response.userinfo.FingerInfo.finger1 !== '') {
+          this.word1_color = '#3CA060'
+          this.word1 = '已登记'
+        }
+        if (response.userinfo.FingerInfo.finger2 !== '') {
+          this.word2_color = '#3CA060'
+          this.word2 = '已登记'
+        }
+        console.log(response)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    // 指纹人脸登记设备列表
+    register_list() {
+      this.$store.dispatch('interactive/Terminal_list', { getClientsByType: 1 }).then(response => {
+        this.fing = response.FingerClients
+        this.humanFace = response.FaceClients
+        console.log(response)
+      }).catch(() => {
+        console.log('error')
+      })
+    },
+    // websocket接收回调函数返回数据的方法
+    getConfigResult(res) {
+      // console.log(this.fingerid)
+      console.log(res)
+      if (res.ret === '0') {
+        this.$message({
+          message: '成功',
+          type: 'success'
+        })
+        if (res.cmd === 'enroll_finger' && this.fingerid === 1) {
+          this.userform.FingerInfo.finger1 = res.data.template
+        } else if (res.cmd === 'enroll_finger' && this.fingerid === 2) {
+          this.userform.FingerInfo.finger2 = res.data.template
+        }
+        this.two = 2
+        return
+      } else {
+        this.$message({
+          message: '失败',
+          type: 'warning'
+        })
+      }
+    },
+    // 登记指纹
+    Register(fingid) {
+      this.fingerid = fingid
+      console.log(JSON.parse('{"cmd":"enroll_finger", "data": {"ts":"' + timestamp + '","clientid": "' + Number(this.userform.net) + '","userid":"' + this.userform.userid + '","fingerid": "' + fingid + '"}}'))
+      this.socketApi.sendSock(JSON.parse('{"cmd":"enroll_finger", "data": {"ts":"' + timestamp + '","clientid": "' + Number(this.userform.net) + '","userid":"' + this.userform.userid + '","fingerid": "' + fingid + '"}}'), this.getConfigResult)
+    },
+
+    // 确定
+
     save() {
       let action = ''
       if (this.isAdd) {
@@ -297,12 +458,29 @@ export default {
       } else {
         action = 'interactive/userEdit'
       }
+      console.log((this.userform))
       this.$store.dispatch(action, this.userform).then(response => {
-        this.centerDialogVisible = false
-        this.$message({
-          type: 'success',
-          message: '新增成功!'
-        })
+        if (this.two === 1) {
+          this.$message({
+            type: 'success',
+            message: '成功!'
+          })
+          this.centerDialogVisible = false
+        } else {
+          this.$confirm('是否将指纹记录上传到设备', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$emit('upload_template')
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消'
+            })
+          })
+        }
+
         this.$emit('people_list')
       }).catch(() => {
         console.log('error')
@@ -342,18 +520,40 @@ export default {
     border-radius:5px;
     padding: 0 10px 10px;
     h4{
+      width: 100%;
       border-bottom:1px solid #bdbdbd;
       margin: 0 0 20px 0;
       padding: 12px 0;
       color:#47a369;
     }
+    .register{
+      >.el-form{
+        width: 50%;
+        margin-left: 20px;
+      }
+      .register-item{
+        width: 50%;
+        margin-left:20px;
+        .register-slide{
+          display:flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 15px;
+          >span{
+            .el-form-item{
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
   }
   .net-input-item{
-        width: 100%;
-        height: 46px;
-        display: flex;
-        align-items: center;
-        border-bottom:1px solid #999
+    width: 100%;
+    height: 41px;
+    display: flex;
+    align-items: center;
+    border-bottom:1px solid #999
   }
   .parameter-item-wrap{
     display: flex;
@@ -374,6 +574,7 @@ export default {
     }
     >div:first-child{
       font-weight: 600;
+      margin-bottom: 6px;
     }
   }
   .attendance,.scheduling{
@@ -381,5 +582,22 @@ export default {
     height: auto;
     margin: 0 30px;
   }
-
+  .select{
+    text-align: center;
+    width: 60%;
+    margin: 0 auto;
+    height: auto;
+    .upload_img{
+      width: 100px;
+      height: 100px;
+      line-height: 100px;
+      border-radius: 5px;
+      border: 1px solid #eee;
+      font-size:20px;
+    }
+    img{
+      width: 100%;
+      height: auto;
+    }
+  }
 </style>

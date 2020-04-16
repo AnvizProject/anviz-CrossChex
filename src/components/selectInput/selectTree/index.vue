@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <select-tree :data = "options" :default-props="defaultProps" />
-    <el-input v-model="input" placeholder="请输入内容"/>
+    <select-tree :data = "options" :node-key="nodeKey" :checked-keys="defaultCheckedKeys" :default-props="defaultProps" @popoverHide="popoverHide" />
+    <!-- <el-input v-model="input" placeholder="请输入内容"/> -->
   </div>
 </template>
 
@@ -14,6 +14,10 @@ export default {
     options: {
       type: Array,
       default: () => {}
+    },
+    deptid: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -23,15 +27,20 @@ export default {
       // define options
       input: '',
       defaultProps: {
-        id: 'devicegroupid',
-        children: 'FingerClient',
-        label: 'devicegroupname'
-      }
+        id: 'Deptid',
+        children: 'SubDept',
+        label: 'DeptName'
+      },
+      nodeKey: 'Deptid',
+      defaultCheckedKeys: []
     }
   },
+  created() {
+    this.defaultCheckedKeys = [this.deptid]
+  },
   methods: {
-    select(id) {
-      console.log(id)
+    popoverHide(checkedIds, checkedData) {
+      this.$emit('Deptid', checkedIds)
     }
   }
 }
@@ -40,6 +49,11 @@ export default {
 <style lang="scss">
   #app{
     display: flex;
+    width: 100%;
+    .el-select{
+      width: 100% !important;
+      height: 100%;
+    }
     .vue-treeselect{
       width: 50%;
       .vue-treeselect__control{
@@ -52,9 +66,22 @@ export default {
         }
       }
     }
+    .tree-wrap{
+      .el-input__inner{
+        height: 32px;
+      }
+    }
     .el-input__inner{
+      width: 100%;
       border-top-left-radius: 0px;
       border-bottom-left-radius: 0px;
     }
+  }
+  .el-popover{
+    min-width: 157px;
+  }
+  .el-tree{
+    width: auto !important;
+    height: auto !important;
   }
 </style>

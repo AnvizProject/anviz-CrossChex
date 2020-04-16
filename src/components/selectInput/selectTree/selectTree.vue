@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tree-wrap">
     <div v-show="isShowSelect" class="mask" @click="isShowSelect = !isShowSelect"/>
     <el-popover
       v-model="isShowSelect"
@@ -18,7 +18,6 @@
         :check-on-click-node="multiple"
         :highlight-current="true"
         class="common-tree"
-        default-expand-all
         @node-click="handleNodeClick"
         @check-change="handleCheckChange"/>
       <el-select
@@ -152,6 +151,7 @@ export default {
       this.options = []
       this.options.push(tmpMap)
       this.selectedData = node.key
+      console.log(this.selectedData)
     },
     // 单选，选中传进来的节点
     checkSelectedNode(checkedKeys) {
@@ -270,7 +270,15 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .tree-wrap{
+    width: 100%;
+    >span{
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
   .mask{
     width: 100%;
     height: 100%;

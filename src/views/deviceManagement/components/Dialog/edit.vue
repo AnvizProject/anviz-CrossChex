@@ -142,10 +142,10 @@ export default {
   },
   mixins: [options],
   props: {
-    device_list: {
-      type: Array,
-      default: () => {}
-    },
+    // device_list: {
+    //   type: Array,
+    //   default: () => {}
+    // },
     de_data: {
       type: Number,
       default: null
@@ -181,7 +181,6 @@ export default {
   },
 
   methods: {
-    // 终端列表
     // 增加修改终端
     add_device() {
       if (this.de_data === 1) {

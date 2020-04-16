@@ -275,7 +275,7 @@ export default {
 
   .net-input-item{
     width: 100%;
-    height: 46px;
+    height: auto;
     display: flex;
     align-items: center;
     border-bottom:1px solid #999;
