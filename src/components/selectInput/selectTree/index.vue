@@ -17,7 +17,7 @@ export default {
     },
     deptid: {
       type: Number,
-      default: 0
+      default: null
     }
   },
   data() {
@@ -36,7 +36,9 @@ export default {
     }
   },
   created() {
-    this.defaultCheckedKeys = [this.deptid]
+    if (this.deptid) {
+      this.defaultCheckedKeys = [this.deptid]
+    }
   },
   methods: {
     popoverHide(checkedIds, checkedData) {

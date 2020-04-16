@@ -11,13 +11,20 @@
     </span>
     <el-form ref="form" :model="form" label-width="100px">
       <el-form-item label="部门名称">
-        <el-input v-model="form.DeptName"/>
+        <!-- <el-input v-model="form.DeptName"/> -->
+        <div style="display: flex">
+          <span><selectTree :options = "dept" :node-key="nodeKey" :default-props="defaultProps" multiple @Deptid="getDeptid"/></span>
+          <span style="width: 100%"><el-input v-model="addInfo.deptName" type="text" size="small"/></span>
+        </div>
       </el-form-item>
     </el-form>
   </el-dialog>
 </template>
 <script>
+import selectTree from '@/components/selectInput/selectTree'
+import { mapState } from 'vuex'
 export default {
+  components: { selectTree },
   props: {
     SupDeptid: {
       type: Number,
@@ -42,12 +49,27 @@ export default {
       form: {
         DeptName: '',
         SupDeptid: ''
+      },
+      defaultProps: {
+        children: 'SubDept',
+        label: 'DeptName'
+      },
+      nodeKey: 'Deptid',
+      addInfo: {
+        deptId: null,
+        deptName: ''
       }
     }
+  },
+  computed: {
+    ...mapState({
+      dept: state => state.interactive.department.deptTree
+    })
   },
   methods: {
     // 部门新增、修改
     submit() {
+      console.log(this.addInfo)
       console.log(this.row_data)
       this.form.SupDeptid = this.SupDeptid
       console.log(this.form)
@@ -70,6 +92,9 @@ export default {
           console.log(error)
         })
       }
+    },
+    getDeptid(deptid) {
+      this.addInfo.deptId = deptid
     }
   }
 }

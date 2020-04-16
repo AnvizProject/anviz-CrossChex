@@ -139,6 +139,9 @@ export default {
       this.initCheckedData()
     }
   },
+  beforeCreate() {
+    // debugger
+  },
   mounted() {
     this.initCheckedData()
   },
@@ -151,7 +154,7 @@ export default {
       this.options = []
       this.options.push(tmpMap)
       this.selectedData = node.key
-      console.log(this.selectedData)
+      // console.log(this.selectedData)
     },
     // 单选，选中传进来的节点
     checkSelectedNode(checkedKeys) {
