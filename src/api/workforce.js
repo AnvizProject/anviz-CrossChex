@@ -25,3 +25,12 @@ export function deleteTime(data) {
     data
   })
 }
+
+// 时间段修改
+export function updateTime(data) {
+  return request({
+    url: '/api/time_table/update',
+    method: 'post',
+    data
+  })
+}

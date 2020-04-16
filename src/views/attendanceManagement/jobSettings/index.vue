@@ -4,9 +4,7 @@
       <el-col :span="4">
         <div class="grid-content bg-purple">
           <ul>
-            <li>123</li>
-            <li>123</li>
-            <li>123</li>
+            <li v-for="(v,k) in jobList" :key="k" @click="show(k)">{{ v.WorkName }}</li>
           </ul>
         </div>
       </el-col>
@@ -18,19 +16,19 @@
             </div>
             <div class="text item">
               <p class="fun-btn">
-                <el-button type="primary" size="mini">新增</el-button>
-                <el-button type="primary" size="mini">修改</el-button>
-                <el-button type="danger" size="mini">删除</el-button>
+                <el-button type="primary" size="mini" @click="add">新增</el-button>
+                <el-button type="primary" size="mini" @click="edit">修改</el-button>
+                <el-button type="danger" size="mini" @click="del">删除</el-button>
               </p>
               <div class="day">
                 <div class="day-top">工种信息</div>
                 <div class="day-list">
                   <el-form ref="form" :inline="true" :model="form" label-width="80px">
                     <el-form-item label="工种编号">
-                      <el-input v-model="form.num"/>
+                      <el-input v-model="form.WorkID"/>
                     </el-form-item>
                     <el-form-item label="工种名称">
-                      <el-input v-model="form.name"/>
+                      <el-input v-model="form.WorkName"/>
                     </el-form-item>
                   </el-form>
                 </div>
@@ -44,13 +42,13 @@
                         <p>单位设定</p>
                         <el-form ref="form" :model="form" label-width="80px">
                           <el-form-item label="单位名称">
-                            <el-select v-model="form.region" placeholder="请选择活动区域">
-                              <el-option label="区域一" value="shanghai"/>
-                              <el-option label="区域二" value="beijing"/>
+                            <el-select v-model="form.Units" placeholder="请选择活动区域">
+                              <el-option label="区域一" value="0"/>
+                              <el-option label="区域二" value="1"/>
                             </el-select>
                           </el-form-item>
                           <el-form-item label="最小单位">
-                            <el-input v-model="form.name"/>
+                            <el-input v-model="form.MinUnit"/>
                           </el-form-item>
                         </el-form>
                       </div>
@@ -62,21 +60,21 @@
                           <el-row :gutter="20" class="option">
                             <el-col :span="12">
                               <div class="option-but">
-                                <el-radio v-model="radio" label="1">向下舍弃</el-radio>
+                                <el-radio v-model="form.SRControl" :label="0">向下舍弃{{ form.SRControl }}</el-radio>
                               </div>
                               <div class="option-but">
-                                <el-radio v-model="radio" label="1">备选项</el-radio>
+                                <el-radio v-model="form.SRControl" :label="1">向上进位{{ form.SRControl }}</el-radio>
                               </div>
                               <div class="option-but">
-                                <el-radio v-model="radio" label="1">备选项</el-radio>
+                                <el-radio v-model="form.SRControl" :label="2">四舍五入{{ form.SRControl }}</el-radio>
                               </div>
                             </el-col>
                             <el-col :span="12">
                               <div class="option-but">
-                                <el-checkbox v-model="checked">备选项</el-checkbox>
+                                <el-checkbox v-model="form.IsAddup">累计后进行舍入</el-checkbox>
                               </div>
                               <div class="option-but">
-                                <el-checkbox v-model="checked">备选项</el-checkbox>
+                                <el-checkbox v-model="form.IsTimes">按次进行计算</el-checkbox>
                               </div>
                             </el-col>
                           </el-row>
@@ -93,6 +91,65 @@
     </el-row>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      form: {
+        num: '',
+        name: '',
+        region: ''
+      },
+      radio: '1',
+      checked: true,
+      jobList: []
+    }
+  },
+  mounted() {
+    this.getJobSetting()
+  },
+  methods: {
+    getJobSetting() {
+      this.$store.dispatch('interactive/getJobList', {}).then(response => {
+        console.log(response)
+        this.jobList = response.WorkCode
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    show(key) {
+      this.form = Object.assign({}, this.jobList[key])
+    },
+    add() {
+      this.$store.dispatch('interactive/createJob', this.form).then(response => {
+        console.log(response)
+        this.getJobSetting()
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    del() {
+      this.$store.dispatch('interactive/delJob', this.form).then(response => {
+        console.log(response)
+        this.form = {}
+        this.getJobSetting()
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    edit() {
+      this.$store.dispatch('interactive/update', this.form).then(response => {
+        console.log(response)
+        this.getJobSetting()
+      }).catch(error => {
+        console.log(error)
+      })
+    }
+  }
+}
+</script>
+
 <style lang="scss" scoped>
   .el-row{
     display: flex;
@@ -158,23 +215,3 @@
     }
   }
 </style>
-<script>
-export default {
-  data() {
-    return {
-      form: {
-        num: '',
-        name: '',
-        region: ''
-      },
-      radio: '1',
-      checked: true
-    }
-  },
-  methods: {
-    onSubmit() {
-      console.log('submit!')
-    }
-  }
-}
-</script>

@@ -21,36 +21,36 @@
               <el-row :gutter="10">
                 <el-col :span="12">
                   <el-form-item label="上班时间">
-                    <el-time-picker v-model="form.Intime" type="date" placeholder="请选择" style="width: 100%;"/>
+                    <el-time-picker v-model="form.Intime" format="HH:mm" value-format="HH:mm" type="date" placeholder="请选择" style="width: 100%;"/>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="下班时间">
-                    <el-time-picker v-model="form.Outtime" type="date" placeholder="请选择" style="width: 100%;"/>
+                    <el-time-picker v-model="form.Outtime" format="HH:mm" value-format="HH:mm" type="date" placeholder="请选择" style="width: 100%;"/>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="10">
                 <el-col :span="12">
                   <el-form-item label="开始签到时间">
-                    <el-time-picker v-model="form.BIntime" type="date" placeholder="请选择" style="width: 100%;"/>
+                    <el-time-picker v-model="form.BIntime" format="HH:mm" value-format="HH:mm" type="date" placeholder="请选择" style="width: 100%;"/>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="结束签到时间">
-                    <el-time-picker v-model="form.EIntime" type="date" placeholder="请选择" style="width: 100%;"/>
+                    <el-time-picker v-model="form.EIntime" format="HH:mm" value-format="HH:mm" type="date" placeholder="请选择" style="width: 100%;"/>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="10">
                 <el-col :span="12">
                   <el-form-item label="开始签退时间">
-                    <el-time-picker v-model="form.BOuttime" type="date" placeholder="请选择" style="width: 100%;"/>
+                    <el-time-picker v-model="form.BOuttime" format="HH:mm" value-format="HH:mm" type="date" placeholder="请选择" style="width: 100%;"/>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="结束签退时间">
-                    <el-time-picker v-model="form.EOuttime" type="date" placeholder="请选择" style="width: 100%;"/>
+                    <el-time-picker v-model="form.EOuttime" format="HH:mm" value-format="HH:mm" type="date" placeholder="请选择" style="width: 100%;"/>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -103,12 +103,12 @@
           <div class="day-foot">
             <el-form ref="form" :model="form">
               <el-form-item>
-                <el-checkbox v-model="form.MustIn" true-label="1" false-label="0" label="必须签到" name="type"/>
-                <el-checkbox v-model="form.MustOut" true-label="1" false-label="0" label="必须签退" name="type"/>
+                <el-checkbox v-model="form.MustIn" :true-label="1" :false-label="0" label="必须签到" name="type"/>
+                <el-checkbox v-model="form.MustOut" :true-label="1" :false-label="0" label="必须签退" name="type"/>
               </el-form-item>
               <el-form-item>
-                <el-checkbox v-model="form.IsFreeTime" true-label="1" false-label="0" label="浮动时段" name="type"/>
-                <el-checkbox v-model="form.IsOverTime" true-label="1" false-label="0" label="加班时段" name="type"/>
+                <el-checkbox v-model="form.IsFreeTime" :true-label="1" :false-label="0" label="浮动时段" name="type"/>
+                <el-checkbox v-model="form.IsOverTime" :true-label="1" :false-label="0" label="加班时段" name="type"/>
               </el-form-item>
             </el-form>
           </div>
@@ -119,6 +119,12 @@
 </template>
 <script>
 export default {
+  props: {
+    row: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     return {
       centerDialogVisible: false,
@@ -144,13 +150,31 @@ export default {
       value1: '',
       num: 1,
       checked: true,
-      multipleSelection: []
+      multipleSelection: [],
+      action: ''
+    }
+  },
+  watch: {
+    action(action) {
+      if (action === 'add') {
+        this.form = {}
+      } else if (action === 'edit') {
+        this.form = Object.assign({}, this.row)
+      }
     }
   },
   methods: {
     // 时间段新增
     save() {
-      this.$store.dispatch('interactive/Add_time', this.form).then(response => {
+      let url = ''
+      if (this.action === 'add') {
+        url = 'interactive/Add_time'
+      } else if (this.action === 'edit') {
+        url = 'interactive/updateTime'
+      }
+      console.log(this.form)
+      this.$store.dispatch(url, this.form).then(response => {
+        this.centerDialogVisible = false
         this.$emit('timelist')
       }).catch(() => {
         console.log(0)

@@ -5,16 +5,18 @@ import { depart_list, depart_create, depart_update, depart_delete } from '@/api/
 import store from '../../..'
 const department = {
   state: {
+    deptTree: []
   },
   mutations: {
 
   },
   actions: {
     // 部门列表
-    Depart_list({ commit }, Depart_list_data) {
+    Depart_list({ commit, state }, Depart_list_data) {
       Depart_list_data.access_token = store.getters.token
       return new Promise((resolve, reject) => {
         depart_list(Depart_list_data).then(response => {
+          state.deptTree = response.dept_tree
           resolve(response)
         }).catch(error => {
           reject(error)

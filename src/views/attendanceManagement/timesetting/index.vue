@@ -5,8 +5,8 @@
         <div class="con-item">
           <div class="header-item">
             <el-button type="primary" size="mini" @click="addtime">增加</el-button>
-            <el-button :disabled="multipleSelection.length<=0" :type="multipleSelection.length>0?'warning':'info'" size="mini">修改</el-button>
-            <el-button :disabled="multipleSelection.length<=0" :type="multipleSelection.length>0?'danger':'info'" size="mini">删除</el-button>
+            <!-- <el-button :disabled="multipleSelection.length<=0" :type="multipleSelection.length>0?'warning':'info'" size="mini">修改</el-button> -->
+            <!-- <el-button :disabled="multipleSelection.length<=0" :type="multipleSelection.length>0?'danger':'info'" size="mini" @click="delList">删除</el-button> -->
           </div>
         </div>
       </el-header>
@@ -47,7 +47,7 @@
         </el-row>
       </el-main>
     </el-container>
-    <addtimeDialog ref="addtimeDialog"/>
+    <addtimeDialog ref="addtimeDialog" :row = "row" @timelist="timelist"/>
   </div>
 </template>
 <script>
@@ -59,7 +59,8 @@ export default {
   data() {
     return {
       tableData: [],
-      multipleSelection: []
+      multipleSelection: [],
+      row: {}
     }
   },
   mounted: function() {
@@ -85,18 +86,25 @@ export default {
     // 新增时间段
     addtime() {
       this.$refs.addtimeDialog.centerDialogVisible = true
+      this.$refs.addtimeDialog.action = 'add'
     },
     onSubmit() {
       console.log('submit!')
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
+      console.log(val)
     },
     handleChange(value) {
       console.log(value)
     },
     handleNodeClick(data) {
       console.log(data)
+    },
+    handleEdit(index, row) {
+      this.$refs.addtimeDialog.centerDialogVisible = true
+      this.$refs.addtimeDialog.action = 'edit'
+      this.row = row
     }
   }
 }

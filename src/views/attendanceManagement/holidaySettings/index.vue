@@ -4,20 +4,18 @@
       <el-col :span="4">
         <div class="grid-content bg-purple">
           <ul>
-            <li>
+            <li v-for="(v,k) in holidayList" :key="k" @click="show(k)">
               <div class="vacation">
                 <span class="vacation-left">
-                  <p class="num">7</p>
+                  <p class="num">{{ v.Days }}</p>
                   <p class="word">天</p>
                 </span>
                 <span class="vacation-right">
-                  <p class="title">国庆节</p>
-                  <p class="word">2018/10/01-2018/10/07</p>
+                  <p class="title">{{ v.Name }}</p>
+                  <p class="word">{{ v.BDate }}</p>
                 </span>
               </div>
             </li>
-            <li>123</li>
-            <li>123</li>
           </ul>
         </div>
       </el-col>
@@ -29,31 +27,26 @@
             </div>
             <div class="text item">
               <p class="fun-btn">
-                <el-button type="primary" size="mini">新增</el-button>
-                <el-button type="primary" size="mini">修改</el-button>
-                <el-button type="danger" size="mini">删除</el-button>
+                <el-button type="primary" size="mini" @click="add">新增</el-button>
+                <el-button type="primary" size="mini" @click="edit">修改</el-button>
+                <el-button type="danger" size="mini" @click="del">删除</el-button>
               </p>
               <div class="day">
                 <div class="day-top">工种信息</div>
                 <div class="day-list">
                   <el-form ref="form" :model="form" label-width="100px">
-                    <el-form-item label="工种编号">
-                      <el-input v-model="form.num"/>
+                    <el-form-item label="名称">
+                      <el-input v-model="form.Name"/>
                     </el-form-item>
                     <el-form-item label="开始日期">
                       <el-date-picker
-                        v-model="form.value1"
+                        v-model="form.BDate"
                         type="date"
-                        placeholder="选择日期"/>
-                    </el-form-item>
-                    <el-form-item label="结束日期">
-                      <el-date-picker
-                        v-model="form.value2"
-                        type="date"
+                        value-format="yyyy-MM-dd"
                         placeholder="选择日期"/>
                     </el-form-item>
                     <el-form-item label="天数">
-                      <el-input-number :min="1" :max="365" v-model="form.num" controls-position="right" @change="handleChange" />
+                      <el-input-number :min="1" :max="365" v-model="form.Days" controls-position="right" @change="handleChange" />
                     </el-form-item>
                   </el-form>
                 </div>
@@ -158,20 +151,59 @@ export default {
   data() {
     return {
       form: {
-        num: 1,
-        value1: '',
-        value2: ''
+        Name: '',
+        BDate: '',
+        Days: 1
       },
       radio: '1',
-      checked: true
+      checked: true.dispatch,
+      holidayList: []
     }
   },
+  mounted() {
+    this.getHolidayList()
+  },
   methods: {
-    onSubmit() {
-      console.log('submit!')
-    },
     handleChange(value) {
       console.log(value)
+    },
+    show(key) {
+      this.form = Object.assign({}, this.holidayList[key])
+      console.log(this.form, 'show')
+    },
+    getHolidayList() {
+      this.$store.dispatch('interactive/getHolidayList', {}).then(response => {
+        console.log(response)
+        this.holidayList = response.Holiday
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    add() {
+      this.$store.dispatch('interactive/createHoliday', this.form).then(response => {
+        console.log(response)
+        this.getHolidayList()
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    edit() {
+      console.log(this.form, 'edit')
+      this.$store.dispatch('interactive/updateHoliday', this.form).then(response => {
+        console.log(response)
+        this.getHolidayList()
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    del() {
+      this.$store.dispatch('interactive/delHoliday', this.form).then(response => {
+        console.log(response)
+        this.form = {}
+        this.getHolidayList()
+      }).catch(error => {
+        console.log(error)
+      })
     }
   }
 }
