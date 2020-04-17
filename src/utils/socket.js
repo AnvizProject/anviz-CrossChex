@@ -1,7 +1,6 @@
 import { getToken } from '@/utils/auth'
 var websock = null
-var globalCallback = null
-
+var globalCallback = () => {}
 // 初始化websocket
 function initWebSocket() {
   // ws地址 -->这里是你的请求路径

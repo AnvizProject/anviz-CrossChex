@@ -49,4 +49,12 @@ export function deptlist(data) {
     params: data
   })
 }
+// 调动部门
+export function transfer(data) {
+  return request({
+    url: '/api/userinfo/transfer',
+    method: 'post',
+    data
+  })
+}
 

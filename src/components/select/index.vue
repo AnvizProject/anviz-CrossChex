@@ -1,11 +1,15 @@
 <template>
-  <el-select :disabled="disabled" :value="changeval" placeholder="请选择" @change="change">
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value"/>
-  </el-select>
+  <div>
+    <el-select :disabled="disabled" :value="changeval" placeholder="请选择" @change="change">
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"/>
+    </el-select>
+    <!-- <pre>{{ options }}</pre> -->
+  </div>
+
 </template>
 
 <script>
