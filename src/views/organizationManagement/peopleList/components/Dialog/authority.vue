@@ -8,13 +8,14 @@
       <span slot="title" class="dialog-header">
         <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
         <div>设置权限</div>
-        <el-button size="mini" type="primary" @click="save">确 定</el-button>
+        <el-button :disabled="disabled" size="mini" type="primary" @click="save">确 定</el-button>
       </span>
       <el-tree
         ref="tree"
         :data="treeData"
         :props="defaultProps"
         :accordion="true"
+        :default-checked-keys="defaultKey"
         show-checkbox
         node-key="id"
         default-expand-all/>
@@ -27,6 +28,10 @@ export default {
     group_list: {
       type: Array,
       default: () => {}
+    },
+    checkedList: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -35,11 +40,13 @@ export default {
       showClo: false,
       data: [],
       list: [],
+      defaultKey: [],
       defaultProps: {
         children: 'children',
         label: 'label'
       },
-      clientids: []
+      clientids: [],
+      disabled: false
     }
   },
   computed: {
@@ -55,7 +62,15 @@ export default {
       return treeData
     }
   },
+  watch: {
+    checkedList(val) {
+      console.log(val.visible)
+      this.centerDialogVisible = val.visible
+    }
+  },
   mounted() {
+    console.log(this.visible)
+    this.centerDialogVisible = this.visible
   },
   methods: {
     save() {

@@ -127,7 +127,6 @@
       height: 70px;
       line-height: 70px;
       padding: 0 25px 0;
-      font-size: 16px;
       &:hover{
         color:$color-main !important;
         background-color: rgba(0,0,0,0.25) !important;
@@ -161,7 +160,6 @@
         border-right:0;
       }
       .el-menu-item{
-        font-size: 16px;
         height: 40px;
         line-height: 40px;
         border-bottom:1px solid rgba(60,160,96,0.3);
@@ -169,7 +167,7 @@
           background-color: rgba(0,0,0,0.06) !important;
         }
         .icon{
-          font-size: 30px;
+          font-size: 20px;
         }
       }
       .router-link-active{

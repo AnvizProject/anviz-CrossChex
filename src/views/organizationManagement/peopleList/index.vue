@@ -12,7 +12,7 @@
               <el-dropdown-item @click.native="shift_depart">调动部门</el-dropdown-item>
               <el-dropdown-item @click.native="resignation">人员离职</el-dropdown-item>
               <el-dropdown-item @click.native="set_authority">设置权限</el-dropdown-item>
-              <el-dropdown-item>复制权限</el-dropdown-item>
+              <el-dropdown-item @click.native="copyAuthority">复制权限</el-dropdown-item>
               <el-dropdown-item @click.native="import_personnel">导入人员</el-dropdown-item>
               <el-dropdown-item @click.native="export_personnel">导出人员</el-dropdown-item>
               <el-dropdown-item @click.native="upload_user">上传人员</el-dropdown-item>
@@ -73,12 +73,12 @@
             align="center"
             show-overflow-tooltip/>
           <el-table-column
-            prop="Cardnum"
+            prop="userid"
             label="考勤号"
             align="center"
             show-overflow-tooltip/>
           <el-table-column
-            prop="UserCode"
+            prop="Cardnum"
             label="卡号"
             align="center"
             show-overflow-tooltip/>
@@ -125,7 +125,8 @@
     </Container>
     <editDialog ref="editDialog" :rowdata="rowdata" :option="depList" @people_list="people_list" @upload_template="upload_template"/>
     <shift ref="shift" :user_id="user_id_list"/>
-    <authority ref="authority" :group_list = "group_data" @setting_authority="setting_authority"/>
+    <authority ref="authority" :group_list = "group_data" :checked-list="checkedList" @setting_authority="setting_authority"/>
+    <copyAuthority ref="copyAuthority" :group_list = "group_data" @copy_authority="copy_authority"/>
   </div>
 </template>
 
@@ -137,6 +138,8 @@ import Devicegroup from '@/components/Devicegroup'
 import editDialog from './components/Dialog/edit'
 import shift from './components/Dialog/shift'
 import authority from './components/Dialog/authority'
+import copyAuthority from './components/Dialog/copyauthority'
+var timestamp = Date.parse(new Date()) / 1000
 function check() {
   if (document.getElementById('check1').checked === true) {
     return true
@@ -144,7 +147,6 @@ function check() {
     return false
   }
 }
-var timestamp = Date.parse(new Date()) / 1000
 export default {
   components: {
     Search,
@@ -153,7 +155,8 @@ export default {
     Devicegroup,
     editDialog,
     shift,
-    authority
+    authority,
+    copyAuthority
   },
   data() {
     return {
@@ -170,7 +173,9 @@ export default {
       multipleSelection: [],
       delete_from_device: 1,
       depList: [],
-      group_data: []
+      group_data: [],
+      // visible: this.$refs.copyAuthority.visible
+      checkedList: {}
     }
   },
   computed: {
@@ -182,7 +187,7 @@ export default {
       return userid
     }
   },
-  mounted: function() {
+  mounted() {
     this.people_list()
   },
   methods: {
@@ -207,6 +212,7 @@ export default {
       this.$store.dispatch('interactive/userList', { per_page: this.per_page.perPage, Deptid: this.$refs.DeptGroup.Deptid, page: this.per_page.page, ClientNumber: this.$refs.DeviceGroup.Clientid, search_key: this.$refs.search.input }).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
+        console.log(response)
       }).catch(error => {
         console.log(error)
       })
@@ -256,6 +262,7 @@ export default {
         }
         if (res.cmd === 'set_power') {
           this.$refs.authority.centerDialogVisible = false
+          this.$refs.copyAuthority.centerDialogVisible = false
         }
         return
       } else {
@@ -313,12 +320,22 @@ export default {
     set_authority() {
       this.$refs.authority.centerDialogVisible = true
     },
+    // 复制权限
+    copyAuthority() {
+      this.$refs.copyAuthority.centerDialogVisible = true
+    },
+    // 设置权限
     setting_authority(data) {
-      console.log(this.user_id_list.join(','))
       this.socketApi.sendSock(JSON.parse('{"cmd":"set_power", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '","clientids": "' + data.join(',') + '"}}'), this.getConfigResult)
+    },
+    // 复制权限
+    copy_authority(data) {
+      console.log(data)
+      this.socketApi.sendSock(JSON.parse('{"cmd":"set_power", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '","copy_userid": "' + data + '"}}'), this.getConfigResult)
     },
     // 上传人员
     upload_user() {
+      console.log('{"cmd":"upload_user", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '" }}')
       this.socketApi.sendSock(JSON.parse('{"cmd":"upload_user", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '" }}'), this.getConfigResult)
     },
     // 上传模板
@@ -327,29 +344,25 @@ export default {
     },
     // 导出人员
     export_personnel() {
-      const userid = []
-      this.multipleSelection.forEach(item => {
-        userid.push(item.userid)
-      })
-      if (userid.length === 0) {
+      this.$store.dispatch('interactive/Userexport', { }).then(response => {
         this.$message({
-          message: '请选择人员',
-          type: 'warning'
+          type: 'success',
+          message: '导出人员成功'
         })
-      }
+      }).catch(error => {
+        console.log(error)
+      })
     },
     // 导入人员
     import_personnel() {
-      const userid = []
-      this.multipleSelection.forEach(item => {
-        userid.push(item.userid)
-      })
-      if (userid.length === 0) {
+      this.$store.dispatch('interactive/Userimport', { }).then(response => {
         this.$message({
-          message: '请选择人员',
-          type: 'warning'
+          type: 'success',
+          message: '导入人员成功'
         })
-      }
+      }).catch(error => {
+        console.log(error)
+      })
     }
   }
 }
