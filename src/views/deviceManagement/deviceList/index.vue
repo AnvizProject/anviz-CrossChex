@@ -39,7 +39,7 @@
           @down="progressShow"/>
       </div>
     </container>
-    <Dialog ref="Dialog" :options="group_list" :de_data="de_data" @Terminal_list="Terminal_list"/>
+    <Dialog ref="Dialog" :group_list="group_list" :de_data="de_data" @Terminal_list="Terminal_list"/>
     <Terminal ref="Terminal" @clear="clear" @initialize="initialize"/>
     <progress-self ref="progress"/>
     <Ringing ref="Ringing" :ring_data="ring_data" @ring_set="ring_set"/>

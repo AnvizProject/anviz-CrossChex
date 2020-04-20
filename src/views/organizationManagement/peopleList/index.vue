@@ -9,10 +9,10 @@
           <el-dropdown>
             <el-button :disabled="multipleSelection.length<=0" type="info" size="mini">更多操作<i class="el-icon-arrow-down el-icon--right"/></el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>调动部门</el-dropdown-item>
-              <el-dropdown-item>人员离职</el-dropdown-item>
-              <el-dropdown-item>设置权限</el-dropdown-item>
-              <el-dropdown-item>复制权限</el-dropdown-item>
+              <el-dropdown-item @click.native="shift_depart">调动部门</el-dropdown-item>
+              <el-dropdown-item @click.native="resignation">人员离职</el-dropdown-item>
+              <el-dropdown-item @click.native="set_authority">设置权限</el-dropdown-item>
+              <el-dropdown-item @click.native="copyAuthority">复制权限</el-dropdown-item>
               <el-dropdown-item @click.native="import_personnel">导入人员</el-dropdown-item>
               <el-dropdown-item @click.native="export_personnel">导出人员</el-dropdown-item>
               <el-dropdown-item @click.native="upload_user">上传人员</el-dropdown-item>
@@ -21,7 +21,7 @@
           </el-dropdown>
         </div>
         <div class="header-item">
-          <Devicegroup ref="DeviceGroup" @Terminal_list="people_list"/>
+          <Devicegroup ref="DeviceGroup" @Terminal_list="people_list" @groupList="groupList"/>
           <Departmentgroup ref="DeptGroup" @Dept_list="people_list" @dep_list="departList"/>
         </div>
       </div>
@@ -73,12 +73,12 @@
             align="center"
             show-overflow-tooltip/>
           <el-table-column
-            prop="Cardnum"
+            prop="userid"
             label="考勤号"
             align="center"
             show-overflow-tooltip/>
           <el-table-column
-            prop="UserCode"
+            prop="Cardnum"
             label="卡号"
             align="center"
             show-overflow-tooltip/>
@@ -124,6 +124,9 @@
       </div>
     </Container>
     <editDialog ref="editDialog" :rowdata="rowdata" :option="depList" @people_list="people_list" @upload_template="upload_template"/>
+    <shift ref="shift" :user_id="user_id_list"/>
+    <authority ref="authority" :group_list = "group_data" :checked-list="checkedList" @setting_authority="setting_authority"/>
+    <copyAuthority ref="copyAuthority" :group_list = "group_data" @copy_authority="copy_authority"/>
   </div>
 </template>
 
@@ -132,7 +135,11 @@ import Search from '@/components/search'
 import Container from '@/components/container'
 import Departmentgroup from '@/components/Departmentgroup'
 import Devicegroup from '@/components/Devicegroup'
-import editDialog from '../components/Dialog/edit'
+import editDialog from './components/Dialog/edit'
+import shift from './components/Dialog/shift'
+import authority from './components/Dialog/authority'
+import copyAuthority from './components/Dialog/copyauthority'
+var timestamp = Date.parse(new Date()) / 1000
 function check() {
   if (document.getElementById('check1').checked === true) {
     return true
@@ -140,14 +147,16 @@ function check() {
     return false
   }
 }
-var timestamp = Date.parse(new Date()) / 1000
 export default {
   components: {
     Search,
     Container,
     Departmentgroup,
     Devicegroup,
-    editDialog
+    editDialog,
+    shift,
+    authority,
+    copyAuthority
   },
   data() {
     return {
@@ -163,7 +172,10 @@ export default {
       user_id: [],
       multipleSelection: [],
       delete_from_device: 1,
-      depList: []
+      depList: [],
+      group_data: [],
+      // visible: this.$refs.copyAuthority.visible
+      checkedList: {}
     }
   },
   computed: {
@@ -175,15 +187,19 @@ export default {
       return userid
     }
   },
-  mounted: function() {
+  mounted() {
     this.people_list()
   },
   methods: {
+    // 部门数据列表
     departList(data) {
-      console.log(data)
       this.depList = data
     },
-
+    // 设备列表数据
+    groupList(data) {
+      this.group_data = data
+      console.log(this.group_data)
+    },
     // 增加人员
     Adduser() {
       this.$refs.editDialog.Adduser()
@@ -196,6 +212,7 @@ export default {
       this.$store.dispatch('interactive/userList', { per_page: this.per_page.perPage, Deptid: this.$refs.DeptGroup.Deptid, page: this.per_page.page, ClientNumber: this.$refs.DeviceGroup.Clientid, search_key: this.$refs.search.input }).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
+        console.log(response)
       }).catch(error => {
         console.log(error)
       })
@@ -209,12 +226,13 @@ export default {
       this.user_id = []
       this.user_id.push(row.userid)
     },
-
+    // 行内删除
     handleDelete(index, row) {
       this.user_id = []
       this.user_id.push(row.userid)
       this.Delete()
     },
+    // 批量删除
     deleteList() {
       this.user_id = this.user_id_list
       this.Delete()
@@ -223,8 +241,14 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
+    // 人员调动部门
+    shift_depart() {
+      this.$refs.shift.centerDialogVisible = true
+    },
+
     getConfigResult(res) {
       // 接收回调函数返回数据的方法
+      console.log(res)
       if (res.ret === '0') {
         this.$message({
           message: '成功',
@@ -235,6 +259,10 @@ export default {
         }
         if (res.cmd === 'upload_template') {
           this.$refs.editDialog.centerDialogVisible = false
+        }
+        if (res.cmd === 'set_power') {
+          this.$refs.authority.centerDialogVisible = false
+          this.$refs.copyAuthority.centerDialogVisible = false
         }
         return
       } else {
@@ -254,7 +282,7 @@ export default {
       }).then(() => {
         console.log(check())
         if (check() === true) {
-          this.delete_from_device = 1
+          this.delete_from_device = 2
         } else {
           this.delete_from_device = 0
         }
@@ -266,47 +294,75 @@ export default {
         })
       })
     },
+    // 人员离职
+    resignation() {
+      this.$confirm('<div class="del_title">确定对该人员做离职处理吗？</div><div><input id="check1" type="checkbox" checked="checked" value="">同时从设备删除该人员</div>', '提示', {
+        dangerouslyUseHTMLString: true,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        console.log(check())
+        if (check() === true) {
+          this.delete_from_device = 1
+        } else {
+          this.delete_from_device = 0
+        }
+        this.socketApi.sendSock(JSON.parse('{"cmd":"user_resign", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id.join(',') + '","delete_from_device": "' + this.delete_from_device + '"}}'), this.getConfigResult)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    // 设置权限
+    set_authority() {
+      this.$refs.authority.centerDialogVisible = true
+    },
+    // 复制权限
+    copyAuthority() {
+      this.$refs.copyAuthority.centerDialogVisible = true
+    },
+    // 设置权限
+    setting_authority(data) {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"set_power", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '","clientids": "' + data.join(',') + '"}}'), this.getConfigResult)
+    },
+    // 复制权限
+    copy_authority(data) {
+      console.log(data)
+      this.socketApi.sendSock(JSON.parse('{"cmd":"set_power", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '","copy_userid": "' + data + '"}}'), this.getConfigResult)
+    },
     // 上传人员
     upload_user() {
-      if (this.user_id_list.length === 0) {
-        this.$message({
-          message: '请选择人员',
-          type: 'warning'
-        })
-        return
-      }
-      this.socketApi.sendSock(JSON.parse('{"cmd":"upload_user", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '","userids": "' + this.user_id_list.join(',') + '" }}'), this.getConfigResult)
+      console.log('{"cmd":"upload_user", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '" }}')
+      this.socketApi.sendSock(JSON.parse('{"cmd":"upload_user", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '" }}'), this.getConfigResult)
     },
     // 上传模板
     upload_template() {
-      console.log('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}')
       this.socketApi.sendSock(JSON.parse('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id.join(',') + '"}}'), this.getConfigResult)
     },
     // 导出人员
     export_personnel() {
-      const userid = []
-      this.multipleSelection.forEach(item => {
-        userid.push(item.userid)
-      })
-      if (userid.length === 0) {
+      this.$store.dispatch('interactive/Userexport', { }).then(response => {
         this.$message({
-          message: '请选择人员',
-          type: 'warning'
+          type: 'success',
+          message: '导出人员成功'
         })
-      }
+      }).catch(error => {
+        console.log(error)
+      })
     },
     // 导入人员
     import_personnel() {
-      const userid = []
-      this.multipleSelection.forEach(item => {
-        userid.push(item.userid)
-      })
-      if (userid.length === 0) {
+      this.$store.dispatch('interactive/Userimport', { }).then(response => {
         this.$message({
-          message: '请选择人员',
-          type: 'warning'
+          type: 'success',
+          message: '导入人员成功'
         })
-      }
+      }).catch(error => {
+        console.log(error)
+      })
     }
   }
 }

@@ -335,9 +335,20 @@ export default {
     // 新增人员
     Adduser() {
       this.centerDialogVisible = true
+      this.showClo = false
+      this.activeName = 'first'
+      this.usertype = 1
       this.dialogtitle = '增加人员'
       this.isAdd = true
-      this.usertype = 1
+      this.textHide = true
+      this.fing = []
+      this.humanFace = []
+      this.word1_color = '#000'
+      this.word1 = '未登记'
+      this.word2_color = '#000'
+      this.word2 = '未登记'
+      this.fingerid = null
+      this.two = 1
       this.userform = {
         userid: '',
         UserCode: '',
@@ -357,7 +368,11 @@ export default {
         Mobile: '',
         Address: '',
         Birthday: '',
-        EmployDate: ''
+        EmployDate: '',
+        Picture: '',
+        net: '1',
+        face: null,
+        FingerInfo: {}
       }
     },
     dept_id(id) {

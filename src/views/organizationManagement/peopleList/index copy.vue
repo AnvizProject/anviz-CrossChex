@@ -188,7 +188,7 @@
           </el-row>
         </div>
       </div>
-      <addDialog ref="addDialog" :rowdata="rowdata" @userlist="userlist"/>
+      <editDialog ref="addDialog" :rowdata="rowdata" @userlist="userlist"/>
     </el-main>
     <el-footer height="auto" class="footer">
       <el-pagination
@@ -207,13 +207,13 @@
 </template>
 <style scoped src="@/styles/list-top.scss"></style>
 <script>
-import addDialog from '../components/Dialog/add'
+import editDialog from './components/Dialog/edit'
 // const id = 1000
 var timestamp = Date.parse(new Date()) / 1000
 export default {
   name: 'DeviceManagement',
   components: {
-    addDialog
+    editDialog
   },
   data() {
     return {

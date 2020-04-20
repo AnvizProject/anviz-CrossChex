@@ -5,7 +5,8 @@ import { depart_list, depart_create, depart_update, depart_delete } from '@/api/
 import store from '../../..'
 const department = {
   state: {
-    deptTree: []
+    deptTree: [],
+    deptList: []
   },
   mutations: {
 
@@ -17,6 +18,7 @@ const department = {
       return new Promise((resolve, reject) => {
         depart_list(Depart_list_data).then(response => {
           state.deptTree = response.dept_tree
+          state.deptList = response.dept
           resolve(response)
         }).catch(error => {
           reject(error)

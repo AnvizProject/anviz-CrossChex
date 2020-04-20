@@ -473,6 +473,7 @@ import Search from '@/components/search'
 import Container from '@/components/container'
 import Departmentgroup from '@/components/Departmentgroup'
 import Devicegroup from '@/components/Devicegroup'
+var timestamp = Date.parse(new Date()) / 1000
 function check() {
   if (document.getElementById('check1').checked === true) {
     return true

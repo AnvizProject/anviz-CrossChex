@@ -49,4 +49,35 @@ export function deptlist(data) {
     params: data
   })
 }
-
+// 调动部门
+export function transfer(data) {
+  return request({
+    url: '/api/userinfo/transfer',
+    method: 'post',
+    data
+  })
+}
+// 人员权限
+export function copyAuthority(data) {
+  return request({
+    url: '/api/userinfo/user_power',
+    method: 'get',
+    params: data
+  })
+}
+// 人员导入
+export function userimport(data) {
+  return request({
+    url: '/api/userinfo/import',
+    method: 'post',
+    data
+  })
+}
+// 人员导出
+export function userexport(data) {
+  return request({
+    url: '/api/userinfo/export',
+    method: 'post',
+    data
+  })
+}

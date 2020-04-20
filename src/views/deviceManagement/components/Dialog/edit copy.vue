@@ -19,7 +19,7 @@
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
-                  <selectbox :options="device_options.value1" v-model="form_data.DeviceType"/>
+                  <selectbox :options="device_options.value1" v-model="form.DeviceType"/>
                 </span>
               </div>
             </div>
@@ -32,7 +32,7 @@
                 <span class="icon-size icon-nav-network"/>
                 <span>
                   <el-input
-                    v-model="form_data.ipaddress"
+                    v-model="form.ipaddress"
                     placeholder="请输入内容"
                     clearable
                     class="input-box"/>
@@ -45,7 +45,7 @@
                 <span class="icon-size icon-nav-network"/>
                 <span>
                   <el-input
-                    v-model="form_data.CommPort"
+                    v-model="form.CommPort"
                     placeholder="请输入内容"
                     clearable/>
                 </span>
@@ -62,7 +62,7 @@
                 <span class="icon-size icon-nav-network"/>
                 <span>
                   <el-input
-                    v-model="form_data.ClientNumber"
+                    v-model="form.ClientNumber"
                     :disabled="Prohibit"
                     placeholder="请输入内容"
                     clearable
@@ -76,7 +76,7 @@
                 <span class="icon-size icon-nav-network"/>
                 <span>
                   <el-input
-                    v-model="form_data.Clientid"
+                    v-model="form.Clientid"
                     placeholder="请输入内容"
                     clearable
                     class="input-box"/>
@@ -91,7 +91,7 @@
                 <span class="icon-size icon-nav-network"/>
                 <span>
                   <el-input
-                    v-model="form_data.ClientName"
+                    v-model="form.ClientName"
                     placeholder="请输入内容"
                     clearable
                     class="input-box"/>
@@ -103,7 +103,7 @@
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
-                  <selectbox :options="group_list" v-model="form_data.Floorid"/>
+                  <selectbox :options="device_options.value18" v-model="form.Floorid" @up="demo"/>
                 </span>
               </div>
             </div>
@@ -114,7 +114,7 @@
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
-                  <selectbox :options="device_options.value2" v-model="form_data.RecStatus"/>
+                  <selectbox :options="device_options.value2" v-model="form.RecStatus"/>
                 </span>
               </div>
             </div>
@@ -123,7 +123,7 @@
               <div class="net-input-item">
                 <span class="icon-size icon-nav-network"/>
                 <span>
-                  <selectbox :options="device_options.value3" v-model="form_data.deviceflag"/>
+                  <selectbox :options="device_options.value3" v-model="form.deviceflag"/>
                 </span>
               </div>
             </div>
@@ -142,11 +142,15 @@ export default {
   },
   mixins: [options],
   props: {
+    // device_list: {
+    //   type: Array,
+    //   default: () => {}
+    // },
     de_data: {
       type: Number,
       default: null
     },
-    group_list: {
+    options: {
       type: Array,
       default: () => {}
     }
@@ -157,7 +161,7 @@ export default {
       showClo: false,
       dialogtitle: '新增终端',
       Prohibit: false,
-      form_data: {
+      form: {
         DeviceType: null,
         Clientid: null,
         ClientNumber: null,
@@ -171,16 +175,19 @@ export default {
       }
     }
   },
-  mounted() {
-    console.log(this.form_data)
-    // this.device_options.value18 = this.options
-  },
+  // mounted() {
+  //   console.log(this.options)
+  //   this.device_options.value18 = this.options
+  // },
 
   methods: {
     // 增加修改终端
+    demo(data) {
+      console.log(data)
+    },
     add_device() {
       if (this.de_data === 1) {
-        this.$store.dispatch('interactive/Device_create', this.form_data).then(response => {
+        this.$store.dispatch('interactive/Device_create', this.form).then(response => {
           this.$message({
             type: 'success',
             message: '新增成功!'
@@ -192,8 +199,8 @@ export default {
           this.$message.error('新增失败')
         })
       } else if (this.de_data === 0) {
-        console.log(this.form_data)
-        this.$store.dispatch('interactive/Device_update', this.form_data).then(response => {
+        console.log(this.form)
+        this.$store.dispatch('interactive/Device_update', this.form).then(response => {
           this.$message({
             type: 'success',
             message: '修改成功!'

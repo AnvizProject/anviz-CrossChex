@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-import { adduser, userlist, useredit, userdelete, userdetail, deptlist } from '@/api/user'
+import { adduser, userlist, useredit, userdetail, deptlist, transfer, copyAuthority, userimport, userexport } from '@/api/user'
 import store from '../../..'
 const userManagement = {
   state: {
@@ -78,6 +78,50 @@ const userManagement = {
           resolve(response)
         }).catch(error => {
           console.log(error)
+          reject(error)
+        })
+      })
+    },
+    // 调动部门
+    Transfer({ commit }, transfer_data) {
+      transfer_data.access_token = store.getters.token
+      return new Promise((resolve, reject) => {
+        transfer(transfer_data).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 人员权限
+    CopyAuthority({ commit }, CopyAuthority_data) {
+      CopyAuthority_data.access_token = store.getters.token
+      return new Promise((resolve, reject) => {
+        copyAuthority(CopyAuthority_data).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 人员导入
+    Userimport({ commit }, Userimport_data) {
+      Userimport_data.access_token = store.getters.token
+      return new Promise((resolve, reject) => {
+        userimport(Userimport_data).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 人员导出
+    Userexport({ commit }, Userexport_data) {
+      Userexport_data.access_token = store.getters.token
+      return new Promise((resolve, reject) => {
+        userexport(Userexport_data).then(response => {
+          resolve(response)
+        }).catch(error => {
           reject(error)
         })
       })
