@@ -13,6 +13,7 @@
             :props="defaultProps"
             :accordion="true"
             @node-click="handleNodeClick"/>
+            <!-- <pre>{{ data }}</pre> -->
         </div>
       </el-col>
 
@@ -33,7 +34,7 @@
         </div>
       </el-col>
     </el-row>
-    <Dialog ref="Dialog" :SupDeptid="SupDeptid" :row_data="row_data" :de_data="de_data" @form="form"/>
+    <Dialog ref="Dialog" :de_data="de_data" :dept="data" @addRow="append"/>
   </div>
 </template>
 <script>
@@ -107,6 +108,14 @@ export default {
       this.$refs.Dialog.dialogVisible = true
       this.$refs.Dialog.dialogtitle = '新增部门'
       this.de_data = 1
+      this.$refs.Dialog.form.DeptName = ''
+    },
+    append(data) {
+      const newChild = { Deptid: data.addRow.Deptid, label: data.addRow.DeptName, children: [] }
+      if (!data.row.children) {
+        this.$set(data.row, 'children', [])
+      }
+      data.row.children.push(newChild)
     },
     // 部门修改
     modify() {
@@ -122,7 +131,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(this.Deptid)
         this.$store.dispatch('interactive/Depart_delete', { Deptid: this.Deptid }).then(response => {
           this.depart_list()
           this.$message({
@@ -145,10 +153,6 @@ export default {
       this.SupDeptid = data.Deptid
       this.Deptid = data.Deptid
       this.row_data = data
-    },
-    // 数据初始默认值
-    form(data) {
-      this.data[0].label = data.DeptName
     },
     remove(node, data) {
       const parent = node.parent

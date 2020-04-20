@@ -11,10 +11,9 @@
     </span>
     <el-form ref="form" :model="form" label-width="100px">
       <el-form-item label="部门名称">
-        <!-- <el-input v-model="form.DeptName"/> -->
         <div style="display: flex">
-          <span><selectTree :options = "dept" :node-key="nodeKey" :default-props="defaultProps" multiple @Deptid="getDeptid"/></span>
-          <span style="width: 100%"><el-input v-model="addInfo.deptName" type="text" size="small"/></span>
+          <span><selectTree :options = "dept" :node-key="nodeKey" :default-props="defaultProps" multiple @DeptRow="getDeptRow"/></span>
+          <span style="width: 100%"><el-input v-model="form.DeptName" type="text" size="small"/></span>
         </div>
       </el-form-item>
     </el-form>
@@ -22,23 +21,16 @@
 </template>
 <script>
 import selectTree from '@/components/selectInput/selectTree'
-import { mapState } from 'vuex'
 export default {
   components: { selectTree },
   props: {
-    SupDeptid: {
-      type: Number,
-      default: null
-    },
-    row_data: {
-      type: Object,
-      default: function() {
-        return {}
-      }
-    },
     de_data: {
       type: Number,
       default: null
+    },
+    dept: {
+      type: Array,
+      default: () => {}
     }
   },
   data() {
@@ -50,41 +42,31 @@ export default {
         DeptName: '',
         SupDeptid: ''
       },
+      deptRow: {}, // tree选中数据
       defaultProps: {
         children: 'SubDept',
         label: 'DeptName'
       },
-      nodeKey: 'Deptid',
-      addInfo: {
-        deptId: null,
-        deptName: ''
-      }
+      nodeKey: 'Deptid'
     }
   },
-  computed: {
-    ...mapState({
-      dept: state => state.interactive.department.deptTree
-    })
+  watch: {
+    SupDeptid(val) {
+      this.form.SupDeptid = val
+    }
   },
   methods: {
     // 部门新增、修改
     submit() {
-      console.log(this.addInfo)
-      console.log(this.row_data)
-      this.form.SupDeptid = this.SupDeptid
-      console.log(this.form)
       if (this.de_data === 1) {
         this.$store.dispatch('interactive/Depart_create', this.form).then(response => {
           this.dialogVisible = false
-          this.row_data.children.push({ label: this.form.DeptName, children: [], SupDeptid: response.dept.Deptid })
+          this.$emit('addRow', { row: this.deptRow, addRow: response.dept })
           this.form.DeptName = ''
-          console.log(response)
         }).catch(error => {
           console.log(error)
         })
       } else if (this.de_data === 0) {
-        this.form.Deptid = this.SupDeptid
-        console.log(this.form)
         this.$store.dispatch('interactive/Depart_update', this.form).then(response => {
           this.dialogVisible = false
           this.$emit('form', this.form)
@@ -93,8 +75,9 @@ export default {
         })
       }
     },
-    getDeptid(deptid) {
-      this.addInfo.deptId = deptid
+    getDeptRow(dept) {
+      this.form.SupDeptid = dept.id
+      this.deptRow = dept.row
     }
   }
 }

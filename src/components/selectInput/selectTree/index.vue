@@ -28,8 +28,8 @@ export default {
       input: '',
       defaultProps: {
         id: 'Deptid',
-        children: 'SubDept',
-        label: 'DeptName'
+        children: 'children',
+        label: 'label'
       },
       nodeKey: 'Deptid',
       defaultCheckedKeys: []
@@ -42,7 +42,8 @@ export default {
   },
   methods: {
     popoverHide(checkedIds, checkedData) {
-      this.$emit('Deptid', checkedIds)
+      console.log(checkedIds)
+      this.$emit('DeptRow', { id: checkedIds, row: checkedData })
     }
   }
 }
