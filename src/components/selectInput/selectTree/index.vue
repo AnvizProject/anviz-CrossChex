@@ -35,14 +35,14 @@ export default {
       defaultCheckedKeys: []
     }
   },
-  created() {
-    if (this.deptid) {
-      this.defaultCheckedKeys = [this.deptid]
+  watch: {
+    deptid(val) {
+      this.defaultCheckedKeys = [val]
     }
   },
   methods: {
     popoverHide(checkedIds, checkedData) {
-      console.log(checkedIds)
+      console.log(checkedData)
       this.$emit('DeptRow', { id: checkedIds, row: checkedData })
     }
   }

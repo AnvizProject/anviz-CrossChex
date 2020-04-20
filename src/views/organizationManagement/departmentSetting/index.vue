@@ -8,12 +8,12 @@
             size="mini"
             placeholder="请输入内容"
             prefix-icon="el-icon-search"/>
-          <el-tree
+          <!-- <el-tree
             :data="data"
             :props="defaultProps"
             :accordion="true"
-            @node-click="handleNodeClick"/>
-            <!-- <pre>{{ data }}</pre> -->
+            @node-click="handleNodeClick"/> -->
+          <tree ref="tree" :tree-data-list="data" @selectedItem="handleNodeClick"/>
         </div>
       </el-col>
 
@@ -34,14 +34,16 @@
         </div>
       </el-col>
     </el-row>
-    <Dialog ref="Dialog" :de_data="de_data" :dept="data" @addRow="append"/>
+    <Dialog ref="Dialog" :de_data="de_data" :dept="data" :Deptid="Deptid" @addRow="append" @edit="edit"/>
   </div>
 </template>
 <script>
 import Dialog from './components/Dialog/adddepartment'
+import tree from '@/components/tree'
 export default {
   components: {
-    Dialog
+    Dialog,
+    tree
   },
   data() {
     return {
@@ -111,11 +113,7 @@ export default {
       this.$refs.Dialog.form.DeptName = ''
     },
     append(data) {
-      const newChild = { Deptid: data.addRow.Deptid, label: data.addRow.DeptName, children: [] }
-      if (!data.row.children) {
-        this.$set(data.row, 'children', [])
-      }
-      data.row.children.push(newChild)
+      this.$refs.tree.append(data)
     },
     // 部门修改
     modify() {
@@ -123,6 +121,9 @@ export default {
       this.$refs.Dialog.dialogtitle = '修改部门'
       this.de_data = 0
       this.$refs.Dialog.form.DeptName = this.depart_title
+    },
+    edit(data) {
+      this.$refs.tree.edit(data.Deptid, data.DeptName)
     },
     // 部门删除
     depart_del() {
@@ -149,17 +150,18 @@ export default {
     },
     // 部门列表点击
     handleNodeClick(data) {
+      console.log(data)
       this.depart_title = data.label
       this.SupDeptid = data.Deptid
       this.Deptid = data.Deptid
       this.row_data = data
-    },
-    remove(node, data) {
-      const parent = node.parent
-      const children = parent.data.children || parent.data
-      const index = children.findIndex(d => d.id === data.id)
-      children.splice(index, 1)
     }
+    // remove(node, data) {
+    //   const parent = node.parent
+    //   const children = parent.data.children || parent.data
+    //   const index = children.findIndex(d => d.id === data.id)
+    //   children.splice(index, 1)
+    // }
   }
 }
 </script>

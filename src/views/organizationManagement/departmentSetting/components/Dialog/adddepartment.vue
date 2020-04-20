@@ -12,7 +12,7 @@
     <el-form ref="form" :model="form" label-width="100px">
       <el-form-item label="部门名称">
         <div style="display: flex">
-          <span><selectTree :options = "dept" :node-key="nodeKey" :default-props="defaultProps" multiple @DeptRow="getDeptRow"/></span>
+          <span><selectTree :options = "dept" :node-key="nodeKey" :deptid="Deptid" :default-props="defaultProps" multiple @DeptRow="getDeptRow"/></span>
           <span style="width: 100%"><el-input v-model="form.DeptName" type="text" size="small"/></span>
         </div>
       </el-form-item>
@@ -31,6 +31,10 @@ export default {
     dept: {
       type: Array,
       default: () => {}
+    },
+    Deptid: {
+      type: Number,
+      default: 1
     }
   },
   data() {
@@ -70,7 +74,7 @@ export default {
         this.form.Deptid = this.form.SupDeptid
         this.$store.dispatch('interactive/Depart_update', this.form).then(response => {
           this.dialogVisible = false
-          this.$emit('form', this.form)
+          this.$emit('edit', this.form)
         }).catch(error => {
           console.log(error)
         })
