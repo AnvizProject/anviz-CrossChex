@@ -1,5 +1,5 @@
 <template>
-  <div class="attendance">
+  <div class="report">
     <Container :total="total" @per_page="statistics_list" @page="statistics_list">
       <div slot="header" class="con-item">
         <div class="header-item">
@@ -26,6 +26,22 @@
         <div class="header-item">
           <Devicegroup ref="DeviceGroup" @Terminal_list="statistics_list"/>
           <Departmentgroup ref="DeptGroup" @Dept_list="statistics_list"/>
+          <span class="date_select">
+            <el-date-picker
+              v-model="start_date"
+              :clearable="false"
+              value-format="yyyy-MM-dd"
+              size="mini"
+              type="date"
+              placeholder="选择日期"/>
+            <el-date-picker
+              v-model="end_date"
+              :clearable="false"
+              value-format="yyyy-MM-dd"
+              type="date"
+              size="mini"
+              placeholder="选择日期"/>
+          </span>
         </div>
       </div>
       <div slot="main" class="main-item">
@@ -36,85 +52,72 @@
                 <div class="grid-content bg-purple">
                   <el-table
                     ref="filterTable"
-                    :data="tableData"
+                    :data="z_mem_record"
                     tooltip-effect="dark"
                     style="width: 100%"
+                    border
                     @selection-change="handleSelectionChange">
                     <el-table-column
-                      type="selection"/>
-                    <el-table-column
-                      fixed
-                      prop="UserCode"
-                      label="人员编号"/>
-                    <el-table-column
-                      prop="userid"
-                      label="考勤号"
-                      sortable
-                      width="90"/>
-                    <el-table-column
-                      prop="Cardnum"
-                      label="卡号"
+                      prop="Udept"
+                      label="部门"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Name"
+                      prop="Ucode"
+                      label="人员编号"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="Uid"
+                      label="考勤号"
+                      sortable
+                      width="90px"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="Uname"
                       label="姓名"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="EmployDate"
-                      label="聘用日期"
+                      prop="Checktime"
+                      label="考勤时间"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="Utypename"
+                      label="状态"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="Disposeplan"
+                      label="处理方法"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="Errorshow"
+                      label="错误描述"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="Timename"
+                      label="对应时段"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="UAttFlag"
+                      width="110px"
+                      label="验证方式编码"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="UAttFlagName"
+                      label="验证方式"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="UWorktype"
+                      label="工作码"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="ULogid"
+                      label="机器号"
                       show-overflow-tooltip
                       width="100"/>
                     <el-table-column
-                      prop="address"
-                      label="所在机器"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="指纹1"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="指纹2"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="面部"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="虹膜"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Sex"
-                      label="性别"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Duty"
-                      label="职务"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Birthday"
-                      label="出生日期"
-                      show-overflow-tooltip
-                      width="100"/>
-                    <el-table-column
-                      prop="Mobile"
-                      label="联系电话"
+                      prop="Checked"
+                      label="审核"
                       show-overflow-tooltip
                       width="120"/>
-                    <el-table-column
-                      prop="Address"
-                      label="联系地址"
-                      show-overflow-tooltip
-                      width="170"/>
-                    <el-table-column
-                      prop="Pwd"
-                      label="密码"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="管理员组"
-                      show-overflow-tooltip/>
                   </el-table>
                 </div>
               </el-col>
@@ -157,19 +160,20 @@
                     style="width: 100%"
                     @selection-change="handleSelectionChange">
                     <el-table-column
-                      type="selection"/>
+                      fixed
+                      prop="UserCode"
+                      label="部门"
+                      show-overflow-tooltip/>
                     <el-table-column
                       fixed
                       prop="UserCode"
-                      label="人员编号"/>
+                      label="人员编号"
+                      show-overflow-tooltip/>
                     <el-table-column
                       prop="userid"
                       label="考勤号"
                       sortable
-                      width="90"/>
-                    <el-table-column
-                      prop="Cardnum"
-                      label="卡号"
+                      width="90px"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="Name"
@@ -177,59 +181,100 @@
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="EmployDate"
-                      label="聘用日期"
-                      show-overflow-tooltip
-                      width="100"/>
-                    <el-table-column
-                      prop="address"
-                      label="所在机器"
+                      label="日期"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="指纹1"
+                      label="对应时段"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="指纹2"
+                      label="应上班时间"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="面部"
+                      label="应下班时间"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="虹膜"
+                      label="班次时间"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="签到时间"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="Sex"
-                      label="性别"
+                      label="签退时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Duty"
-                      label="职务"
+                      prop="chidaoshijian"
+                      label="迟到时间"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="Birthday"
-                      label="出生日期"
+                      label="早退时间"
                       show-overflow-tooltip
                       width="100"/>
                     <el-table-column
                       prop="Mobile"
-                      label="联系电话"
-                      show-overflow-tooltip
-                      width="120"/>
+                      label="加班时间"
+                      show-overflow-tooltip/>
                     <el-table-column
                       prop="Address"
-                      label="联系地址"
-                      show-overflow-tooltip
-                      width="170"/>
+                      label="未签到"
+                      show-overflow-tooltip/>
                     <el-table-column
                       prop="Pwd"
-                      label="密码"
+                      label="未签退"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="管理员组"
+                      label="旷工"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="例外情况"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="浮动"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="加班"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="排定工作日"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="排定时长"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="工作时间"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="实际时间"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="工种"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="审核"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="外出时间"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="排班时间"
                       show-overflow-tooltip/>
                   </el-table>
                 </div>
@@ -273,19 +318,18 @@
                     style="width: 100%"
                     @selection-change="handleSelectionChange">
                     <el-table-column
-                      type="selection"/>
-                    <el-table-column
-                      fixed
                       prop="UserCode"
-                      label="人员编号"/>
+                      label="部门"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="UserCode"
+                      label="人员编号"
+                      show-overflow-tooltip/>
                     <el-table-column
                       prop="userid"
                       label="考勤号"
                       sortable
-                      width="90"/>
-                    <el-table-column
-                      prop="Cardnum"
-                      label="卡号"
+                      width="90px"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="Name"
@@ -293,59 +337,32 @@
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="EmployDate"
-                      label="聘用日期"
+                      label="开始时间"
                       show-overflow-tooltip
                       width="100"/>
                     <el-table-column
                       prop="address"
-                      label="所在机器"
+                      label="结束时间"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="指纹1"
+                      label="异常情况"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="指纹2"
+                      label="时长"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="面部"
+                      label="排定工作日"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="虹膜"
+                      label="排定时长"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="Sex"
-                      label="性别"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Duty"
-                      label="职务"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="Birthday"
-                      label="出生日期"
-                      show-overflow-tooltip
-                      width="100"/>
-                    <el-table-column
-                      prop="Mobile"
-                      label="联系电话"
-                      show-overflow-tooltip
-                      width="120"/>
-                    <el-table-column
-                      prop="Address"
-                      label="联系地址"
-                      show-overflow-tooltip
-                      width="170"/>
-                    <el-table-column
-                      prop="Pwd"
-                      label="密码"
-                      show-overflow-tooltip/>
-                    <el-table-column
-                      prop="address"
-                      label="管理员组"
+                      label="备注"
                       show-overflow-tooltip/>
                   </el-table>
                 </div>
@@ -374,19 +391,18 @@
                     style="width: 100%"
                     @selection-change="handleSelectionChange">
                     <el-table-column
-                      type="selection"/>
-                    <el-table-column
-                      fixed
                       prop="UserCode"
-                      label="人员编号"/>
+                      label="部门"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="UserCode"
+                      label="人员编号"
+                      show-overflow-tooltip/>
                     <el-table-column
                       prop="userid"
                       label="考勤号"
                       sortable
-                      width="90"/>
-                    <el-table-column
-                      prop="Cardnum"
-                      label="卡号"
+                      width="90px"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="Name"
@@ -394,60 +410,99 @@
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="EmployDate"
-                      label="聘用日期"
+                      label="应到[工作日]"
                       show-overflow-tooltip
                       width="100"/>
                     <el-table-column
                       prop="address"
-                      label="所在机器"
+                      label="实到[工作日]"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="指纹1"
+                      label="迟到[分钟]"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="指纹2"
+                      label="早退[分钟]"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="面部"
+                      label="旷工[工作日]"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="虹膜"
+                      label="加班[小时]"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="Sex"
-                      label="性别"
+                      label="加班1[小时]"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="Duty"
-                      label="职务"
+                      label="加班2[小时]"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="Birthday"
-                      label="出生日期"
-                      show-overflow-tooltip
-                      width="100"/>
+                      label="加班3[小时]"
+                      show-overflow-tooltip/>
                     <el-table-column
                       prop="Mobile"
-                      label="联系电话"
-                      show-overflow-tooltip
-                      width="120"/>
+                      label="自由加班[小时]"
+                      show-overflow-tooltip/>
                     <el-table-column
                       prop="Address"
-                      label="联系地址"
+                      label="未签到[次]"
                       show-overflow-tooltip
                       width="170"/>
                     <el-table-column
                       prop="Pwd"
-                      label="密码"
+                      label="未签退[次]"
                       show-overflow-tooltip/>
                     <el-table-column
                       prop="address"
-                      label="管理员组"
+                      label="外出[分钟]"
                       show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="公出[工作日]"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="请假[工作日]"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="工作时间[小时]"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="实际时间[小时]"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="出勤率"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="Break Time"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="时间段2"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="早班司机"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="白工"
+                      show-overflow-tooltip/>
+                    <el-table-column
+                      prop="address"
+                      label="黑工"
+                      show-overflow-tooltip/>
+
                   </el-table>
                 </div>
               </el-col>
@@ -486,6 +541,7 @@ export default {
     return {
       search: '输入日期',
       group_list: [],
+      z_mem_record: [],
       tableData: [],
       rowdata: {},
       total: null,
@@ -495,13 +551,44 @@ export default {
       },
       user_id: [],
       checked: true,
-      multipleSelection: []
+      multipleSelection: [],
+      deptid: '0',
+      userid: '0',
+      start_date: '',
+      end_date: ''
     }
   },
   mounted: function() {
     this.statistics_list()
   },
+  created() {
+    this.getCurrentMonthFirst()
+    this.getNowTime()
+  },
   methods: {
+    // 当月第一天
+    getCurrentMonthFirst() {
+      var date = new Date()
+      date.setDate(1)
+      var month = parseInt(date.getMonth() + 1)
+      var day = date.getDate()
+      if (month < 10) month = '0' + month
+      if (day < 10) day = '0' + day
+      this.start_date = date.getFullYear() + '-' + month + '-' + day
+    },
+    // 当天
+    getNowTime() {
+      var now = new Date()
+      var year = now.getFullYear() // 得到年份
+      var month = now.getMonth() // 得到月份
+      var date = now.getDate() // 得到日期
+      month = month + 1
+      month = month.toString().padStart(2, '0')
+      date = date.toString().padStart(2, '0')
+      var defaultDate = `${year}-${month}-${date}`
+      this.end_date = defaultDate
+    },
+
     // 表格数据
     handleSelectionChange(val) {
       console.log(val, 'table')
@@ -515,6 +602,9 @@ export default {
           message: '成功',
           type: 'success'
         })
+        if (res.cmd === 'stat_analysis') {
+          this.z_mem_record = res.data.z_mem_record
+        }
         return
       } else {
         this.$message({
@@ -525,7 +615,7 @@ export default {
     },
     // 考勤记录分析列表
     statistics_list() {
-      this.socketApi.sendSock(JSON.parse('{"cmd":"stat_analysis", "data": {"ts":"' + timestamp + '","deptid": "' + this.clientid + '"}}'), this.getConfigResult)
+      this.socketApi.sendSock(JSON.parse('{"cmd":"stat_analysis", "data": {"ts":"' + timestamp + '","deptid": "' + this.deptid + '","userid": "' + this.userid + '","start_date":"' + this.start_date + '","end_date":"' + this.end_date + '" }}'), this.getConfigResult)
     }
   }
 }
@@ -578,5 +668,16 @@ export default {
       margin: 5px 0;
     }
   }
-
+  .el-date-editor{
+    &.el-input{
+      width: 110px;
+    }
+  }
+</style>
+<style lang="scss">
+  .el-input--suffix{
+    .el-input__inner{
+      padding-right: 0;
+    }
+  }
 </style>
