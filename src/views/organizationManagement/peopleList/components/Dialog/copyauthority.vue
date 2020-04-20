@@ -60,7 +60,7 @@ export default {
       })
     },
     save() {
-      console.log(1223)
+      this.centerDialogVisible = false
       this.$confirm('确定要复制选择人员的功能传限吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

@@ -62,16 +62,6 @@ export default {
       return treeData
     }
   },
-  watch: {
-    checkedList(val) {
-      console.log(val.visible)
-      this.centerDialogVisible = val.visible
-    }
-  },
-  mounted() {
-    console.log(this.visible)
-    this.centerDialogVisible = this.visible
-  },
   methods: {
     save() {
       this.$emit('setting_authority', this.$refs.tree.getCheckedKeys(true))

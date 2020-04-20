@@ -13,7 +13,21 @@
               <el-dropdown-item @click.native="resignation">人员离职</el-dropdown-item>
               <el-dropdown-item @click.native="set_authority">设置权限</el-dropdown-item>
               <el-dropdown-item @click.native="copyAuthority">复制权限</el-dropdown-item>
-              <el-dropdown-item @click.native="import_personnel">导入人员</el-dropdown-item>
+              <el-dropdown-item>
+                <el-upload
+                  :multiple="false"
+                  :auto-upload="true"
+                  :before-upload="beforeUpload"
+                  :limit="1"
+                  :http-request="import_personnel"
+                  :show-file-list="false"
+                  class="image-uploader"
+                  list-type="text"
+                  action=""
+                  accept=".xlsx,.xls">
+                  导入人员
+                </el-upload>
+              </el-dropdown-item>
               <el-dropdown-item @click.native="export_personnel">导出人员</el-dropdown-item>
               <el-dropdown-item @click.native="upload_user">上传人员</el-dropdown-item>
               <el-dropdown-item @click.native="upload_template">上传模板</el-dropdown-item>
@@ -198,7 +212,6 @@ export default {
     // 设备列表数据
     groupList(data) {
       this.group_data = data
-      console.log(this.group_data)
     },
     // 增加人员
     Adduser() {
@@ -212,7 +225,6 @@ export default {
       this.$store.dispatch('interactive/userList', { per_page: this.per_page.perPage, Deptid: this.$refs.DeptGroup.Deptid, page: this.per_page.page, ClientNumber: this.$refs.DeviceGroup.Clientid, search_key: this.$refs.search.input }).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
-        console.log(response)
       }).catch(error => {
         console.log(error)
       })
@@ -248,7 +260,9 @@ export default {
 
     getConfigResult(res) {
       // 接收回调函数返回数据的方法
-      console.log(res)
+      if (res.ret === '10000') {
+        return
+      }
       if (res.ret === '0') {
         this.$message({
           message: '成功',
@@ -330,7 +344,6 @@ export default {
     },
     // 复制权限
     copy_authority(data) {
-      console.log(data)
       this.socketApi.sendSock(JSON.parse('{"cmd":"set_power", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '","copy_userid": "' + data + '"}}'), this.getConfigResult)
     },
     // 上传人员
@@ -340,22 +353,40 @@ export default {
     },
     // 上传模板
     upload_template() {
-      this.socketApi.sendSock(JSON.parse('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id.join(',') + '"}}'), this.getConfigResult)
+      this.socketApi.sendSock(JSON.parse('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '"}}'), this.getConfigResult)
     },
     // 导出人员
     export_personnel() {
-      this.$store.dispatch('interactive/Userexport', { }).then(response => {
+      this.$store.dispatch('interactive/Userexport', {}).then(response => {
         this.$message({
           type: 'success',
           message: '导出人员成功'
         })
+        window.location.href = process.env.BASE_API + response.export_url
       }).catch(error => {
         console.log(error)
       })
     },
+
+    // 上传文件之前的钩子
+    beforeUpload(file) {
+    // 判断文件格式
+      const hz = file.name.split('.')[1]
+      if (hz !== 'xlsx' && hz !== 'xls') {
+        this.$message({
+          message: '只允许上传xlsx或xls结尾的表格文件',
+          type: 'warning'
+        })
+        return false
+      }
+    },
     // 导入人员
-    import_personnel() {
-      this.$store.dispatch('interactive/Userimport', { }).then(response => {
+    import_personnel(item) {
+      console.log(item)
+      const fileObj = item.file
+      const form = new FormData()// FormData 对象
+      form.append('file', fileObj)// 文件对象  'upload'是后台接收的参数名
+      this.$store.dispatch('interactive/Userimport', form).then(response => {
         this.$message({
           type: 'success',
           message: '导入人员成功'

@@ -1,30 +1,31 @@
 <template>
   <div class="attendance">
-    <search ref="search" :search="search" @search="people_list"/>
-    <Container :total="total" @per_page="people_list" @page="people_list">
+    <Container :total="total" @per_page="statistics_list" @page="statistics_list">
       <div slot="header" class="con-item">
         <div class="header-item">
-          <el-button type="primary" size="mini" @click="Adduser">增加</el-button>
-          <el-button :disabled="multipleSelection.length<=0" :type="multipleSelection.length>0?'danger':'info'" size="mini" @click="deleteList">删除</el-button>
+          <el-button type="primary" size="mini">统计分析</el-button>
+          <el-button size="mini" type="primary">查询结果</el-button>
+          <el-button size="mini" type="primary">导出当前数据</el-button>
+          <el-button size="mini" type="primary">保存结果</el-button>
           <el-dropdown>
-            <el-button :disabled="multipleSelection.length<=0" type="info" size="mini">更多操作<i class="el-icon-arrow-down el-icon--right"/></el-button>
+            <el-button :disabled="multipleSelection.length<=0" type="info" size="mini">报表预览<i class="el-icon-arrow-down el-icon--right"/></el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>调动部门</el-dropdown-item>
-              <el-dropdown-item>人员离职</el-dropdown-item>
-              <el-dropdown-item>设置权限</el-dropdown-item>
-              <el-dropdown-item>复制权限</el-dropdown-item>
-              <el-dropdown-item @click="import_personnel">导入人员</el-dropdown-item>
-              <el-dropdown-item @click="export_personnel">导出人员</el-dropdown-item>
-              <el-dropdown-item @click="update_status">下载人员</el-dropdown-item>
-              <el-dropdown-item @click="upload_user">上传人员</el-dropdown-item>
-              <el-dropdown-item @click="download_template">下载模板</el-dropdown-item>
-              <el-dropdown-item @click="upload_template">上传模板</el-dropdown-item>
+              <el-dropdown-item>设计报表</el-dropdown-item>
+              <el-dropdown-item>流水记录表</el-dropdown-item>
+              <el-dropdown-item>每月记录表</el-dropdown-item>
+              <el-dropdown-item>月考勤符号表</el-dropdown-item>
+              <el-dropdown-item>月考勤明细表</el-dropdown-item>
+              <el-dropdown-item>月工时汇总表</el-dropdown-item>
+              <el-dropdown-item>考勤统计总表</el-dropdown-item>
+              <el-dropdown-item>考勤异常报表</el-dropdown-item>
+              <el-dropdown-item>外出/请假报表</el-dropdown-item>
+              <el-dropdown-item>当前数据报表</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
         <div class="header-item">
-          <Devicegroup ref="DeviceGroup" @Terminal_list="people_list"/>
-          <Departmentgroup ref="DeptGroup" @Dept_list="people_list"/>
+          <Devicegroup ref="DeviceGroup" @Terminal_list="statistics_list"/>
+          <Departmentgroup ref="DeptGroup" @Dept_list="statistics_list"/>
         </div>
       </div>
       <div slot="main" class="main-item">
@@ -474,13 +475,6 @@ import Container from '@/components/container'
 import Departmentgroup from '@/components/Departmentgroup'
 import Devicegroup from '@/components/Devicegroup'
 var timestamp = Date.parse(new Date()) / 1000
-function check() {
-  if (document.getElementById('check1').checked === true) {
-    return true
-  } else {
-    return false
-  }
-}
 export default {
   components: {
     Search,
@@ -504,86 +498,10 @@ export default {
       multipleSelection: []
     }
   },
-  computed: {
-    user_id_list() {
-      const userid = []
-      this.multipleSelection.forEach(item => {
-        userid.push(item.userid)
-      })
-      return userid
-    }
-  },
   mounted: function() {
-    this.people_list()
+    this.statistics_list()
   },
   methods: {
-    // 增加人员
-    Adduser() {
-      this.$refs.editDialog.Adduser()
-    },
-    // 人员列表
-    people_list(per_page) {
-      // console.log(this.$refs.search.input)
-      // console.log(this.$refs.DeviceGroup.Clientid, '10')
-      // console.log(this.$refs.DeptGroup.Deptid, '11')
-      if (per_page !== undefined) {
-        this.per_page = per_page
-      }
-      this.$store.dispatch('interactive/userList', { per_page: this.per_page.perPage, Deptid: this.$refs.DeptGroup.Deptid, page: this.per_page.page, ClientNumber: this.$refs.DeviceGroup.Clientid, search_key: this.$refs.search.input }).then(response => {
-        this.tableData = response.userinfo_list.data
-        this.total = response.userinfo_list.total
-        console.log(response)
-      }).catch(error => {
-        console.log(error)
-      })
-    },
-    // 修改人员
-    handleEdit(index, row) {
-      setTimeout(() => {
-        this.$refs.editDialog.handleEdit()
-      }, 0)
-      this.rowdata = Object.assign({}, row)
-    },
-
-    handleDelete(index, rows) {
-      this.user_id = []
-      console.log(index, rows)
-      this.user_id.push(rows.userid)
-      this.Delete()
-    },
-    deleteList() {
-      this.user_id = []
-      console.log(this.multipleSelection)
-      this.multipleSelection.forEach((v, k) => {
-        this.user_id.push(v.userid)
-      })
-      console.log(this.user_id)
-      this.Delete()
-    },
-    // 删除人员
-    Delete() {
-      this.$confirm('<div>123</div><div><input id="check1" type="checkbox" checked="checked" value="">456</div>', '提示', {
-        dangerouslyUseHTMLString: true,
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        console.log(check())
-        this.$store.dispatch('interactive/userDelete', { userid: this.user_id.join(',') }).then(response => {
-          this.people_list()
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-        }).catch(() => {
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-    },
     // 表格数据
     handleSelectionChange(val) {
       console.log(val, 'table')
@@ -591,91 +509,23 @@ export default {
     },
     getConfigResult(res) {
       // 接收回调函数返回数据的方法
-      console.log(res.ret)
+      console.log(res)
       if (res.ret === '0') {
         this.$message({
-          message: '连接成功',
-          type: 'warning'
+          message: '成功',
+          type: 'success'
         })
-        this.userlist()
-        this.depart_list()
-        this.All_groups_list()
         return
       } else {
         this.$message({
-          message: '连接失败',
-          type: 'warning'
-        })
-      }
-      console.log(res)
-    },
-    // 下载人员
-    update_status() {
-      this.socketApi.sendSock(JSON.parse('{"cmd":"download_user", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
-    },
-    // 下载模板
-    download_template() {
-      if (this.user_id_list.length === 0) {
-        this.$message({
-          message: '请选择人员',
-          type: 'warning'
-        })
-        return
-      }
-      console.log('{"cmd":"download_template", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '","userids": "' + this.user_id_list.join(',') + '" }}')
-      this.socketApi.sendSock(JSON.parse('{"cmd":"download_template", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '","userids": "' + this.user_id_list.join(',') + '" }}'), this.getConfigResult)
-    },
-    // 上传人员
-    upload_user() {
-      if (this.user_id_list.length === 0) {
-        this.$message({
-          message: '请选择人员',
-          type: 'warning'
-        })
-        return
-      }
-      this.socketApi.sendSock(JSON.parse('{"cmd":"upload_user", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '","userids": "' + this.user_id_list.join(',') + '" }}'), this.getConfigResult)
-    },
-    // 上传模板
-    upload_template() {
-      this.socketApi.sendSock(JSON.parse('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
-    },
-    // 从设备删除人员
-    delete_from_device() {
-      if (this.user_id_list.length === 0) {
-        this.$message({
-          message: '请选择人员',
-          type: 'warning'
-        })
-        return
-      }
-      this.socketApi.sendSock(JSON.parse('{"cmd":"delete_from_device", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '","userids": "' + this.user_id_list.join(',') + '" }}'), this.getConfigResult)
-    },
-    // 导出人员
-    export_personnel() {
-      const userid = []
-      this.multipleSelection.forEach(item => {
-        userid.push(item.userid)
-      })
-      if (userid.length === 0) {
-        this.$message({
-          message: '请选择人员',
+          message: '失败',
           type: 'warning'
         })
       }
     },
-    // 导入人员
-    import_personnel() {
-      const userid = []
-      this.multipleSelection.forEach(item => {
-        userid.push(item.userid)
-      })
-      if (userid.length === 0) {
-        this.$message({
-          message: '请选择人员',
-          type: 'warning'
-        })
-      }
+    // 考勤记录分析列表
+    statistics_list() {
+      this.socketApi.sendSock(JSON.parse('{"cmd":"stat_analysis", "data": {"ts":"' + timestamp + '","deptid": "' + this.clientid + '"}}'), this.getConfigResult)
     }
   }
 }
