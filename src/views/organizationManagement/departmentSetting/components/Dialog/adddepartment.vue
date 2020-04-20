@@ -67,6 +67,7 @@ export default {
           console.log(error)
         })
       } else if (this.de_data === 0) {
+        this.form.Deptid = this.form.SupDeptid
         this.$store.dispatch('interactive/Depart_update', this.form).then(response => {
           this.dialogVisible = false
           this.$emit('form', this.form)
