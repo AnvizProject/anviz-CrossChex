@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="selectTree">
     <select-tree :data = "options" :node-key="nodeKey" :checked-keys="defaultCheckedKeys" :default-props="defaultProps" @popoverHide="popoverHide" />
     <!-- <el-input v-model="input" placeholder="请输入内容"/> -->
   </div>
@@ -32,7 +32,7 @@ export default {
         label: 'label'
       },
       nodeKey: 'Deptid',
-      defaultCheckedKeys: []
+      defaultCheckedKeys: [1]
     }
   },
   watch: {
@@ -42,7 +42,6 @@ export default {
   },
   methods: {
     popoverHide(checkedIds, checkedData) {
-      console.log(checkedData)
       this.$emit('DeptRow', { id: checkedIds, row: checkedData })
     }
   }
@@ -78,6 +77,11 @@ export default {
       width: 100%;
       border-top-left-radius: 0px;
       border-bottom-left-radius: 0px;
+    }
+    &.selectTree{
+      .el-input--small .el-input__icon{
+        line-height: unset !important
+      }
     }
   }
   .el-popover{

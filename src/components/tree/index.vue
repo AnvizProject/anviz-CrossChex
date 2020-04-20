@@ -54,7 +54,6 @@ export default {
         if (v.Deptid !== id) {
           this.subEdit(v.children, id, name)
         } else {
-          console.log(arr, id, name)
           v.label = name
         }
       })

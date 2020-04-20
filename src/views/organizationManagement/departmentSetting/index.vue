@@ -84,7 +84,6 @@ export default {
         this.SupDeptid = response.dept_tree[0].Deptid
         this.Deptid = response.dept_tree[0].Deptid
         this.row_data = Object.assign({}, this.data[0])
-        console.log(response)
       }).catch(error => {
         console.log(error)
       })

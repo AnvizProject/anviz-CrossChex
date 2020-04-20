@@ -15,6 +15,7 @@
           <span><selectTree :options = "dept" :node-key="nodeKey" :deptid="Deptid" :default-props="defaultProps" multiple @DeptRow="getDeptRow"/></span>
           <span style="width: 100%"><el-input v-model="form.DeptName" type="text" size="small"/></span>
         </div>
+        <!-- <pre>{{ dept }}</pre> -->
       </el-form-item>
     </el-form>
   </el-dialog>
@@ -44,7 +45,7 @@ export default {
       dialogtitle: '新增部门',
       form: {
         DeptName: '',
-        SupDeptid: ''
+        SupDeptid: 1
       },
       deptRow: {}, // tree选中数据
       defaultProps: {
@@ -52,12 +53,16 @@ export default {
         label: 'DeptName'
       },
       nodeKey: 'Deptid'
+      // deptList: []
     }
   },
   watch: {
     SupDeptid(val) {
       this.form.SupDeptid = val
     }
+    // dept(newVal, oldVal) {
+    //   this.deptList = newVal
+    // }
   },
   methods: {
     // 部门新增、修改
