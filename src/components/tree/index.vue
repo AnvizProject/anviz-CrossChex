@@ -12,7 +12,6 @@
 </template>
 
 <script>
-let id = 1000
 export default {
   props: {
     treeDataList: {
@@ -22,7 +21,7 @@ export default {
   },
   data() {
     return {
-      // data: JSON.parse(JSON.stringify(this.treeDataList)),
+      data: JSON.parse(JSON.stringify(this.treeDataList)),
       selectedItem: '',
       selectedNode: ''
     }
@@ -33,19 +32,32 @@ export default {
       this.$emit('selectedItem', this.selectedItem)
       this.selectedNode = this.$refs.tree.getNode(data)
     },
-    append() {
-      const newChild = { id: id++, label: 'testtest', children: [] }
-      if (!this.selectedItem.children) {
-        this.$set(this.selectedItem, 'children', [])
+    append(data) {
+      const newChild = { Deptid: data.addRow.Deptid, label: data.addRow.DeptName, children: [] }
+      if (!data.row.children) {
+        this.$set(data.row, 'children', [])
       }
-      this.selectedItem.children.push(newChild)
+      data.row.children.push(newChild)
     },
     remove() {
-      console.log(this.selectedNode)
       const parent = this.selectedNode.parent
       const children = parent.data.children || parent.data
       const index = children.findIndex(d => d.id === this.selectedItem.id)
       children.splice(index, 1)
+    },
+    edit(id, label) {
+      console.log(this.treeDataList, id, label)
+      this.subEdit(this.treeDataList, id, label)
+    },
+    subEdit(arr, id, name) {
+      arr.forEach((v, k) => {
+        if (v.Deptid !== id) {
+          this.subEdit(v.children, id, name)
+        } else {
+          console.log(arr, id, name)
+          v.label = name
+        }
+      })
     }
   }
 }

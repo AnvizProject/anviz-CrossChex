@@ -8,11 +8,12 @@
             size="mini"
             placeholder="请输入内容"
             prefix-icon="el-icon-search"/>
-          <el-tree
+          <!-- <el-tree
             :data="data"
             :props="defaultProps"
             :accordion="true"
-            @node-click="handleNodeClick"/>
+            @node-click="handleNodeClick"/> -->
+          <tree ref="tree" :tree-data-list="data" @selectedItem="handleNodeClick"/>
         </div>
       </el-col>
 
@@ -33,14 +34,16 @@
         </div>
       </el-col>
     </el-row>
-    <Dialog ref="Dialog" :SupDeptid="SupDeptid" :row_data="row_data" :de_data="de_data" @form="form"/>
+    <Dialog ref="Dialog" :de_data="de_data" :dept="data" :Deptid="Deptid" @addRow="append" @edit="edit"/>
   </div>
 </template>
 <script>
 import Dialog from './components/Dialog/adddepartment'
+import tree from '@/components/tree'
 export default {
   components: {
-    Dialog
+    Dialog,
+    tree
   },
   data() {
     return {
@@ -107,6 +110,10 @@ export default {
       this.$refs.Dialog.dialogVisible = true
       this.$refs.Dialog.dialogtitle = '新增部门'
       this.de_data = 1
+      this.$refs.Dialog.form.DeptName = ''
+    },
+    append(data) {
+      this.$refs.tree.append(data)
     },
     // 部门修改
     modify() {
@@ -115,6 +122,9 @@ export default {
       this.de_data = 0
       this.$refs.Dialog.form.DeptName = this.depart_title
     },
+    edit(data) {
+      this.$refs.tree.edit(data.Deptid, data.DeptName)
+    },
     // 部门删除
     depart_del() {
       this.$confirm('是否确定删除此部门?', '提示', {
@@ -122,7 +132,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(this.Deptid)
         this.$store.dispatch('interactive/Depart_delete', { Deptid: this.Deptid }).then(response => {
           this.depart_list()
           this.$message({
@@ -141,21 +150,18 @@ export default {
     },
     // 部门列表点击
     handleNodeClick(data) {
+      console.log(data)
       this.depart_title = data.label
       this.SupDeptid = data.Deptid
       this.Deptid = data.Deptid
       this.row_data = data
-    },
-    // 数据初始默认值
-    form(data) {
-      this.data[0].label = data.DeptName
-    },
-    remove(node, data) {
-      const parent = node.parent
-      const children = parent.data.children || parent.data
-      const index = children.findIndex(d => d.id === data.id)
-      children.splice(index, 1)
     }
+    // remove(node, data) {
+    //   const parent = node.parent
+    //   const children = parent.data.children || parent.data
+    //   const index = children.findIndex(d => d.id === data.id)
+    //   children.splice(index, 1)
+    // }
   }
 }
 </script>
