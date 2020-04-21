@@ -46,7 +46,6 @@ export default {
       children.splice(index, 1)
     },
     edit(id, label) {
-      console.log(this.treeDataList, id, label)
       this.subEdit(this.treeDataList, id, label)
     },
     subEdit(arr, id, name) {

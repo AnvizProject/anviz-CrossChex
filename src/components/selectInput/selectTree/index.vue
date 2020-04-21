@@ -17,7 +17,7 @@ export default {
     },
     deptid: {
       type: Number,
-      default: null
+      default: 1
     }
   },
   data() {
@@ -32,7 +32,7 @@ export default {
         label: 'label'
       },
       nodeKey: 'Deptid',
-      defaultCheckedKeys: [1]
+      defaultCheckedKeys: [this.deptid]
     }
   },
   watch: {

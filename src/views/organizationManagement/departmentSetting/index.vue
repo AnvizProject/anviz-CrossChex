@@ -34,7 +34,7 @@
         </div>
       </el-col>
     </el-row>
-    <Dialog ref="Dialog" :de_data="de_data" :dept="data" :Deptid="Deptid" @addRow="append" @edit="edit"/>
+    <Dialog ref="Dialog" :de_data="de_data" :rowData="row_data" :dept="data" :Deptid="Deptid" @addRow="append" @edit="edit"/>
   </div>
 </template>
 <script>
@@ -149,7 +149,6 @@ export default {
     },
     // 部门列表点击
     handleNodeClick(data) {
-      console.log(data)
       this.depart_title = data.label
       this.SupDeptid = data.Deptid
       this.Deptid = data.Deptid
