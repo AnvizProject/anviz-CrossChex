@@ -1,12 +1,10 @@
 <template>
   <div>
-    <!-- <pre>{{ treeDataList }}</pre>
-    <pre>{{ data }}</pre> -->
     <el-tree
       ref="tree"
       :data="treeDataList"
       :expand-on-click-node="false"
-      node-key="id"
+      node-key="Deptid"
       @node-click="handleNodeClick"/>
   </div>
 </template>

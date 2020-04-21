@@ -119,10 +119,15 @@ export default {
       this.$refs.Dialog.dialogVisible = true
       this.$refs.Dialog.dialogtitle = '修改部门'
       this.de_data = 0
+      // if (this.$refs.Dialog.form.DeptName === '') {
       this.$refs.Dialog.form.DeptName = this.depart_title
+      // } else {
+      //   this.$refs.Dialog.form.DeptName = this.$refs.Dialog.form.tempName
+      // }
     },
     edit(data) {
       this.$refs.tree.edit(data.Deptid, data.DeptName)
+      this.depart_title = data.DeptName
     },
     // 部门删除
     depart_del() {
@@ -154,12 +159,6 @@ export default {
       this.Deptid = data.Deptid
       this.row_data = data
     }
-    // remove(node, data) {
-    //   const parent = node.parent
-    //   const children = parent.data.children || parent.data
-    //   const index = children.findIndex(d => d.id === data.id)
-    //   children.splice(index, 1)
-    // }
   }
 }
 </script>
