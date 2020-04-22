@@ -56,8 +56,7 @@ export default {
         label: 'DeptName'
       },
       nodeKey: 'Deptid',
-      tempID: '',
-      tempName: ''
+      tempID: ''
     }
   },
   watch: {
@@ -70,13 +69,9 @@ export default {
     },
     dialogVisible(val) {
       if (val === false) {
-        this.form.SupDeptid = 0
+        this.form.SupDeptid = -1
       } else {
         this.form.SupDeptid = this.tempID
-        if (this.de_data === 0) {
-          // alert(this.tempName)
-          // this.form.DeptName = this.tempName
-        }
       }
     }
   },
@@ -92,7 +87,6 @@ export default {
           console.log(error)
         })
       } else if (this.de_data === 0) {
-        this.tempName = this.form.DeptName
         this.form.Deptid = this.form.SupDeptid
         this.$store.dispatch('interactive/Depart_update', this.form).then(response => {
           this.dialogVisible = false
