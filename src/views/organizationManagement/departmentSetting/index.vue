@@ -119,11 +119,7 @@ export default {
       this.$refs.Dialog.dialogVisible = true
       this.$refs.Dialog.dialogtitle = '修改部门'
       this.de_data = 0
-      // if (this.$refs.Dialog.form.DeptName === '') {
       this.$refs.Dialog.form.DeptName = this.depart_title
-      // } else {
-      //   this.$refs.Dialog.form.DeptName = this.$refs.Dialog.form.tempName
-      // }
     },
     edit(data) {
       this.$refs.tree.edit(data.Deptid, data.DeptName)
