@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-select :disabled="disabled" :value="changeval" placeholder="请选择" @change="change">
+    <el-select :disabled="disabled" :value="changeval" :multiple="multiple" placeholder="请选择" @change="change">
       <el-option
         v-for="item in options"
         :key="item.value"
@@ -28,6 +28,10 @@ export default {
       default: null
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    multiple: {
       type: Boolean,
       default: false
     }

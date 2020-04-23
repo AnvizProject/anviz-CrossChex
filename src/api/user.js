@@ -81,3 +81,12 @@ export function userexport(data) {
     data
   })
 }
+
+// 统计报表-> 统计记录
+export function checkinout(params) {
+  return request({
+    url: '/api/checkinout/search',
+    method: 'GET',
+    params
+  })
+}
