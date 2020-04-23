@@ -18,7 +18,7 @@
               <el-input v-model="form.db_username"/>
             </el-form-item>
             <el-form-item label="用户密码">
-              <el-input v-model="form.db_password"/>
+              <el-input v-model="form.db_password" :type="pwdType"/>
             </el-form-item>
             <el-form-item label="数据库名">
               <el-select v-model="form.db_database" placeholder="请选择">
@@ -42,7 +42,8 @@ export default {
         db_password: '',
         db_database: ''
       },
-      db_name: []
+      db_name: [],
+      pwdType: 'password'
     }
   },
   mounted() {
