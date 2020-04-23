@@ -46,7 +46,7 @@ export default {
         console.log('error')
       })
     },
-    // 部门列表点击
+    // 终端列表点击
     list(data) {
       console.log(data)
       this.value = data.ClientName

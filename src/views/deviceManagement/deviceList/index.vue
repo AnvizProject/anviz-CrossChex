@@ -161,7 +161,7 @@ export default {
       this.$refs.Dialog.centerDialogVisible = true
       this.de_data = 0
       this.$refs.Dialog.dialogtitle = '修改终端'
-      this.$refs.Dialog.form = this.ter_list[this.key]
+      this.$refs.Dialog.form_data = this.ter_list[this.key]
       this.$refs.Dialog.Prohibit = true
     },
     del() {

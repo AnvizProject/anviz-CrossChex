@@ -73,7 +73,7 @@
                 <div class="parameter-item-center">
                   <div>部门</div>
                   <div class="net-input-item">
-                    <selectInput :options="option" :deptid ="userform.Deptid" @Deptid="dept_id"/>
+                    <selectInput :options="option" :default-props="defaultProps" :deptid ="userform.Deptid" @DeptRow="dept_id"/>
                   </div>
                 </div>
               </div>
@@ -328,6 +328,11 @@ export default {
         net: '1',
         face: null,
         FingerInfo: {}
+      },
+      defaultProps: {
+        id: 'Deptid',
+        children: 'SubDept',
+        label: 'DeptName'
       }
     }
   },
@@ -375,8 +380,8 @@ export default {
         FingerInfo: {}
       }
     },
-    dept_id(id) {
-      this.userform.Deptid = id
+    dept_id(data) {
+      this.userform.Deptid = data.id
     },
     // 修改人员
     handleEdit() {

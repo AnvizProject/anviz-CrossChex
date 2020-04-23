@@ -18,6 +18,16 @@ export default {
     deptid: {
       type: Number,
       default: 1
+    },
+    defaultProps: {
+      type: Object,
+      default: () => {
+        return {
+          id: 'Deptid',
+          children: 'children',
+          label: 'label'
+        }
+      }
     }
   },
   data() {
@@ -26,11 +36,11 @@ export default {
       value: null,
       // define options
       input: '',
-      defaultProps: {
-        id: 'Deptid',
-        children: 'children',
-        label: 'label'
-      },
+      // defaultProps: {
+      //   id: 'Deptid',
+      //   children: 'children',
+      //   label: 'label'
+      // },
       nodeKey: 'Deptid',
       defaultCheckedKeys: [this.deptid]
     }
@@ -39,6 +49,9 @@ export default {
     deptid(val) {
       this.defaultCheckedKeys = [val]
     }
+  },
+  mounted() {
+    console.log(this.options)
   },
   methods: {
     popoverHide(checkedIds, checkedData) {
@@ -49,13 +62,13 @@ export default {
 </script>
 
 <style lang="scss">
+  .el-select{
+    width: 100% !important;
+    height: 100%;
+  }
   #app{
     display: flex;
     width: 100%;
-    .el-select{
-      width: 100% !important;
-      height: 100%;
-    }
     .vue-treeselect{
       width: 50%;
       .vue-treeselect__control{
