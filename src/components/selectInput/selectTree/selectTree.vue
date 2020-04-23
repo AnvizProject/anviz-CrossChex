@@ -17,6 +17,7 @@
         :expand-on-click-node="false"
         :check-on-click-node="multiple"
         :highlight-current="true"
+        :default-expanded-keys="checkedKeys"
         class="common-tree"
         @node-click="handleNodeClick"
         @check-change="handleCheckChange"/>
@@ -154,7 +155,6 @@ export default {
       this.options = []
       this.options.push(tmpMap)
       this.selectedData = node.key
-      // console.log(this.selectedData)
     },
     // 单选，选中传进来的节点
     checkSelectedNode(checkedKeys) {
