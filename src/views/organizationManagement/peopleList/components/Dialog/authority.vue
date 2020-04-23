@@ -62,6 +62,11 @@ export default {
       return treeData
     }
   },
+  watch: {
+    defaultKey(val) {
+      this.$refs.tree.setCheckedKeys(val)
+    }
+  },
   methods: {
     save() {
       this.$emit('setting_authority', this.$refs.tree.getCheckedKeys(true))
