@@ -26,7 +26,7 @@
             <span>
               <span class="search-title">记录<br>标识</span>
               <span class="net-input-item">
-                <selectbox :options="options.record_identifier" v-model="searchForm.recordType"/>
+                <selectbox :options="options.record_identifier" v-model="searchForm.logflag"/>
               </span>
             </span>
             <span>
@@ -124,62 +124,87 @@
             ref="filterTable"
             :data="tableData"
             tooltip-effect="dark"
-            style="width: 100%"
-            @selection-change="handleSelectionChange">
+            style="width: 100%">
             <el-table-column
-              type="selection"/>
-            <el-table-column
-              fixed
               prop="UserCode"
+              align="center"
+              fixed
               label="人员编号"/>
             <el-table-column
               prop="userid"
-              label="考勤号"
-              sortable/>
+              align="center"
+              label="考勤号"/>
             <el-table-column
               prop="Name"
+              align="center"
               label="姓名"
               show-overflow-tooltip/>
             <el-table-column
               prop="CheckTime"
+              align="center"
               label="日期/时间"
+              width="150"
               show-overflow-tooltip/>
             <el-table-column
               prop="CheckType"
+              align="center"
               label="状态"
               show-overflow-tooltip/>
             <el-table-column
               prop="CheckTypeName"
+              align="center"
               label="状态说明"
               show-overflow-tooltip/>
             <el-table-column
               prop="Sensorid"
+              align="center"
               label="机器号"
               show-overflow-tooltip/>
             <el-table-column
               prop="ClientNumber"
+              align="center"
               label="机器序列号"
               show-overflow-tooltip/>
             <el-table-column
               prop="ClientName"
               label="机器名称"
+              align="center"
               show-overflow-tooltip/>
             <el-table-column
               prop="DeptName"
+              align="center"
               label="部门"
               show-overflow-tooltip/>
             <el-table-column
               prop="Duty"
+              align="center"
               label="职务"
               show-overflow-tooltip/>
             <el-table-column
               prop="WorkType"
+              align="center"
               label="工作码"
               show-overflow-tooltip/>
             <el-table-column
               prop="AttFlag"
+              align="center"
               label="验证方式编码"
               show-overflow-tooltip/>
+            <!-- <el-table-column label="验证方式">
+              <template slot-scope="scope">
+                {{ scope.row.AttFlag }}
+              </template>
+            </el-table-column> -->
+            <el-table-column
+              prop="AttFlag"
+              align="center"
+              label="验证方式"
+              show-overflow-tooltip/>
+            <el-table-column label="是否开门" align="center">
+              <template slot-scope="scope">
+                <el-checkbox v-model="scope.row.OpenDoorFlag" :true-label="1" :false-label="0" disabled/>
+              </template>
+            </el-table-column>
           </el-table>
         </div>
       </el-main>
@@ -203,11 +228,6 @@ export default {
   mixins: [department, staff, options],
   data() {
     return {
-      // form: {
-      //   Nmae: '',
-      //   UserCode: '',
-      //   Deptid: ''
-      // },
       tableData: [],
       multipleSelection: [],
       total: 10,
@@ -218,7 +238,7 @@ export default {
         export: 0,
         Deptid: 0,
         userid: '0',
-        recordType: 1,
+        logflag: 0,
         Sensorid: '',
         beginTime: '',
         endTime: ''
@@ -235,17 +255,17 @@ export default {
     }
   },
   mounted: function() {
-    // this.userlist(1)
     this.personnel.unshift({ userid: '0', Name: '所有人员' })
     this.getData({})
   },
   methods: {
-    // tableData
     getData(data) {
       this.$store.dispatch('interactive/checkinout', data).then(response => {
-        console.log(response)
         if (data.export === 1) {
-          window.location = response.export_url
+          // window.location = response.export_url
+          // window.open(response.export_url)
+          window.open(process.env.BASE_API + response.export_url)
+          return
         }
         this.tableData = response.Checkinout
       }).catch(error => {
@@ -256,7 +276,6 @@ export default {
     Dept_list() {
       this.searchForm.userid = '0'
       this.$store.dispatch('interactive/userList', { Deptid: this.$refs.DeptGroup.Deptid }).then(response => {
-        console.log(response)
         this.searchForm.Deptid = this.$refs.DeptGroup.Deptid
         this.personnel = response.userinfo_list.data
         this.personnel.unshift({ userid: '0', Name: '全部人员' })
@@ -267,7 +286,6 @@ export default {
     // 查询
     search() {
       this.searchForm.export = 0
-      console.log(this.searchForm)
       this.getData(this.searchForm)
     },
     // 重置查询
@@ -286,7 +304,6 @@ export default {
     // 导出
     exportData() {
       this.exportForm.export = 1
-      console.log(this.exportForm)
       this.getData(this.exportForm)
     },
     clear() {
@@ -299,9 +316,6 @@ export default {
         Spacer: 1,
         SpacerNum: 1
       }
-    },
-    handleSelectionChange(val) {
-      console.log(val, 'handleSelectionChange')
     }
   }
 }

@@ -75,19 +75,19 @@ export default{
           label: '4'
         }],
         record_identifier: [{
-          value: 1,
+          value: 0,
           label: '全部'
         }, {
-          value: 2,
+          value: 1,
           label: '考勤'
         }, {
-          value: 3,
+          value: 2,
           label: '门禁'
         }, {
-          value: 4,
+          value: 3,
           label: '考勤和门禁'
         }, {
-          value: 5,
+          value: 4,
           label: '无效记录'
         }],
         Attendance: {
