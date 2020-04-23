@@ -3,7 +3,7 @@
     :visible.sync="drawer"
     :with-header = "false">
     <el-scrollbar style="height:100%">
-      <div class="drawer">
+      <div v-loading="loading" class="drawer" >
         <!-- <pre>{{ val }}</pre> -->
         <div class="header">
           <div :style="{backgroundImage:'url('+coverImage+')'}" class="image">
@@ -118,7 +118,8 @@ export default {
   data() {
     return {
       drawer: false,
-      coverImage: require('../images/c2slim.png')
+      coverImage: require('../images/c2slim.png'),
+      loading: false
     }
   }
 }

@@ -81,3 +81,12 @@ export function userexport(data) {
     data
   })
 }
+// 最大id人员
+// 部门列表
+export function last(data) {
+  return request({
+    url: '/api/userinfo/last',
+    method: 'get',
+    params: data
+  })
+}

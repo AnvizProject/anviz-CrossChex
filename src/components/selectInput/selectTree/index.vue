@@ -17,7 +17,7 @@ export default {
     },
     deptid: {
       type: Number,
-      default: 1
+      default: 0
     },
     defaultProps: {
       type: Object,

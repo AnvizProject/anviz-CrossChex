@@ -137,7 +137,7 @@
         </el-table>
       </div>
     </Container>
-    <editDialog ref="editDialog" :rowdata="rowdata" :option="depList" @people_list="people_list" @upload_template="upload_template"/>
+    <editDialog ref="editDialog" :rowdata="rowdata" :option="depList" @people_list="people_list" @upload_infor="upload_infor"/>
     <shift ref="shift" :user_id="user_id_list"/>
     <authority ref="authority" :group_list = "group_data" :checked-list="checkedList" @setting_authority="setting_authority"/>
     <copyAuthority ref="copyAuthority" :group_list = "group_data" @copy_authority="copy_authority"/>
@@ -224,6 +224,7 @@ export default {
       this.$store.dispatch('interactive/userList', { per_page: this.per_page.perPage, Deptid: this.$refs.DeptGroup.Deptid, page: this.per_page.page, ClientNumber: this.$refs.DeviceGroup.Clientid, search_key: this.$refs.search.input }).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
+        console.log(response)
       }).catch(error => {
         console.log(error)
       })
@@ -295,7 +296,7 @@ export default {
       }).then(() => {
         console.log(check())
         if (check() === true) {
-          this.delete_from_device = 2
+          this.delete_from_device = 1
         } else {
           this.delete_from_device = 0
         }
@@ -331,6 +332,14 @@ export default {
     },
     // 设置权限
     set_authority() {
+      console.log(this.multipleSelection.length !== 1)
+      if (this.multipleSelection.length !== 1) {
+        this.$refs.authority.defaultKey = []
+      } else {
+        console.log(this.multipleSelection.length)
+        this.$refs.authority.defaultKey = this.multipleSelection[0].ClientNumbers.split(',')
+        console.log(this.$refs.authority.defaultKey)
+      }
       this.$refs.authority.centerDialogVisible = true
     },
     // 复制权限
@@ -353,6 +362,11 @@ export default {
     // 上传模板
     upload_template() {
       this.socketApi.sendSock(JSON.parse('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '"}}'), this.getConfigResult)
+    },
+    // 登记指纹上传到机器
+    upload_infor() {
+      console.log('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","userids": "' + this.$refs.editDialog.userform.userid + '","clientid":"' + this.$refs.editDialog.userform.net + '"}}')
+      this.socketApi.sendSock(JSON.parse('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","userids": "' + this.$refs.editDialog.userform.userid + '","clientid":"' + this.$refs.editDialog.userform.net + '","enroll_finger":"1"}}'), this.getConfigResult)
     },
     // 导出人员
     export_personnel() {

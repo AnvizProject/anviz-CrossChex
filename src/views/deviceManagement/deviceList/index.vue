@@ -7,7 +7,7 @@
           <el-button type="primary" size="mini" @click="add">增加</el-button>
           <el-button :disabled="!checked" :type="checked?'warning':'info'" size="mini" @click="edit">修改</el-button>
           <el-button :disabled="getSelectedList.length<=0" :type="getSelectedList.length>0?'danger':'info'" size="mini" @click="del">删除</el-button>
-          <el-button :disabled="!checked" :type="checked?'primary':'info'" size="mini" @click="clear_admin">清除管理员</el-button>
+          <el-button :disabled="!checked" :type="checked?'primary':'info'" size="mini" @click="clear_admin"><s>清除管理员</s></el-button>
           <el-dropdown>
             <el-button :disabled="!checked" type="info" size="mini">更多操作<i class="el-icon-arrow-down el-icon--right"/></el-button>
             <el-dropdown-menu slot="dropdown">
@@ -146,6 +146,7 @@ export default {
       this.$store.dispatch('interactive/Terminal_list', { per_page: this.per_page.perPage, page: this.per_page.page, Floorid: floorid, search_key: this.$refs.search.input }).then(response => {
         this.ter_list = response.FingerClient
         this.total = response.FingerClientList.total
+        console.log(response)
       }).catch(() => {
         console.log('error')
       })
@@ -161,7 +162,9 @@ export default {
       this.$refs.Dialog.centerDialogVisible = true
       this.de_data = 0
       this.$refs.Dialog.dialogtitle = '修改终端'
+      this.$refs.Dialog.disabled = false
       this.$refs.Dialog.form_data = this.ter_list[this.key]
+      this.$refs.Dialog.loading = false
       this.$refs.Dialog.Prohibit = true
     },
     del() {
@@ -193,6 +196,9 @@ export default {
     // websocket接收回调函数返回数据的方法
     getConfigResult(res) {
       console.log(res)
+      if (res.ret === '10000') {
+        return
+      }
       if (res.ret === '0') {
         this.$message({
           message: '更新成功',

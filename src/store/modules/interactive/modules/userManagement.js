@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-import { adduser, userlist, useredit, userdetail, deptlist, transfer, copyAuthority, userimport, userexport } from '@/api/user'
+import { adduser, userlist, useredit, userdetail, deptlist, transfer, copyAuthority, userimport, userexport, last } from '@/api/user'
 import store from '../../..'
 const userManagement = {
   state: {
@@ -120,6 +120,17 @@ const userManagement = {
       Userexport_data.access_token = store.getters.token
       return new Promise((resolve, reject) => {
         userexport(Userexport_data).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 最大id人员
+    Last({ commit }, Last_data) {
+      Last_data.access_token = store.getters.token
+      return new Promise((resolve, reject) => {
+        last(Last_data).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

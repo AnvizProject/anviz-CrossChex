@@ -18,7 +18,7 @@
               <el-input v-model="form.db_username"/>
             </el-form-item>
             <el-form-item label="用户密码">
-              <el-input v-model="form.db_password"/>
+              <el-input v-model="form.db_password" :type="pwdType"/>
             </el-form-item>
             <el-form-item label="数据库名">
               <el-select v-model="form.db_database" placeholder="请选择">
@@ -35,6 +35,7 @@
 export default {
   data() {
     return {
+      pwdType: 'password',
       form: {
         db_host: '',
         db_port: '',
@@ -71,7 +72,7 @@ export default {
       })
     },
     request() {
-      console.log(123)
+      console.log(this.form)
     }
   }
 }

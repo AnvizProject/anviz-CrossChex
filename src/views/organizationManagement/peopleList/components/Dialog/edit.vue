@@ -208,7 +208,12 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="指纹登记" name="third">
-          <div class="custom">
+          <div
+            v-loading="loading"
+            :element-loading-text="register_title"
+            class="custom"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="hsla(0,0%,100%,.9)">
             <div class="register">
               <h4>设备选择</h4>
               <el-form ref="form" :model="userform" label-width="80px">
@@ -234,8 +239,6 @@
                 </div>
               </div>
             </div>
-            {{ userform.FingerInfo }}
-            {{ fingerid }}
           </div>
         </el-tab-pane>
         <el-tab-pane label="人脸登记" name="fourth">
@@ -254,7 +257,7 @@
                       </el-form-item>
                     </el-form>
                   </span>
-                  <span><el-button size="mini" type="primary">登记</el-button></span>
+                  <span><el-button size="mini" type="primary" class="people-face">登记</el-button></span>
                 </div>
               </div>
             </div>
@@ -304,6 +307,8 @@ export default {
       word2: '未登记',
       fingerid: null,
       two: 1,
+      register_title: '登记中...',
+      loading: false,
       userform: {
         userid: '',
         UserCode: '',
@@ -336,9 +341,13 @@ export default {
       }
     }
   },
+  mounted() {
+    this.register_list()
+  },
   methods: {
     // 新增人员
     Adduser() {
+      this.Last()
       this.centerDialogVisible = true
       this.showClo = false
       this.activeName = 'first'
@@ -346,7 +355,6 @@ export default {
       this.dialogtitle = '增加人员'
       this.isAdd = true
       this.textHide = true
-      this.fing = []
       this.humanFace = []
       this.word1_color = '#000'
       this.word1 = '未登记'
@@ -354,6 +362,8 @@ export default {
       this.word2 = '未登记'
       this.fingerid = null
       this.two = 1
+      this.register_title = '登记中...'
+      this.loading = false
       this.userform = {
         userid: '',
         UserCode: '',
@@ -393,7 +403,6 @@ export default {
         this.usertype = 2
       }
       this.people_detail()
-      this.register_list()
     },
     // 上传头像
     selectImg: function() {
@@ -439,15 +448,33 @@ export default {
         console.log('error')
       })
     },
+    // 最大id人员
+    Last() {
+      this.$store.dispatch('interactive/Last', {}).then(response => {
+        if (response.last_userinfo.length === 0) {
+          this.userform.userid = 1
+          this.userform.UserCode = 1
+        } else {
+          this.userform.userid = Number(response.last_userinfo[0].userid) + 1
+          this.userform.UserCode = Number(response.last_userinfo[0].UserCode) + 1
+        }
+      }).catch(() => {
+        console.log('error')
+      })
+    },
     // websocket接收回调函数返回数据的方法
     getConfigResult(res) {
       // console.log(this.fingerid)
       console.log(res)
+      if (res.ret === '10000') {
+        return
+      }
       if (res.ret === '0') {
         this.$message({
           message: '成功',
           type: 'success'
         })
+        this.loading = false
         if (res.cmd === 'enroll_finger' && this.fingerid === 1) {
           this.userform.FingerInfo.finger1 = res.data.template
         } else if (res.cmd === 'enroll_finger' && this.fingerid === 2) {
@@ -460,12 +487,19 @@ export default {
           message: '失败',
           type: 'warning'
         })
+        this.register_title = '登记失败，请重新登记'
+        this.loading = false
       }
     },
     // 登记指纹
     Register(fingid) {
+      this.register_title = '登记中...'
       this.fingerid = fingid
-      console.log(JSON.parse('{"cmd":"enroll_finger", "data": {"ts":"' + timestamp + '","clientid": "' + Number(this.userform.net) + '","userid":"' + this.userform.userid + '","fingerid": "' + fingid + '"}}'))
+      this.loading = true
+      setTimeout(() => {
+        this.loading = false
+        this.register_title = '登记超时，请重新登记！'
+      }, 30000)
       this.socketApi.sendSock(JSON.parse('{"cmd":"enroll_finger", "data": {"ts":"' + timestamp + '","clientid": "' + Number(this.userform.net) + '","userid":"' + this.userform.userid + '","fingerid": "' + fingid + '"}}'), this.getConfigResult)
     },
 
@@ -492,7 +526,7 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$emit('upload_template')
+            this.$emit('upload_infor')
           }).catch(() => {
             this.$message({
               type: 'info',
@@ -619,5 +653,8 @@ export default {
       width: 100%;
       height: auto;
     }
+  }
+  .people-face{
+    text-decoration:line-through
   }
 </style>

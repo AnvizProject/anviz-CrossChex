@@ -392,6 +392,9 @@ export default {
     getConfigResult(res) {
       // 接收回调函数返回数据的方法
       console.log(res.ret)
+      if (res.ret === '10000') {
+        return
+      }
       if (res.ret === '0') {
         this.$message({
           message: '连接成功',

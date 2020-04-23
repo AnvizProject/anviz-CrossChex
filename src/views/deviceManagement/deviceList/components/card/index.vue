@@ -1,9 +1,8 @@
 <template>
   <el-card class="card-select">
-    <div :class="val.online_status==='online'?'':'mask'"/>
     <div slot="header" class="header" title="点击查看终端信息" @click="drawer">
       <div class="left">
-        <div :style="{backgroundImage:'url('+coverImage+')'}" class="image">
+        <div :style="{backgroundImage:'url('+coverImage+')'}" :class="val.online_status==='online'?'':'mask'" class="image">
           <!-- <img src="./c2slim.png" alt=""> -->
           <div id="box" class="name">
             {{ val.device_type_name }}
@@ -24,18 +23,18 @@
       </div>
     </div>
     <div class="device-icon">
-      <span v-if="close" :class="val.can_open_door===1?'icon-cursor': 'display'" title="软件开门" class="icon-psd-lock" @click="open_door(val.can_open_door)"/>
+      <span v-if="close" :class="val.can_open_door===1&&val.online_status!=='online'?'icon-cursor': 'display'" title="软件开门" class="icon-psd-lock" @click="open_door(val.can_open_door)"/>
       <span v-else class="icon-cursor icon-psd-open open"/>
-      <span class="icon-cursor icon-data-import" title="读取新纪录" @click="read_new_record"/>
-      <el-dropdown :hide-on-click="true" @command="handleCommand">
+      <span :class="val.online_status==='online'?'':'mask'" class="icon-cursor icon-data-import" title="读取新纪录" @click="read_new_record"/>
+      <el-dropdown :hide-on-click="true" :disabled="val.online_status==='online'?false:true" :class="val.online_status==='online'?'':'mask'" @command="handleCommand">
         <span class="el-dropdown-link">
           <span class="icon-cursor icon-setting"/><i class="el-icon-arrow-down el-icon--right"/>
         </span>
-        <el-dropdown-menu slot="dropdown">
+        <el-dropdown-menu slot="dropdown" :class="val.online_status==='online'?'':'none'">
           <el-dropdown-item command="netSetting">设置网络参数</el-dropdown-item>
-          <el-dropdown-item>消息管理</el-dropdown-item>
-          <el-dropdown-item>设置机器号</el-dropdown-item>
-          <el-dropdown-item>自动切换考勤状态设置</el-dropdown-item>
+          <el-dropdown-item class="disable">消息管理</el-dropdown-item>
+          <el-dropdown-item class="disable">设置机器号</el-dropdown-item>
+          <el-dropdown-item class="disable">自动切换考勤状态设置</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -94,6 +93,9 @@ export default {
     // websocket接收回调函数返回数据的方法
     getConfigResult(res) {
       console.log(res)
+      if (res.ret === '10000') {
+        return
+      }
       if (res.ret === '0') {
         this.$message({
           message: '成功',
@@ -116,7 +118,7 @@ export default {
             this.$refs.setting.centerDialogVisible = false
           }
           if (res.cmd === 'device_info') {
-            this.$refs.drawer.drawer = true
+            this.$refs.drawer.loading = false
             this.terminal_info = res.data
           }
         }, 500)
@@ -131,6 +133,11 @@ export default {
     },
     // 终端信息
     drawer() {
+      if (this.val.online_status !== 'online') {
+        return
+      }
+      this.$refs.drawer.drawer = true
+      this.$refs.drawer.loading = true
       this.socketApi.sendSock(JSON.parse('{"cmd":"device_info", "data": {"ts":"' + timestamp + '","clientid": "' + this.val.Clientid + '"}}'), this.getConfigResult)
     },
     // 读取新纪录
@@ -155,19 +162,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .el-card{
-    position: relative;
-    .mask{
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top:0;
-      left:0%;
-      background: rgba(207, 207, 207, 0.5);
-      z-index: 1;
-      cursor:not-allowed
-    }
-  }
   .header{
     display: flex;
     justify-content: space-between;
@@ -185,7 +179,6 @@ export default {
     }
     .left{
       border-right: 1px #F3F3F3 solid;
-
       .image{
         text-align: center;
         background-repeat: no-repeat;
@@ -225,7 +218,7 @@ export default {
     height: 100%;
     display: flex;
     justify-content: space-around;
-    .icon-cursor, .el-dropdown-link{
+    .icon-cursor{
       cursor: pointer;
     }
     .el-dropdown-link{
@@ -242,6 +235,23 @@ export default {
     .open{
       color: #d0021b;
     }
+  }
+  .mask{
+    opacity: 0.3;
+    cursor:not-allowed !important;
+    .icon-cursor{
+      cursor:not-allowed !important;
+    }
+    .el-dropdown-menu{
+      display: none !important;
+    }
+  }
+  .disable{
+    text-decoration:line-through;
+    cursor:not-allowed !important;
+  }
+  .none{
+    display: none;
   }
 </style>
 

@@ -53,12 +53,14 @@ export const constantRouterMap = [
         path: '/systemSettings/adminManagement',
         component: () => import('@/views/systemSettings/adminManagement/index'),
         name: 'Admin Management',
+        line: true,
         meta: { title: 'System_Settings.Admin_Management', icon: 'icon-period' }
       },
       {
         path: '/systemSettings/rightsGroups',
         component: () => import('@/views/systemSettings/rightsGroups/index'),
         name: 'Rights Groups',
+        line: true,
         meta: { title: 'System_Settings.Rights_Groups', icon: 'icon-period' }
       }
     ]

@@ -12,7 +12,7 @@
     <el-form ref="form" :model="form" label-width="100px">
       <el-form-item label="部门名称">
         <div style="display: flex">
-          <span><selectTree :options = "dept" :node-key="nodeKey" :deptid="form.SupDeptid" :default-props="defaultProps" multiple @DeptRow="getDeptRow"/></span>
+          <span><selectTree :options = "dept" :node-key="nodeKey" :deptid="form.SupDeptid" multiple @DeptRow="getDeptRow"/></span>
           <span style="width: 100%"><el-input v-model="form.DeptName" type="text" size="small"/></span>
         </div>
       </el-form-item>
@@ -51,10 +51,10 @@ export default {
         SupDeptid: 1
       },
       deptRow: {}, // tree选中数据
-      defaultProps: {
-        children: 'SubDept',
-        label: 'DeptName'
-      },
+      // defaultProps: {
+      //   children: 'SubDept',
+      //   label: 'DeptName'
+      // },
       nodeKey: 'Deptid',
       tempID: ''
     }

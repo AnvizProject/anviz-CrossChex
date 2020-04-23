@@ -9,14 +9,14 @@
       text-color="#fff"
       active-text-color="#fff"
       mode="vertical">
-      <template v-if="menuList.length==1">
+      <!-- <template v-if="menuList.length==1">
         <app-link :to="menuList[0].path">
           <el-menu-item :index="menuList[0].path.split('/')[1]">
             <i :class="menuList[0].meta.icon" class="icon"/>
             <item :title="$t(menuList[0].meta.title)" />
           </el-menu-item>
         </app-link>
-      </template>
+      </template> -->
       <!-- <template slot="title">
         <i class="el-icon-location"/>
         <span>{{ $t(parentRputer.meta.title) }}</span>
@@ -48,7 +48,7 @@
             <el-menu-item :index="v.path.split('/')[2]">
               <!-- <template slot="title"> -->
               <span :class="v.meta.icon" class="icon"/>
-              <span v-if="!isCollapse" slot="title">{{ $t(v.meta.title) }}</span>
+              <span v-if="!isCollapse" slot="title" :style="{textDecoration: v.line===true?'line-through':'none'}">{{ $t(v.meta.title) }}</span>
               <!-- </template> -->
             </el-menu-item>
           </el-tooltip>
