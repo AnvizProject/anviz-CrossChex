@@ -71,7 +71,8 @@ export default {
       })
     },
     request() {
-      console.log(123)
+      this.form.cmd = 'init_db'
+      this.get_db(this.form)
     }
   }
 }
