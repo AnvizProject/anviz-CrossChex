@@ -1,31 +1,38 @@
 <template>
   <div class="report">
-    <Container :total="total" @per_page="statistics_list" @page="statistics_list">
+    <Container @per_page="statistics_list" @page="statistics_list">
       <div slot="header" class="con-item">
         <div class="header-item">
-          <el-button type="primary" size="mini">统计分析</el-button>
+          <el-button size="mini" type="primary" @click="Export_current">导出当前数据</el-button>
           <el-button size="mini" type="primary">查询结果</el-button>
-          <el-button size="mini" type="primary">导出当前数据</el-button>
           <el-button size="mini" type="primary">保存结果</el-button>
           <el-dropdown>
-            <el-button :disabled="multipleSelection.length<=0" type="info" size="mini">报表预览<i class="el-icon-arrow-down el-icon--right"/></el-button>
+            <el-button type="info" size="mini">报表预览<i class="el-icon-arrow-down el-icon--right"/></el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>设计报表</el-dropdown-item>
-              <el-dropdown-item>流水记录表</el-dropdown-item>
-              <el-dropdown-item>每月记录表</el-dropdown-item>
-              <el-dropdown-item>月考勤符号表</el-dropdown-item>
-              <el-dropdown-item>月考勤明细表</el-dropdown-item>
-              <el-dropdown-item>月工时汇总表</el-dropdown-item>
-              <el-dropdown-item>考勤统计总表</el-dropdown-item>
-              <el-dropdown-item>考勤异常报表</el-dropdown-item>
-              <el-dropdown-item>外出/请假报表</el-dropdown-item>
+              <!-- <el-dropdown-item>设计报表</el-dropdown-item> -->
+              <el-dropdown-item @click.native="Report_preview('records')">流水记录表</el-dropdown-item>
+              <el-dropdown-item @click.native="Report_preview('daily_records')">每日记录表</el-dropdown-item>
+              <el-dropdown-item @click.native="Report_preview('month_symbol')">月考勤符号表</el-dropdown-item>
+              <el-dropdown-item @click.native="Report_preview('month_detail')">月考勤明细表</el-dropdown-item>
+              <el-dropdown-item @click.native="Report_preview('month_hours')">月工时汇总表</el-dropdown-item>
+              <el-dropdown-item @click.native="Report_preview('stat_total')">考勤统计总表</el-dropdown-item>
+              <el-dropdown-item @click.native="Report_preview('stat_total')">考勤异常报表</el-dropdown-item>
+              <el-dropdown-item @click.native="Report_preview('away_leave')">外出/请假报表</el-dropdown-item>
               <el-dropdown-item>当前数据报表</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
         <div class="header-item">
-          <Devicegroup ref="DeviceGroup" @Terminal_list="statistics_list"/>
-          <Departmentgroup ref="DeptGroup" @Dept_list="statistics_list"/>
+          <Departmentgroup ref="DeptGroup" @Dept_list="Dept_list"/>
+          <span>
+            <el-select v-model="value" size="mini" placeholder="人员">
+              <el-option
+                v-for="item in personnel"
+                :key="item.userid"
+                :label="item.Name"
+                :value="item.userid"/>
+            </el-select>
+          </span>
           <span class="date_select">
             <el-date-picker
               v-model="start_date"
@@ -42,10 +49,11 @@
               size="mini"
               placeholder="选择日期"/>
           </span>
+          <span><el-button type="primary" size="mini" @click="statistics_list">统计分析</el-button></span>
         </div>
       </div>
       <div slot="main" class="main-item">
-        <el-tabs type="border-card">
+        <el-tabs v-model="editableTabsValue" type="border-card">
           <el-tab-pane label="考勤记录分析">
             <el-row>
               <el-col :span="20">
@@ -66,7 +74,7 @@
                       label="人员编号"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Uid"
+                      prop="uid"
                       label="考勤号"
                       sortable
                       width="90px"
@@ -155,117 +163,118 @@
                 <div class="grid-content bg-purple">
                   <el-table
                     ref="filterTable"
-                    :data="tableData"
+                    :data="z_mem_uclass"
                     tooltip-effect="dark"
+                    border
                     style="width: 100%"
                     @selection-change="handleSelectionChange">
                     <el-table-column
-                      fixed
-                      prop="UserCode"
+                      prop="Udept"
                       label="部门"
                       show-overflow-tooltip/>
                     <el-table-column
-                      fixed
-                      prop="UserCode"
+                      prop="Ucode"
                       label="人员编号"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="userid"
+                      prop="uid"
                       label="考勤号"
                       sortable
                       width="90px"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Name"
+                      prop="Uname"
                       label="姓名"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="EmployDate"
+                      prop="Udate"
                       label="日期"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="TimeName"
                       label="对应时段"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="OnTime"
                       label="应上班时间"
+                      width="95px"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="OffTime"
+                      width="95px"
                       label="应下班时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="SOntime"
                       label="班次时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="EOntime"
                       label="签到时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Sex"
+                      prop="EOfftime"
                       label="签退时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="chidaoshijian"
+                      prop="TLate"
                       label="迟到时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Birthday"
+                      prop="TEarly"
                       label="早退时间"
-                      show-overflow-tooltip
-                      width="100"/>
+                      show-overflow-tooltip/>
                     <el-table-column
-                      prop="Mobile"
+                      prop="TAdd"
                       label="加班时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Address"
+                      prop="IsNoIn"
                       label="未签到"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Pwd"
+                      prop="IsNoIn"
                       label="未签退"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="IsNoWork"
                       label="旷工"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="Memo"
                       label="例外情况"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="IsFreeTime"
                       label="浮动"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="IsOverTime"
                       label="加班"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="Workday"
                       label="排定工作日"
+                      width="95px"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="WorkLong"
                       label="排定时长"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="AWorktime"
                       label="工作时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="UWorktime"
                       label="实际时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="UWorkname"
                       label="工种"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="Checked"
                       label="审核"
                       show-overflow-tooltip/>
                     <el-table-column
@@ -313,55 +322,56 @@
                 <div class="grid-content bg-purple">
                   <el-table
                     ref="filterTable"
-                    :data="tableData"
+                    :data="z_mem_abnor"
                     tooltip-effect="dark"
                     style="width: 100%"
+                    border
                     @selection-change="handleSelectionChange">
                     <el-table-column
-                      prop="UserCode"
+                      prop="Udept"
                       label="部门"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="UserCode"
+                      prop="Ucode"
                       label="人员编号"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="userid"
+                      prop="uid"
                       label="考勤号"
                       sortable
                       width="90px"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Name"
+                      prop="Uname"
                       label="姓名"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="EmployDate"
+                      prop="BeginTime"
                       label="开始时间"
                       show-overflow-tooltip
                       width="100"/>
                     <el-table-column
-                      prop="address"
+                      prop="EndTime"
                       label="结束时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="AbnorShow"
                       label="异常情况"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="TimeLong"
                       label="时长"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="Workday"
                       label="排定工作日"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="Worklong"
                       label="排定时长"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Sex"
+                      prop="Remark"
                       label="备注"
                       show-overflow-tooltip/>
                   </el-table>
@@ -386,103 +396,104 @@
                 <div class="grid-content bg-purple">
                   <el-table
                     ref="filterTable"
-                    :data="tableData"
+                    :data="z_mem_stat"
                     tooltip-effect="dark"
                     style="width: 100%"
+                    border
                     @selection-change="handleSelectionChange">
                     <el-table-column
-                      prop="UserCode"
+                      prop="Udept"
                       label="部门"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="UserCode"
+                      prop="Ucode"
                       label="人员编号"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="userid"
+                      prop="uid"
                       label="考勤号"
                       sortable
                       width="90px"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Name"
+                      prop="Uname"
                       label="姓名"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="EmployDate"
+                      prop="Normal"
                       label="应到[工作日]"
                       show-overflow-tooltip
                       width="100"/>
                     <el-table-column
-                      prop="address"
+                      prop="Actual"
                       label="实到[工作日]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="Latetime"
                       label="迟到[分钟]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="Earlytime"
                       label="早退[分钟]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="Absenttime"
                       label="旷工[工作日]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="Overtime"
                       label="加班[小时]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Sex"
+                      prop="Overtime1"
                       label="加班1[小时]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Duty"
+                      prop="Overtime2"
                       label="加班2[小时]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Birthday"
+                      prop="Overtime3"
                       label="加班3[小时]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Mobile"
+                      prop="Freeovertime"
                       label="自由加班[小时]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Address"
+                      prop="Noin"
                       label="未签到[次]"
                       show-overflow-tooltip
                       width="170"/>
                     <el-table-column
-                      prop="Pwd"
+                      prop="Noout"
                       label="未签退[次]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="Awaytime"
                       label="外出[分钟]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="BusyLeave"
                       label="公出[工作日]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="Leave"
                       label="请假[工作日]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="Worktime"
                       label="工作时间[小时]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="UWorktime"
                       label="实际时间[小时]"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="Attrate"
                       label="出勤率"
                       show-overflow-tooltip/>
-                    <el-table-column
+                      <!-- <el-table-column
                       prop="address"
                       label="Break Time"
                       show-overflow-tooltip/>
@@ -501,7 +512,7 @@
                     <el-table-column
                       prop="address"
                       label="黑工"
-                      show-overflow-tooltip/>
+                      show-overflow-tooltip/> -->
 
                   </el-table>
                 </div>
@@ -522,6 +533,7 @@
         </el-tabs>
       </div>
     </Container>
+    <Report ref="Report" :report_type="report_type"/>
   </div>
 </template>
 <script>
@@ -529,43 +541,66 @@ import Search from '@/components/search'
 import Container from '@/components/container'
 import Departmentgroup from '@/components/Departmentgroup'
 import Devicegroup from '@/components/Devicegroup'
+import Report from './components/report'
 var timestamp = Date.parse(new Date()) / 1000
 export default {
   components: {
     Search,
     Container,
     Departmentgroup,
-    Devicegroup
+    Devicegroup,
+    Report
   },
   data() {
     return {
-      search: '输入日期',
-      group_list: [],
       z_mem_record: [],
-      tableData: [],
-      rowdata: {},
-      total: null,
-      per_page: {
-        page: 1,
-        perPage: 15
-      },
-      user_id: [],
+      z_mem_uclass: [],
+      z_mem_abnor: [],
+      z_mem_stat: [],
       checked: true,
       multipleSelection: [],
-      deptid: '0',
-      userid: '0',
       start_date: '',
-      end_date: ''
+      end_date: '',
+      personnel: [],
+      value: '0',
+      editableTabsValue: '0',
+      Current_data: '',
+      report_type: ''
     }
   },
   mounted: function() {
     this.statistics_list()
+    this.personnel.unshift({ userid: '0', Name: '所有人员' })
   },
   created() {
     this.getCurrentMonthFirst()
     this.getNowTime()
   },
   methods: {
+    Dept_list() {
+      this.$store.dispatch('interactive/userList', { Deptid: this.$refs.DeptGroup.Deptid }).then(response => {
+        console.log(response)
+        this.personnel = response.userinfo_list.data
+        this.personnel.unshift({ userid: '0', Name: '全部人员' })
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    Export_current() {
+      console.log(this.editableTabsValue)
+      if (this.editableTabsValue === '0') {
+        this.report_type = 'attendance_record_analysis'
+      }
+      if (this.editableTabsValue === '1') {
+        this.report_type = 'schedule_record_analysis'
+      }
+      if (this.editableTabsValue === '2') {
+        this.report_type = 'leave_record_analysis'
+      }
+    },
+    Report_preview(data) {
+      this.report_type = data
+    },
     // 当月第一天
     getCurrentMonthFirst() {
       var date = new Date()
@@ -591,12 +626,14 @@ export default {
 
     // 表格数据
     handleSelectionChange(val) {
-      console.log(val, 'table')
       this.multipleSelection = val
     },
     getConfigResult(res) {
       // 接收回调函数返回数据的方法
-      console.log(res)
+      // console.log(res)
+      if (res.ret === '10000') {
+        return
+      }
       if (res.ret === '0') {
         this.$message({
           message: '成功',
@@ -604,6 +641,9 @@ export default {
         })
         if (res.cmd === 'stat_analysis') {
           this.z_mem_record = res.data.z_mem_record
+          this.z_mem_uclass = res.data.z_mem_uclass
+          this.z_mem_abnor = res.data.z_mem_abnor
+          this.z_mem_stat = res.data.z_mem_stat
         }
         return
       } else {
@@ -615,7 +655,8 @@ export default {
     },
     // 考勤记录分析列表
     statistics_list() {
-      this.socketApi.sendSock(JSON.parse('{"cmd":"stat_analysis", "data": {"ts":"' + timestamp + '","deptid": "' + this.deptid + '","userid": "' + this.userid + '","start_date":"' + this.start_date + '","end_date":"' + this.end_date + '" }}'), this.getConfigResult)
+      console.log('{"cmd":"stat_analysis", "data": {"ts":"' + timestamp + '","deptid": "' + this.$refs.DeptGroup.Deptid + '","userid": "' + this.userid + '","start_date":"' + this.start_date + '","end_date":"' + this.end_date + '" }}')
+      this.socketApi.sendSock(JSON.parse('{"cmd":"stat_analysis", "data": {"ts":"' + timestamp + '","deptid": "' + this.$refs.DeptGroup.Deptid + '","userid": "' + this.value + '","start_date":"' + this.start_date + '","end_date":"' + this.end_date + '" }}'), this.getConfigResult)
     }
   }
 }
@@ -673,11 +714,26 @@ export default {
       width: 110px;
     }
   }
+  .el-select{
+    width: 100px !important;
+    border-radius: 4px;
+  }
 </style>
 <style lang="scss">
-  .el-input--suffix{
-    .el-input__inner{
-      padding-right: 0;
+  .report{
+    .main-body{
+      height:calc(100vh - 90px) !important;
+    }
+    .date_select{
+      .el-input--suffix{
+        .el-input__inner{
+          padding-right: 0;
+        }
+      }
+    }
+    .el-tabs--border-card>.el-tabs__content {
+      padding: 5px 0px 0px 5px;
     }
   }
+
 </style>

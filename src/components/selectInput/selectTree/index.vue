@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="selectTree">
     <select-tree :data = "options" :node-key="nodeKey" :checked-keys="defaultCheckedKeys" :default-props="defaultProps" @popoverHide="popoverHide" />
+    <!-- <el-input v-model="input" placeholder="请输入内容"/> -->
   </div>
 </template>
 
@@ -17,6 +18,16 @@ export default {
     deptid: {
       type: Number,
       default: 1
+    },
+    defaultProps: {
+      type: Object,
+      default: () => {
+        return {
+          id: 'Deptid',
+          children: 'children',
+          label: 'label'
+        }
+      }
     }
   },
   data() {
@@ -24,11 +35,12 @@ export default {
       // define the default value
       value: null,
       // define options
-      defaultProps: {
-        id: 'Deptid',
-        children: 'children',
-        label: 'label'
-      },
+      input: '',
+      // defaultProps: {
+      //   id: 'Deptid',
+      //   children: 'children',
+      //   label: 'label'
+      // },
       nodeKey: 'Deptid',
       defaultCheckedKeys: [this.deptid]
     }
@@ -37,6 +49,9 @@ export default {
     deptid(val) {
       this.defaultCheckedKeys = [val]
     }
+  },
+  mounted() {
+    console.log(this.options)
   },
   methods: {
     popoverHide(checkedIds, checkedData) {
@@ -47,13 +62,13 @@ export default {
 </script>
 
 <style lang="scss">
+  .el-select{
+    width: 100% !important;
+    height: 100%;
+  }
   #app{
     display: flex;
     width: 100%;
-    .el-select{
-      width: 100% !important;
-      height: 100%;
-    }
     .vue-treeselect{
       width: 50%;
       .vue-treeselect__control{

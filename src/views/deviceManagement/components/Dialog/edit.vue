@@ -171,11 +171,6 @@ export default {
       }
     }
   },
-  mounted() {
-    console.log(this.form_data)
-    // this.device_options.value18 = this.options
-  },
-
   methods: {
     // 增加修改终端
     add_device() {

@@ -188,7 +188,6 @@ export default {
       delete_from_device: 1,
       depList: [],
       group_data: [],
-      // visible: this.$refs.copyAuthority.visible
       checkedList: {}
     }
   },
