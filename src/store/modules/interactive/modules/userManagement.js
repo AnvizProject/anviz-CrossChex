@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-import { adduser, userlist, useredit, userdetail, deptlist, transfer, copyAuthority, userimport, userexport, last } from '@/api/user'
+import { adduser, userlist, useredit, userdetail, deptlist, transfer, copyAuthority, userimport, userexport, last, checkinout } from '@/api/user'
 import store from '../../..'
 const userManagement = {
   state: {
@@ -131,6 +131,18 @@ const userManagement = {
       Last_data.access_token = store.getters.token
       return new Promise((resolve, reject) => {
         last(Last_data).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 统计报表 -> 考勤记录
+    checkinout({ commit }, data) {
+      data.access_token = store.getters.token
+      console.log(data)
+      return new Promise((resolve, reject) => {
+        checkinout(data).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

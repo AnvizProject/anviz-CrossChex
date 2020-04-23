@@ -75,21 +75,131 @@ export default{
           label: '4'
         }],
         record_identifier: [{
-          value: 1,
+          value: 0,
           label: '全部'
         }, {
-          value: 2,
+          value: 1,
           label: '考勤'
         }, {
-          value: 3,
+          value: 2,
           label: '门禁'
         }, {
-          value: 4,
+          value: 3,
           label: '考勤和门禁'
         }, {
-          value: 5,
+          value: 4,
           label: '无效记录'
-        }]
+        }],
+        Attendance: {
+          exportFormat: [
+            {
+              value: 'txt',
+              label: '文本文件(*.txt)'
+            },
+            {
+              value: 'csv',
+              label: 'CSV 文件(*.csv)'
+            },
+            {
+              value: 'xls',
+              label: 'Excel 文件(*.xls)'
+            }
+          ],
+          exportField: [
+            {
+              value: '考勤号',
+              label: '考勤号'
+            },
+            {
+              value: '人员编号',
+              label: '人员编号'
+            },
+            {
+              value: '姓名',
+              label: '姓名'
+            },
+            {
+              value: '日期/时间',
+              label: '日期/时间'
+            },
+            {
+              value: '机器号',
+              label: '机器号'
+            },
+            {
+              value: '机器名称',
+              label: '机器名称'
+            },
+            {
+              value: '状态',
+              label: '状态'
+            },
+            {
+              value: '状态名称',
+              label: '状态名称'
+            },
+            {
+              value: '部门',
+              label: '部门'
+            },
+            {
+              value: '职务',
+              label: '职务'
+            },
+            {
+              value: '工作码',
+              label: '工作码'
+            }
+          ],
+          timeFormat: [
+            {
+              value: 0,
+              label: 'yyyy-mm-dd hh:mm:ss'
+            },
+            {
+              value: 1,
+              label: 'yyyy-m-d hh:mm:ss'
+            },
+            {
+              value: 2,
+              label: 'yy-mm-dd hh:mm:ss'
+            },
+            {
+              value: 3,
+              label: 'yyyymmddhhmmss'
+            }
+          ],
+          spacer: [
+            {
+              value: 0,
+              label: ','
+            },
+            {
+              value: 1,
+              label: ';'
+            },
+            {
+              value: 2,
+              label: '_'
+            },
+            {
+              value: 3,
+              label: '/'
+            },
+            {
+              value: 4,
+              label: '-'
+            },
+            {
+              value: 5,
+              label: 'Tab'
+            },
+            {
+              value: 6,
+              label: 'Space'
+            }
+          ]
+        }
       }
     }
   }
