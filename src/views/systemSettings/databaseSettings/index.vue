@@ -57,6 +57,12 @@ export default {
     get_db(cmd) {
       this.$store.dispatch('interactive/Get_db', cmd).then(response => {
         console.log(response)
+        if (cmd.cmd === 'init_db') {
+          this.$message({
+            message: '修改成功',
+            type: 'success'
+          })
+        }
         if (cmd.cmd === 'get_db') {
           this.form.db_host = response.db_config.db_host
           this.form.db_port = response.db_config.db_port

@@ -8,7 +8,7 @@
       <span slot="title" class="dialog-header ">
         <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
         <div>{{ dialogtitle }}</div>
-        <el-button disabled="disabled" size="mini" type="primary" @click="add_device">确 定</el-button>
+        <el-button :disabled="disabled" size="mini" type="primary" @click="add_device">确 定</el-button>
       </span>
       <div v-loading="loading" class="parameter">
         <span class="parameter-item">

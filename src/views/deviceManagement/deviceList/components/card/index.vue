@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="device-icon">
-      <span v-if="close" :class="val.can_open_door===1&&val.online_status!=='online'?'icon-cursor': 'display'" title="软件开门" class="icon-psd-lock" @click="open_door(val.can_open_door)"/>
+      <span v-if="close" :class="val.can_open_door===1&&val.online_status==='online'?'icon-cursor': 'ban'"><span :class="val.can_open_door===1&&val.online_status==='online'?'icon-cursor': 'display'" title="软件开门" class="icon-psd-lock" @click="open_door(val.can_open_door)"/></span>
       <span v-else class="icon-cursor icon-psd-open open"/>
       <span :class="val.online_status==='online'?'':'mask'" class="icon-cursor icon-data-import" title="读取新纪录" @click="read_new_record"/>
       <el-dropdown :hide-on-click="true" :disabled="val.online_status==='online'?false:true" :class="val.online_status==='online'?'':'mask'" @command="handleCommand">
@@ -230,11 +230,15 @@ export default {
     }
     .display{
       color: #dedbdc;
-      cursor:not-allowed
+      cursor:not-allowed;
+      pointer-events:none
     }
     .open{
       color: #d0021b;
     }
+  }
+  .ban{
+    cursor:not-allowed !important;
   }
   .mask{
     opacity: 0.3;

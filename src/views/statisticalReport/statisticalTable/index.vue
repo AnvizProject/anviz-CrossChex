@@ -122,10 +122,13 @@
                       show-overflow-tooltip
                       width="100"/>
                     <el-table-column
-                      prop="Checked"
                       label="审核"
                       show-overflow-tooltip
-                      width="120"/>
+                      width="120">
+                      <template slot-scope="scope">
+                        <el-checkbox v-model="scope.row.Checked" :true-label="1" :false-label="0" disabled/>
+                      </template>
+                    </el-table-column>
                   </el-table>
                 </div>
               </el-col>
@@ -229,29 +232,44 @@
                       label="加班时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="IsNoIn"
                       label="未签到"
-                      show-overflow-tooltip/>
+                      show-overflow-tooltip>
+                      <template slot-scope="scope">
+                        <el-checkbox v-model="scope.row.IsNoIn" :true-label="1" :false-label="0" disabled/>
+                      </template>
+                    </el-table-column>
                     <el-table-column
-                      prop="IsNoIn"
                       label="未签退"
-                      show-overflow-tooltip/>
+                      show-overflow-tooltip>
+                      <template slot-scope="scope">
+                        <el-checkbox v-model="scope.row.IsNoIn" :true-label="1" :false-label="0" disabled/>
+                      </template>
+                    </el-table-column>
                     <el-table-column
-                      prop="IsNoWork"
                       label="旷工"
-                      show-overflow-tooltip/>
+                      show-overflow-tooltip>
+                      <template slot-scope="scope">
+                        <el-checkbox v-model="scope.row.IsNoWork" :true-label="1" :false-label="0" disabled/>
+                      </template>
+                    </el-table-column>
                     <el-table-column
                       prop="Memo"
                       label="例外情况"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="IsFreeTime"
                       label="浮动"
-                      show-overflow-tooltip/>
+                      show-overflow-tooltip>
+                      <template slot-scope="scope">
+                        <el-checkbox v-model="scope.row.IsFreeTime" :true-label="1" :false-label="0" disabled/>
+                      </template>
+                    </el-table-column>
                     <el-table-column
-                      prop="IsOverTime"
                       label="加班"
-                      show-overflow-tooltip/>
+                      show-overflow-tooltip>
+                      <template slot-scope="scope">
+                        <el-checkbox v-model="scope.row.IsOverTime" :true-label="1" :false-label="0" disabled/>
+                      </template>
+                    </el-table-column>
                     <el-table-column
                       prop="Workday"
                       label="排定工作日"
@@ -274,9 +292,12 @@
                       label="工种"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="Checked"
                       label="审核"
-                      show-overflow-tooltip/>
+                      show-overflow-tooltip>
+                      <template slot-scope="scope">
+                        <el-checkbox v-model="scope.row.Checked" :true-label="1" :false-label="0" disabled/>
+                      </template>
+                    </el-table-column>
                     <el-table-column
                       prop="address"
                       label="外出时间"

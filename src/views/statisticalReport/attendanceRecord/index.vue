@@ -118,96 +118,97 @@
           </span>
         </div>
       </el-header>
-      <el-main slot="main">
-        <div class="main-slide">
-          <el-table
-            ref="filterTable"
-            :data="tableData"
-            tooltip-effect="dark"
-            style="width: 100%">
-            <el-table-column
-              prop="UserCode"
-              align="center"
-              fixed
-              label="人员编号"/>
-            <el-table-column
-              prop="userid"
-              align="center"
-              label="考勤号"/>
-            <el-table-column
-              prop="Name"
-              align="center"
-              label="姓名"
-              show-overflow-tooltip/>
-            <el-table-column
-              prop="CheckTime"
-              align="center"
-              label="日期/时间"
-              width="150"
-              show-overflow-tooltip/>
-            <el-table-column
-              prop="CheckType"
-              align="center"
-              label="状态"
-              show-overflow-tooltip/>
-            <el-table-column
-              prop="CheckTypeName"
-              align="center"
-              label="状态说明"
-              show-overflow-tooltip/>
-            <el-table-column
-              prop="Sensorid"
-              align="center"
-              label="机器号"
-              show-overflow-tooltip/>
-            <el-table-column
-              prop="ClientNumber"
-              align="center"
-              label="机器序列号"
-              show-overflow-tooltip/>
-            <el-table-column
-              prop="ClientName"
-              label="机器名称"
-              align="center"
-              show-overflow-tooltip/>
-            <el-table-column
-              prop="DeptName"
-              align="center"
-              label="部门"
-              show-overflow-tooltip/>
-            <el-table-column
-              prop="Duty"
-              align="center"
-              label="职务"
-              show-overflow-tooltip/>
-            <el-table-column
-              prop="WorkType"
-              align="center"
-              label="工作码"
-              show-overflow-tooltip/>
-            <el-table-column
-              prop="AttFlag"
-              align="center"
-              label="验证方式编码"
-              show-overflow-tooltip/>
-            <!-- <el-table-column label="验证方式">
+      <!-- <el-main slot="main"> -->
+      <div slot="main" class="main-slide">
+        <el-table
+          ref="filterTable"
+          :data="tableData"
+          border
+          tooltip-effect="dark"
+          style="width: 100%">
+          <el-table-column
+            prop="UserCode"
+            align="center"
+            fixed
+            label="人员编号"/>
+          <el-table-column
+            prop="userid"
+            align="center"
+            label="考勤号"/>
+          <el-table-column
+            prop="Name"
+            align="center"
+            label="姓名"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="CheckTime"
+            align="center"
+            label="日期/时间"
+            width="150"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="CheckType"
+            align="center"
+            label="状态"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="CheckTypeName"
+            align="center"
+            label="状态说明"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="Sensorid"
+            align="center"
+            label="机器号"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="ClientNumber"
+            align="center"
+            label="机器序列号"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="ClientName"
+            label="机器名称"
+            align="center"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="DeptName"
+            align="center"
+            label="部门"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="Duty"
+            align="center"
+            label="职务"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="WorkType"
+            align="center"
+            label="工作码"
+            show-overflow-tooltip/>
+          <el-table-column
+            prop="AttFlag"
+            align="center"
+            label="验证方式编码"
+            show-overflow-tooltip/>
+          <!-- <el-table-column label="验证方式">
               <template slot-scope="scope">
                 {{ scope.row.AttFlag }}
               </template>
             </el-table-column> -->
-            <el-table-column
-              prop="AttFlag"
-              align="center"
-              label="验证方式"
-              show-overflow-tooltip/>
-            <el-table-column label="是否开门" align="center">
-              <template slot-scope="scope">
-                <el-checkbox v-model="scope.row.OpenDoorFlag" :true-label="1" :false-label="0" disabled/>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </el-main>
+          <el-table-column
+            prop="AttFlag"
+            align="center"
+            label="验证方式"
+            show-overflow-tooltip/>
+          <el-table-column label="是否开门" align="center">
+            <template slot-scope="scope">
+              <el-checkbox v-model="scope.row.OpenDoorFlag" :true-label="1" :false-label="0" disabled/>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <!-- </el-main> -->
     </Container>
   </div>
 </template>
@@ -377,7 +378,10 @@ export default {
 </style>
 
 <style lang="scss">
-.record{
+  .record{
+    .main-body{
+      height:calc(100vh - 90px) !important;
+    }
     .main-body .el-header{
       height: unset !important;
     }

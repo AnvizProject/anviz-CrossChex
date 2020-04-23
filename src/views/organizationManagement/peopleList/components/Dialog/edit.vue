@@ -451,6 +451,7 @@ export default {
     // 最大id人员
     Last() {
       this.$store.dispatch('interactive/Last', {}).then(response => {
+        console.log(response)
         if (response.last_userinfo.length === 0) {
           this.userform.userid = 1
           this.userform.UserCode = 1
@@ -477,8 +478,12 @@ export default {
         this.loading = false
         if (res.cmd === 'enroll_finger' && this.fingerid === 1) {
           this.userform.FingerInfo.finger1 = res.data.template
+          this.word1_color = '#3CA060'
+          this.word1 = '已登记'
         } else if (res.cmd === 'enroll_finger' && this.fingerid === 2) {
           this.userform.FingerInfo.finger2 = res.data.template
+          this.word2_color = '#3CA060'
+          this.word2 = '已登记'
         }
         this.two = 2
         return
