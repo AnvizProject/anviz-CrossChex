@@ -9,10 +9,11 @@ import router from './router'
 import i18n from '@/utils/locales'
 import '@/icons' // icon
 import '@/permission' // permission control
+import '@/assets/font/font.css'
 // WebSocket封装方法
 import * as socketApi from './utils/socket'
-import Cookies from 'js-cookie'
-if(Cookies.get())
+// import Cookies from 'js-cookie'
+// if(Cookies.get())
 /**
  * This project originally used easy-mock to simulate data,
  * but its official service is very unstable,
