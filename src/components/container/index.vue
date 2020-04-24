@@ -30,11 +30,9 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-      console.log(val, '子组件1')
       this.$emit('per_page', { perPage: val, page: 1 })
     },
     handleCurrentChange(val) {
-      console.log(val, '子组件2')
       this.$emit('page', { perPage: this.pageSize, page: val })
     }
   }
@@ -43,7 +41,7 @@ export default {
 <style lang="scss" scoped>
   .main-body{
     width: calc(100vw - 250px) !important;
-    height: calc(100vh - 122px) !important;
+    height: calc(100vh - 112px) !important;
     margin:10px !important;
     box-shadow:0px 2px 7px 0px rgba(65, 48, 48, 0.13);
     border-radius:5px !important;

@@ -124,8 +124,8 @@
     }
     
     .el-menu-item {
-      height: 70px;
-      line-height: 70px;
+      height: 60px;
+      line-height: 60px;
       padding: 0 25px 0;
       &:hover{
         color:$color-main !important;
@@ -144,7 +144,7 @@
   
   // 主体区域 Main container
   .main-container {
-    max-height:calc(100vh - 70px);
+    max-height:calc(100vh - 60px);
     position: relative;
     display: flex;
     // 侧边栏

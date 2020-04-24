@@ -6,7 +6,7 @@ import ElementUILocale from 'element-ui/lib/locale'
 import enLocale from 'element-ui/lib/locale/lang/en'
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 Vue.use(VueI18n)
-const DEFAULT_LANG = 'zh'
+const DEFAULT_LANG = 'en'
 const LOCALE_KEY = 'DemoLanguage'
 const locales = {
   zh: require('../../static/locales/zh.json'),

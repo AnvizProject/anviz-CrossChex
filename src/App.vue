@@ -15,9 +15,6 @@ export default {
         return false
       }
     }
-  },
-  mounted() {
-    console.log(this.$i18n.locale)
   }
 }
 

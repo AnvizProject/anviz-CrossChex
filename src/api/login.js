@@ -8,14 +8,6 @@ export function login(data) {
   })
 }
 
-export function getInfo(token) {
-  return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
-  })
-}
-
 export function logout(data) {
   return request({
     url: '/api/opinfo/logout',
@@ -29,15 +21,6 @@ export function modifyPassword(data) {
   return request({
     url: '/api/opinfo/update_pwd',
     method: 'post',
-    data
-  })
-}
-
-export function userlist(data) {
-  console.log(data)
-  return request({
-    url: '/api/opgroup/index',
-    method: 'get',
     data
   })
 }

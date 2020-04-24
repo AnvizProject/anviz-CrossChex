@@ -381,7 +381,7 @@ export default {
 <style lang="scss">
   .record{
     .main-body{
-      height:calc(100vh - 90px) !important;
+      height:calc(100vh - 80px) !important;
     }
     .main-body .el-header{
       height: unset !important;

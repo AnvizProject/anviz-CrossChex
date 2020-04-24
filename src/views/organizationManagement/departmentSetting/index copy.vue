@@ -274,8 +274,8 @@ export default {
         margin-right: 0;
       }
       .block{
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
         margin-right: 20px;
       }
       .name-num{
