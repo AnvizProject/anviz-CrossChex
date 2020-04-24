@@ -105,12 +105,6 @@
                         </el-upload>
                       </span>
                     </el-form>
-                    <div class="check-box">
-                      <el-checkbox v-model="checked1">关闭时软件最小化到系统托盘</el-checkbox>
-                    </div>
-                    <div>
-                      <el-checkbox v-model="checked2">退出程序时，自动备份数据库</el-checkbox>
-                    </div>
                   </div>
                 </el-col>
                 <el-col :span="12">
@@ -208,8 +202,6 @@ export default {
       delete_all_num: 1,
       hasCheckedWHLeftData: [],
       checked: true,
-      checked1: false,
-      checked2: false,
       renderFunc(h, option) {
         return <span>{ option.label }</span>
       }

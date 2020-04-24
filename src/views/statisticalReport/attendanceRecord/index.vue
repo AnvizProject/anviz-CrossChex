@@ -129,7 +129,6 @@
           <el-table-column
             prop="UserCode"
             align="center"
-            fixed
             label="人员编号"/>
           <el-table-column
             prop="userid"
@@ -164,6 +163,7 @@
           <el-table-column
             prop="ClientNumber"
             align="center"
+            width="100px"
             label="机器序列号"
             show-overflow-tooltip/>
           <el-table-column
@@ -189,6 +189,7 @@
           <el-table-column
             prop="AttFlag"
             align="center"
+            width="120px"
             label="验证方式编码"
             show-overflow-tooltip/>
           <!-- <el-table-column label="验证方式">
