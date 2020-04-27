@@ -163,6 +163,7 @@
           <el-table-column
             prop="ClientNumber"
             align="center"
+            width="100px"
             label="机器序列号"
             show-overflow-tooltip/>
           <el-table-column
@@ -188,6 +189,7 @@
           <el-table-column
             prop="AttFlag"
             align="center"
+            width="120px"
             label="验证方式编码"
             show-overflow-tooltip/>
           <el-table-column
@@ -374,7 +376,7 @@ export default {
 <style lang="scss">
   .record{
     .main-body{
-      height:calc(100vh - 90px) !important;
+      height:calc(100vh - 80px) !important;
     }
     .main-body .el-header{
       height: unset !important;

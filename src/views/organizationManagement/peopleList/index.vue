@@ -6,6 +6,22 @@
         <div class="header-item">
           <el-button type="primary" size="mini" @click="Adduser">增加</el-button>
           <el-button :disabled="multipleSelection.length<=0" :type="multipleSelection.length>0?'danger':'info'" size="mini" @click="deleteList">删除</el-button>
+          <el-button type="primary" size="mini" class="import">
+            <el-upload
+              :multiple="false"
+              :auto-upload="true"
+              :before-upload="beforeUpload"
+              :limit="1"
+              :http-request="import_personnel"
+              :show-file-list="false"
+              class="image-uploader"
+              list-type="text"
+              action=""
+              accept=".xlsx,.xls">
+              导入人员
+            </el-upload>
+          </el-button>
+          <el-button type="primary" size="mini" @click="export_personnel">导出人员</el-button>
           <el-dropdown>
             <el-button :disabled="multipleSelection.length<=0" type="info" size="mini">更多操作<i class="el-icon-arrow-down el-icon--right"/></el-button>
             <el-dropdown-menu slot="dropdown">
@@ -13,22 +29,6 @@
               <el-dropdown-item @click.native="resignation">人员离职</el-dropdown-item>
               <el-dropdown-item @click.native="set_authority">设置权限</el-dropdown-item>
               <el-dropdown-item @click.native="copyAuthority">复制权限</el-dropdown-item>
-              <el-dropdown-item>
-                <el-upload
-                  :multiple="false"
-                  :auto-upload="true"
-                  :before-upload="beforeUpload"
-                  :limit="1"
-                  :http-request="import_personnel"
-                  :show-file-list="false"
-                  class="image-uploader"
-                  list-type="text"
-                  action=""
-                  accept=".xlsx,.xls">
-                  导入人员
-                </el-upload>
-              </el-dropdown-item>
-              <el-dropdown-item @click.native="export_personnel">导出人员</el-dropdown-item>
               <el-dropdown-item @click.native="upload_user">上传人员</el-dropdown-item>
               <el-dropdown-item @click.native="upload_template">上传模板</el-dropdown-item>
             </el-dropdown-menu>
@@ -421,6 +421,14 @@ export default {
         vertical-align: top;
         margin-left: 10px;
       }
+      .import{
+        padding: 0;
+        .image-uploader{
+          .el-upload{
+            padding: 7px 15px;
+          }
+        }
+      }
     }
   }
   .el-main{
@@ -443,5 +451,24 @@ export default {
   }
   .have{
     color:#47a369;
+  }
+</style>
+<style lang="scss">
+  .el-header{
+    .con-item{
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .import{
+        padding: 0;
+        .image-uploader{
+          .el-upload{
+            padding: 7px 15px;
+            color:#fff;
+          }
+        }
+      }
+    }
   }
 </style>

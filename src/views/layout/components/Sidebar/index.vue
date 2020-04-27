@@ -18,7 +18,7 @@
     </el-menu>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <span class="user-avatar">yaobo</span>
+        <span class="user-avatar">{{ username.OPName }}</span>
         <i class="el-icon-caret-bottom"/>
       </div>
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -43,7 +43,7 @@
 <script>
 import variables from '@/styles/variables.scss'
 import { setup } from '@/utils/locales'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import SidebarItem from './SidebarItem'
 import Dialog from '../Dialog/editPwd'
 export default {
@@ -52,6 +52,9 @@ export default {
     ...mapGetters([
       'sidebar'
     ]),
+    ...mapState({
+      username: state => state.user.userInfo
+    }),
     routes() {
       // console.log(this.$router.options.routes)
       return this.$router.options.routes
@@ -82,7 +85,7 @@ export default {
       this.$store.commit('leftmenu')
     },
     editPassword() {
-      this.$refs.Dialog.dialogFormVisible = true
+      this.$refs.Dialog.dialogVisible = true
     },
     // 语言切换
     changeLanguage(lang) {

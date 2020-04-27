@@ -138,7 +138,7 @@ export default {
 .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 230px;
      width: 230px;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 60px);
   }
   .order {
     height: 40px;

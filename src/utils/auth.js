@@ -21,3 +21,11 @@ export function setDebug(debug) {
 export function getDebug() {
   return Cookies.get(DebugKey)
 }
+
+export function getInfo() {
+  return Cookies.get('UserInfo')
+}
+
+export function setInfo(userinfo) {
+  return Cookies.set('UserInfo', userinfo)
+}

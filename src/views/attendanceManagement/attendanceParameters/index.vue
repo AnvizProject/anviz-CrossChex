@@ -491,7 +491,7 @@ export default {
     color:#E02020;
     text-align: right;
     padding: 0 15px;
-    margin-top: 70px;
+    margin-top: 60px;
     font-size: 14px;
   }
   .overtim-level{

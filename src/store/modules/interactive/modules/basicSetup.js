@@ -12,9 +12,10 @@ const basicSetup = {
   actions: {
     // 添加字段
     Add_fields({ commit }, Add_fields_data) {
+      Add_fields_data.access_token = store.getters.token
       return new Promise((resolve, reject) => {
-        add_fields({ access_token: store.getters.token, field_name: Add_fields_data }).then(response => {
-          resolve()
+        add_fields(Add_fields_data).then(response => {
+          resolve(response)
         }).catch(error => {
           reject(error)
         })

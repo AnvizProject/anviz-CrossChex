@@ -743,7 +743,7 @@ export default {
 <style lang="scss">
   .report{
     .main-body{
-      height:calc(100vh - 90px) !important;
+      height:calc(100vh - 80px) !important;
     }
     .date_select{
       .el-input--suffix{

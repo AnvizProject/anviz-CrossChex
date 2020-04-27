@@ -8,12 +8,12 @@
               <span>自定义字段设置</span>
             </div>
             <div>
-              <el-form :inline="true" :model="field" class="demo-form-inline word-name">
-                <el-form-item label="字段名称" class="word-box">
+              <el-form ref="field" :inline="true" :rules="rules" :model="field" class="demo-form-inline word-name">
+                <el-form-item label="字段名称" class="word-box" prop="word">
                   <el-input v-model="field.word"/>
                 </el-form-item>
                 <el-form-item class="word-but">
-                  <el-button type="primary" size="small" @click="add_word">新增</el-button>
+                  <el-button type="primary" size="small" @click="add_word('field')">新增</el-button>
                 </el-form-item>
               </el-form>
             </div>
@@ -65,7 +65,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-row>
+    <!-- <el-row>
       <el-col :span="24" class="download-record">
         <div class="grid-content bg-purple-dark">
           <el-card class="box-card">
@@ -173,7 +173,7 @@
           </el-card>
         </div>
       </el-col>
-    </el-row>
+    </el-row> -->
   </div>
 </template>
 <script>
@@ -208,10 +208,13 @@ export default {
       delete_all_num: 1,
       hasCheckedWHLeftData: [],
       checked: true,
-      checked1: false,
-      checked2: false,
       renderFunc(h, option) {
         return <span>{ option.label }</span>
+      },
+      rules: {
+        word: [
+          { required: true, message: '请输入字段名称', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -221,17 +224,18 @@ export default {
   },
   methods: {
     // 新增字段
-    add_word() {
-      if (this.form.word === '') {
-        this.$message.error('字段名称为空！')
-        return
-      }
-      console.log(this.form.word)
-      this.$store.dispatch('interactive/Add_fields', this.field.word).then(response => {
-        this.base_para_details()
-        this.field.word = ''
-      }).catch(() => {
-        console.log('error')
+    add_word(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$store.dispatch('interactive/Add_fields', { field_name: this.field.word }).then(response => {
+            this.base_para_details()
+            this.field.word = ''
+          }).catch(() => {
+            console.log('error')
+          })
+        } else {
+          return false
+        }
       })
     },
     // 字段列表
@@ -270,6 +274,12 @@ export default {
       this.form.cmd = cmd
       this.$store.dispatch('interactive/Communication', this.form).then(response => {
         this.form = response.config
+        if (cmd === 'update_config') {
+          this.$message({
+            message: '通讯参数设置成功',
+            type: 'success'
+          })
+        }
       }).catch(() => {
         console.log('error')
       })
@@ -305,6 +315,13 @@ export default {
     span:first-child{
     width: 80px;
     margin-right: 30px;
+    }
+  }
+</style>
+<style lang="scss">
+  .basic{
+    .el-form-item__label::before{
+      content:'' !important;
     }
   }
 </style>
