@@ -129,7 +129,6 @@
           <el-table-column
             prop="UserCode"
             align="center"
-            fixed
             label="人员编号"/>
           <el-table-column
             prop="userid"
@@ -191,13 +190,8 @@
             align="center"
             label="验证方式编码"
             show-overflow-tooltip/>
-          <!-- <el-table-column label="验证方式">
-              <template slot-scope="scope">
-                {{ scope.row.AttFlag }}
-              </template>
-            </el-table-column> -->
           <el-table-column
-            prop="AttFlag"
+            prop="AttFlagName"
             align="center"
             label="验证方式"
             show-overflow-tooltip/>

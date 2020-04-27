@@ -224,19 +224,18 @@ export default {
       this.$store.dispatch('interactive/userList', { per_page: this.per_page.perPage, Deptid: this.$refs.DeptGroup.Deptid, page: this.per_page.page, ClientNumber: this.$refs.DeviceGroup.Clientid, search_key: this.$refs.search.input }).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
-        console.log(response)
       }).catch(error => {
         console.log(error)
       })
     },
     // 修改人员
     handleEdit(index, row) {
+      this.rowdata = Object.assign({}, row)
+      // this.user_id = []
+      // this.user_id.push(row.userid)
       setTimeout(() => {
         this.$refs.editDialog.handleEdit()
       }, 0)
-      this.rowdata = Object.assign({}, row)
-      this.user_id = []
-      this.user_id.push(row.userid)
     },
     // 行内删除
     handleDelete(index, row) {
