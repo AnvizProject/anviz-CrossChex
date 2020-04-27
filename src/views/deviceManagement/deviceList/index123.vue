@@ -176,8 +176,8 @@ export default {
         this.group_list.forEach((v, k) => {
           this.device_list.push({ value: v.devicegroupid, label: '' + v.devicegroupname + '' })
         })
-      }).catch(() => {
-        console.log('error')
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 所有组列表点击
@@ -195,8 +195,8 @@ export default {
         this.clientid = response.FingerClient[0].Clientid
         this.details = response.FingerClient[0]
         this.ClientNumbers = response.FingerClient[0].ClientNumber
-      }).catch(() => {
-        console.log('error')
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 终端列表点击
@@ -237,7 +237,8 @@ export default {
         }).catch((error) => {
           console.log(error)
         })
-      }).catch(() => {
+      }).catch((error) => {
+        console.log(error)
         this.$message({
           type: 'info',
           message: '已取消删除'
@@ -249,7 +250,8 @@ export default {
       this.$store.dispatch('interactive/userList', this.form).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
-      }).catch(() => {
+      }).catch(error => {
+        console.log(error)
       })
     }
   }

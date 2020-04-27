@@ -263,7 +263,8 @@ export default {
         message: '完成分析'
       })
       this.getData({})
-    }).catch(() => {
+    }).catch((error) => {
+      console.log(error)
       this.$message({
         type: 'info',
         message: '已取消'

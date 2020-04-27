@@ -23,16 +23,16 @@
       </div>
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
         <el-dropdown-item >
-          <span class="icon icon-modify icon-size" @click="editPassword">{{ $t("Modify-Password") }}</span>
+          <span class="icon icon-modify pdall" @click="editPassword">{{ $t("Modify-Password") }}</span>
         </el-dropdown-item>
         <el-dropdown-item>
-          <span class="icon icon-nav-signout icon-size" @click="logout">{{ $t("Sign-Out") }}</span>
+          <span class="icon icon-nav-signout pdall" @click="logout">{{ $t("Sign-Out") }}</span>
         </el-dropdown-item>
         <el-dropdown-item >
-          <span class="icon icon-modify icon-size" @click="changeLanguage('en')">{{ $t("English") }}</span>
+          <span class="icon icon-modify pdall" @click="changeLanguage('en')">{{ $t("English") }}</span>
         </el-dropdown-item>
         <el-dropdown-item>
-          <span class="icon icon-nav-signout icon-size" @click="changeLanguage('zh')">{{ $t("Chinese") }}</span>
+          <span class="icon icon-nav-signout pdall" @click="changeLanguage('zh')">{{ $t("Chinese") }}</span>
         </el-dropdown-item>
 
       </el-dropdown-menu>
@@ -77,7 +77,8 @@ export default {
           this.$router.push({ name: 'login' })
         })
         // document.cookie = 'Admin-Token' + '=;expires=' + (new Date(0)).toGMTString()
-      }).catch(() => {
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 左边导航栏开关
@@ -102,5 +103,8 @@ export default {
   }
   .avatar-wrapper{
     display: flex;
+  }
+  .icon{
+    display: block;
   }
 </style>

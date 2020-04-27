@@ -67,8 +67,8 @@ export default {
       this.$store.dispatch('interactive/Status_index', {}).then(response => {
         this.tableData = response.Status
         console.log(response)
-      }).catch(() => {
-        console.log('error')
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 更新考勤状态到终端设备

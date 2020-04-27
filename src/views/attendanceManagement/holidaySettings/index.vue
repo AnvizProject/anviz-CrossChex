@@ -169,11 +169,9 @@ export default {
     },
     show(key) {
       this.form = Object.assign({}, this.holidayList[key])
-      console.log(this.form, 'show')
     },
     getHolidayList() {
       this.$store.dispatch('interactive/getHolidayList', {}).then(response => {
-        console.log(response)
         this.holidayList = response.Holiday
       }).catch(error => {
         console.log(error)
@@ -181,16 +179,13 @@ export default {
     },
     add() {
       this.$store.dispatch('interactive/createHoliday', this.form).then(response => {
-        console.log(response)
         this.getHolidayList()
       }).catch(error => {
         console.log(error)
       })
     },
     edit() {
-      console.log(this.form, 'edit')
       this.$store.dispatch('interactive/updateHoliday', this.form).then(response => {
-        console.log(response)
         this.getHolidayList()
       }).catch(error => {
         console.log(error)

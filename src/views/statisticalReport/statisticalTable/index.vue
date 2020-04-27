@@ -117,7 +117,7 @@
                       label="工作码"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="ULogid"
+                      prop="Sensorid"
                       label="机器号"
                       show-overflow-tooltip
                       width="100"/>
@@ -651,7 +651,7 @@ export default {
     },
     getConfigResult(res) {
       // 接收回调函数返回数据的方法
-      // console.log(res)
+      console.log(res)
       if (res.ret === '10000') {
         return
       }

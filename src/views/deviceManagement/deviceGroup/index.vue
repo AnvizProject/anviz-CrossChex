@@ -48,8 +48,8 @@ export default {
         this.group_list = response.DeviceGroup
         this.group_title = response.DeviceGroup[0].devicegroupname
         console.log(this.group_list)
-      }).catch(() => {
-        console.log('error')
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 所有组列表点击

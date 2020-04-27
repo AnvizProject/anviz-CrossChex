@@ -112,7 +112,6 @@ export default {
   methods: {
     getJobSetting() {
       this.$store.dispatch('interactive/getJobList', {}).then(response => {
-        console.log(response)
         this.jobList = response.WorkCode
       }).catch(error => {
         console.log(error)
@@ -123,7 +122,6 @@ export default {
     },
     add() {
       this.$store.dispatch('interactive/createJob', this.form).then(response => {
-        console.log(response)
         this.getJobSetting()
       }).catch(error => {
         console.log(error)
@@ -131,7 +129,6 @@ export default {
     },
     del() {
       this.$store.dispatch('interactive/delJob', this.form).then(response => {
-        console.log(response)
         this.form = {}
         this.getJobSetting()
       }).catch(error => {

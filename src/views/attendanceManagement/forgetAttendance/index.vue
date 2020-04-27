@@ -460,24 +460,24 @@ export default {
     timelist() {
       this.$store.dispatch('interactive/Time_list').then(response => {
         this.tableData = response.TimeTable
-      }).catch(() => {
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 时间段新增
     newlyAdded() {
       this.$store.dispatch('interactive/Add_time', this.form).then(response => {
         this.timelist()
-      }).catch(() => {
-        console.log(0)
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 时间段删除
     deleteRow(index, rows) {
-      console.log(rows.Timeid)
       this.$store.dispatch('interactive/delete_time', rows.Timeid).then(response => {
         this.timelist()
-      }).catch(() => {
-        console.log(0)
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 新增班次

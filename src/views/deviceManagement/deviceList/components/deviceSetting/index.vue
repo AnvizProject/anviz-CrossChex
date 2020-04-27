@@ -294,12 +294,6 @@ export default {
       &:last-child{
         margin-bottom: 30px;
       }
-    .icon-size{
-      color:#47a369;
-      width: 12%;
-      flex-shrink: 0;
-      flex-basis: 12%;
-    }
     span:last-child{
       width: 88%;
       flex-basis: 88%;

@@ -381,8 +381,8 @@ export default {
         this.week = response.BasePara.RestDaysConfig
         this.overtime = response.BasePara
         console.log(response)
-      }).catch(() => {
-        console.log('error')
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 考勤参数修改
@@ -390,8 +390,8 @@ export default {
       this.form.RestDays = Number(this.week.MON) + Number(this.week.TUE) + Number(this.week.WED) + Number(this.week.THU) + Number(this.week.FIR) + Number(this.week.SAT) + Number(this.week.SUN)
       this.$store.dispatch('interactive/Attendance_para', this.form).then(response => {
         // console.log(response)
-      }).catch(() => {
-        console.log('error')
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 考勤统计项目
@@ -399,8 +399,8 @@ export default {
       this.$store.dispatch('interactive/Stat_items', {}).then(response => {
         this.statistics = response.StatItems
         this.statItem = response.StatItems[0]
-      }).catch(() => {
-        console.log('error')
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 考勤统计项目修改
@@ -408,16 +408,15 @@ export default {
       this.statItem.newItemid = this.radio
       this.$store.dispatch('interactive/Update_stat_items', this.statItem).then(response => {
         // console.log(response)
-      }).catch(() => {
-        console.log('error')
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 加班数据修改
     overtime_btn() {
       this.$store.dispatch('interactive/Attendance_para', this.overtime).then(response => {
-        console.log(response)
-      }).catch(() => {
-        console.log('error')
+      }).catch(error => {
+        console.log(error)
       })
     }
   }

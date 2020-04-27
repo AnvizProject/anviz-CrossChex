@@ -510,14 +510,14 @@ export default {
       this.$store.dispatch('interactive/userList', { page }).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
-      }).catch(() => {
+      }).catch(error => {
+        console.log(error)
       })
     },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
           this.$refs.filterTable.toggleRowSelection(row)
-          console.log(rows)
         })
       } else {
         this.$refs.filterTable.clearSelection()
@@ -535,7 +535,8 @@ export default {
       this.$store.dispatch('interactive/userList', this.form).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
-      }).catch(() => {
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 导出人员

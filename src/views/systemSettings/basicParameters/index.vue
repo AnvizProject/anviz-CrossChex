@@ -230,8 +230,8 @@ export default {
           this.$store.dispatch('interactive/Add_fields', { field_name: this.field.word }).then(response => {
             this.base_para_details()
             this.field.word = ''
-          }).catch(() => {
-            console.log('error')
+          }).catch((error) => {
+            console.log(error)
           })
         } else {
           return false
@@ -246,16 +246,16 @@ export default {
           // this.data.push({ key: k, label: v })
           this.$set(this.data, k, { key: k, label: v })
         })
-      }).catch(() => {
-        console.log('error')
+      }).catch((error) => {
+        console.log(error)
       })
     },
     // 清除所有字段
     delete_all(num, field) {
       this.$store.dispatch('interactive/Delete_fields', { field_name: field, delete_all: num }).then(response => {
         this.base_para_details()
-      }).catch(() => {
-        console.log('error')
+      }).catch((error) => {
+        console.log(error)
       })
     },
     // 字段列表元素选中 / 取消
@@ -280,16 +280,16 @@ export default {
             type: 'success'
           })
         }
-      }).catch(() => {
-        console.log('error')
+      }).catch((error) => {
+        console.log(error)
       })
     },
     // 定时下载记录
     timing_download_but(time_cmd) {
       this.$store.dispatch('interactive/Timing_download', this.form).then(response => {
         this.form = response.config
-      }).catch(() => {
-        console.log('error')
+      }).catch((error) => {
+        console.log(error)
       })
     }
   }

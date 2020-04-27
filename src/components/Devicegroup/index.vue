@@ -42,13 +42,12 @@ export default {
       this.$store.dispatch('interactive/All_groups_list', {}).then(response => {
         this.group_list = response.DeviceGroup
         this.$emit('groupList', this.group_list)
-      }).catch(() => {
-        console.log('error')
+      }).catch((error) => {
+        console.log(error)
       })
     },
     // 终端列表点击
     list(data) {
-      console.log(data)
       this.value = data.ClientName
       this.fontColor = '#3CA060'
       this.floorid = data.Floorid

@@ -140,7 +140,6 @@ const userManagement = {
     // 统计报表 -> 考勤记录
     checkinout({ commit }, data) {
       data.access_token = store.getters.token
-      console.log(data)
       return new Promise((resolve, reject) => {
         checkinout(data).then(response => {
           resolve(response)

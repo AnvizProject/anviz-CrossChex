@@ -48,7 +48,6 @@ const basicSetup = {
       Timing_download_data.access_token = store.getters.token
       return new Promise((resolve, reject) => {
         timing_download(Communication_data).then(response => {
-          console.log(response)
           resolve(response)
         }).catch(error => {
           reject(error)

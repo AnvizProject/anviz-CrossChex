@@ -104,9 +104,8 @@ export default {
       this.$store.dispatch('interactive/All_groups_list', {}).then(response => {
         this.group_list = response.DeviceGroup
         this.group_title = response.DeviceGroup[0].devicegroupname
-        console.log(this.group_list)
-      }).catch(() => {
-        console.log('error')
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 所有组列表点击
@@ -156,9 +155,8 @@ export default {
     status_index() {
       this.$store.dispatch('interactive/Status_index', {}).then(response => {
         this.tableData = response.Status
-        console.log(response)
-      }).catch(() => {
-        console.log('error')
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 更新考勤状态到终端设备

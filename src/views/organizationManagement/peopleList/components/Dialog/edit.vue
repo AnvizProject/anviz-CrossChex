@@ -40,13 +40,15 @@
               <div class="parameter-item-wrap">
                 <div class="parameter-item-center">
                   <div>姓名</div>
-                  <div class="net-input-item">
+                  <div :class="{'name':isActive }" class="net-input-item">
                     <el-input
+                      ref="inputVal"
                       v-model="userform.Name"
                       placeholder="请输入内容"
                       clearable
                       class="input-box"/>
                   </div>
+                  <p :style="{'display':hint}" :class="{'show':isActive}">*人员姓名必须填写</p>
                 </div>
                 <div class="parameter-item-center">
                   <div>卡号</div>
@@ -95,13 +97,13 @@
                 <div class="parameter-item-center">
                   <div>用户类型</div>
                   <div class="net-input-item">
-                    <selectbox :options="options.User_option4" v-model="usertype"/>
+                    <selectbox :options="options.User_option4" v-model="userform.MgFlag"/>
                   </div>
                 </div>
                 <div class="parameter-item-center">
                   <div>管理员组</div>
                   <div class="net-input-item">
-                    <selectbox :disabled="usertype!==2?true:false" :options="options.User_option5" v-model="userform.admingroupid"/>
+                    <selectbox :disabled="userform.MgFlag!==3?true:false" :options="options.User_option5" v-model="userform.admingroupid"/>
                   </div>
                 </div>
               </div>
@@ -112,7 +114,7 @@
                 <input id="filed" type="file" hidden="" @change="filePreview">
                 <p @click="selectImg()">
                   <span v-if="textHide" class="icon el-icon-plus upload_img"/>
-                  <img :src="userform.Picture" >
+                  <img v-else :src="userform.Picture" >
                 </p>
               </div>
             </span>
@@ -228,9 +230,9 @@
             element-loading-background="hsla(0,0%,100%,.9)">
             <div class="register">
               <h4>设备选择</h4>
-              <el-form ref="form" :model="userform" label-width="80px">
+              <el-form ref="form" :model="info" label-width="80px">
                 <el-form-item label="网络设备">
-                  <el-select v-model="userform.net" placeholder="请选择">
+                  <el-select v-model="info.net" placeholder="请选择">
                     <el-option v-for="(v,k) in fing" :key="k" :label="v.ClientName" :value="v.Clientid"/>
                   </el-select>
                 </el-form-item>
@@ -241,12 +243,12 @@
               <div class="register-item">
                 <div class="register-slide">
                   <span>第一枚指纹</span>
-                  <span :style="{color:word1_color}">{{ word1 }}</span>
+                  <span :style="{'color':word1_color}">{{ word1 }}</span>
                   <span><el-button size="mini" type="primary" @click="Register(1)">登记</el-button></span>
                 </div>
                 <div class="register-slide">
                   <span>第二枚指纹</span>
-                  <span :style="{color:word2_color}">{{ word2 }}</span>
+                  <span :style="{'color':word2_color}">{{ word2 }}</span>
                   <span><el-button size="mini" type="primary" @click="Register(2)">登记</el-button></span>
                 </div>
               </div>
@@ -260,11 +262,11 @@
               <div class="register-item">
                 <div class="register-slide">
                   <span>
-                    <el-form ref="form" :model="userform" label-width="100px">
+                    <el-form ref="form" :model="info" label-width="100px">
                       <el-form-item label="Facepass7">
-                        <el-select v-model="userform.face" placeholder="请选择">
-                          <el-option label="区域一" value="shanghai"/>
-                          <el-option label="区域二" value="beijing"/>
+                        <el-select v-model="info.face" placeholder="请选择">
+                          <el-option label="1" value="shanghai"/>
+                          <el-option label="2" value="beijing"/>
                         </el-select>
                       </el-form-item>
                     </el-form>
@@ -321,6 +323,12 @@ export default {
       two: 1,
       register_title: '登记中...',
       loading: false,
+      hint: 'none',
+      isActive: false,
+      info: {
+        net: '1',
+        face: null
+      },
       userform: {
         userid: '',
         UserCode: '',
@@ -330,6 +338,7 @@ export default {
         Deptid: 1,
         Groupid: null,
         UserFlag: null,
+        MgFlag: null,
         admingroupid: null,
         IsAtt: 1,
         Isovertime: 1,
@@ -342,8 +351,6 @@ export default {
         Birthday: '',
         EmployDate: '',
         Picture: '',
-        net: '1',
-        face: null,
         FingerInfo: {},
         OtherInfo: {
           demo: ''
@@ -366,8 +373,8 @@ export default {
     getField() {
       this.$store.dispatch('interactive/Base_para_details', {}).then(response => {
         this.CustomField = response.BasePara.CustomField
-      }).catch(() => {
-        console.log('error')
+      }).catch((error) => {
+        console.log(error)
       })
     },
     // 新增人员
@@ -389,6 +396,10 @@ export default {
       this.two = 1
       this.register_title = '登记中...'
       this.loading = false
+      this.info = {
+        net: '1',
+        face: null
+      }
       this.userform = {
         userid: '',
         UserCode: '',
@@ -398,6 +409,7 @@ export default {
         Deptid: 1,
         Groupid: null,
         UserFlag: null,
+        MgFlag: null,
         admingroupid: null,
         IsAtt: 1,
         Isovertime: 1,
@@ -410,8 +422,6 @@ export default {
         Birthday: '',
         EmployDate: '',
         Picture: '',
-        net: '1',
-        face: null,
         FingerInfo: {},
         OtherInfo: {}
       }
@@ -453,8 +463,13 @@ export default {
     // 人员详情
     people_detail() {
       this.$store.dispatch('interactive/userDetail', this.userform.userid).then(response => {
-        this.userform.Picture = response.userinfo.Picture
-        this.textHide = false
+        console.log(response)
+        if (response.userinfo.Picture === null) {
+          this.textHide = true
+        } else {
+          this.userform.Picture = response.userinfo.Picture
+          this.textHide = false
+        }
 
         if (response.userinfo.FingerInfo.finger1 !== '') {
           this.word1_color = '#3CA060'
@@ -475,8 +490,8 @@ export default {
         this.fing = response.FingerClients
         this.humanFace = response.FaceClients
         // console.log(response)
-      }).catch(() => {
-        console.log('error')
+      }).catch((error) => {
+        console.log(error)
       })
     },
     // 最大id人员
@@ -489,8 +504,8 @@ export default {
           this.userform.userid = Number(response.last_userinfo[0].userid) + 1
           this.userform.UserCode = Number(response.last_userinfo[0].UserCode) + 1
         }
-      }).catch(() => {
-        console.log('error')
+      }).catch((error) => {
+        console.log(error)
       })
     },
     // websocket接收回调函数返回数据的方法
@@ -539,6 +554,12 @@ export default {
     },
     // 确定
     save() {
+      if (this.userform.Name === '') {
+        this.isActive = true
+        this.hint = 'block'
+        this.$refs.inputVal.focus()
+        return
+      }
       let action = ''
       if (this.isAdd) {
         action = 'interactive/Adduser'
@@ -546,8 +567,10 @@ export default {
         action = 'interactive/userEdit'
       }
       this.userform.OtherInfo = JSON.stringify(this.userform.OtherInfo)
-      // return
+      console.log(this.userform)
       this.$store.dispatch(action, this.userform).then(response => {
+        this.isActive = false
+        this.hint = 'none'
         if (this.two === 1) {
           this.$message({
             type: 'success',
@@ -561,7 +584,8 @@ export default {
             type: 'warning'
           }).then(() => {
             this.$emit('upload_infor')
-          }).catch(() => {
+          }).catch((error) => {
+            console.log(error)
             this.$message({
               type: 'info',
               message: '已取消'
@@ -569,8 +593,8 @@ export default {
           })
         }
         this.$emit('people_list')
-      }).catch(() => {
-        console.log('error')
+      }).catch((error) => {
+        console.log(error)
       })
     }
   }
@@ -698,5 +722,13 @@ export default {
   }
   .people-face{
     text-decoration:line-through
+  }
+  .name{
+    border-bottom: 1px solid #D0021B;
+  }
+  .show{
+    font-size: 12px;
+    color:#D0021B;
+    margin: 5px 0;
   }
 </style>

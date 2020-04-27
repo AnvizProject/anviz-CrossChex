@@ -117,10 +117,13 @@
             align="center"
             show-overflow-tooltip/>
           <el-table-column
-            prop="Pwd"
             label="密码"
             align="center"
-            show-overflow-tooltip/>
+            show-overflow-tooltip>
+            <template slot-scope="scope">
+              <el-checkbox v-model="scope.row.hasPwd" :true-label="1" :false-label="0" disabled/>
+            </template>
+          </el-table-column>
           <el-table-column
             prop="admingroupid"
             label="管理员组"
@@ -199,6 +202,7 @@ export default {
       })
       return userid
     }
+
   },
   mounted() {
     this.people_list()
@@ -224,6 +228,13 @@ export default {
       this.$store.dispatch('interactive/userList', { per_page: this.per_page.perPage, Deptid: this.$refs.DeptGroup.Deptid, page: this.per_page.page, ClientNumber: this.$refs.DeviceGroup.Clientid, search_key: this.$refs.search.input }).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
+        this.tableData.forEach((v, k) => {
+          if (v.Pwd === '') {
+            v.hasPwd = 0
+          } else {
+            v.hasPwd = 1
+          }
+        })
       }).catch(error => {
         console.log(error)
       })
@@ -300,7 +311,8 @@ export default {
           this.delete_from_device = 0
         }
         this.socketApi.sendSock(JSON.parse('{"cmd":"delete_from_device", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id.join(',') + '","delete_from_device": "' + this.delete_from_device + '"}}'), this.getConfigResult)
-      }).catch(() => {
+      }).catch((error) => {
+        console.log(error)
         this.$message({
           type: 'info',
           message: '已取消删除'
@@ -315,14 +327,14 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(check())
         if (check() === true) {
           this.delete_from_device = 1
         } else {
           this.delete_from_device = 0
         }
-        this.socketApi.sendSock(JSON.parse('{"cmd":"user_resign", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id.join(',') + '","delete_from_device": "' + this.delete_from_device + '"}}'), this.getConfigResult)
-      }).catch(() => {
+        this.socketApi.sendSock(JSON.parse('{"cmd":"user_resign", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '","delete_from_device": "' + this.delete_from_device + '"}}'), this.getConfigResult)
+      }).catch((error) => {
+        console.log(error)
         this.$message({
           type: 'info',
           message: '已取消删除'
@@ -331,13 +343,10 @@ export default {
     },
     // 设置权限
     set_authority() {
-      console.log(this.multipleSelection.length !== 1)
       if (this.multipleSelection.length !== 1) {
         this.$refs.authority.defaultKey = []
       } else {
-        console.log(this.multipleSelection.length)
         this.$refs.authority.defaultKey = this.multipleSelection[0].ClientNumbers.split(',')
-        console.log(this.$refs.authority.defaultKey)
       }
       this.$refs.authority.centerDialogVisible = true
     },
@@ -355,7 +364,6 @@ export default {
     },
     // 上传人员
     upload_user() {
-      console.log('{"cmd":"upload_user", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '" }}')
       this.socketApi.sendSock(JSON.parse('{"cmd":"upload_user", "data": {"ts":"' + timestamp + '","userids": "' + this.user_id_list.join(',') + '" }}'), this.getConfigResult)
     },
     // 上传模板
@@ -364,7 +372,6 @@ export default {
     },
     // 登记指纹上传到机器
     upload_infor() {
-      console.log('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","userids": "' + this.$refs.editDialog.userform.userid + '","clientid":"' + this.$refs.editDialog.userform.net + '"}}')
       this.socketApi.sendSock(JSON.parse('{"cmd":"upload_template", "data": {"ts":"' + timestamp + '","userids": "' + this.$refs.editDialog.userform.userid + '","clientid":"' + this.$refs.editDialog.userform.net + '","enroll_finger":"1"}}'), this.getConfigResult)
     },
     // 导出人员
@@ -394,7 +401,6 @@ export default {
     },
     // 导入人员
     import_personnel(item) {
-      console.log(item)
       const fileObj = item.file
       const form = new FormData()// FormData 对象
       form.append('file', fileObj)// 文件对象  'upload'是后台接收的参数名

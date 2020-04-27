@@ -8,9 +8,9 @@
       <span slot="title" class="dialog-header ">
         <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
         <div>打铃设置</div>
-        <el-button size="mini" type="primary" @click="save">确 定</el-button>
+        <el-button :disabled="disabled" size="mini" type="primary" @click="save">确 定</el-button>
       </span>
-      <div class="parameter">
+      <div v-loading="loading" class="parameter">
         <span class="parameter-item">
           <h4>打铃时间列表</h4>
           <ul class="time-list">
@@ -73,6 +73,8 @@ export default {
       centerDialogVisible: false,
       showClo: false,
       isactive: 0,
+      loading: true,
+      disabled: true,
       form: {
         ring_time: '',
         weekinfo: {

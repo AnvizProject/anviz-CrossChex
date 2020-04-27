@@ -147,8 +147,8 @@ export default {
         this.ter_list = response.FingerClient
         this.total = response.FingerClientList.total
         console.log(response)
-      }).catch(() => {
-        console.log('error')
+      }).catch(error => {
+        console.log(error)
       })
     },
     add() {
@@ -190,7 +190,8 @@ export default {
         }).catch((error) => {
           console.log(error)
         })
-      }).catch(() => {
+      }).catch((error) => {
+        console.log(error)
         this.$message({
           type: 'info',
           message: '已取消删除'
@@ -216,7 +217,8 @@ export default {
             this.$refs.Terminal.exceed = 'auto'
           }
           if (res.cmd === 'get_ring_setting') {
-            this.$refs.Ringing.centerDialogVisible = true
+            this.$refs.Ringing.loading = false
+            this.$refs.Ringing.disabled = false
             this.ring_data = res.data.ring_setting_list
           }
           if (res.cmd === 'ring_setting') {
@@ -250,6 +252,7 @@ export default {
     },
     // 获取打铃设置
     get_ringing_set() {
+      this.$refs.Ringing.centerDialogVisible = true
       this.socketApi.sendSock(JSON.parse('{"cmd":"get_ring_setting", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
     },
     // 打铃设置

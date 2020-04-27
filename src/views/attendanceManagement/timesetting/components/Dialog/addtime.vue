@@ -176,8 +176,8 @@ export default {
       this.$store.dispatch(url, this.form).then(response => {
         this.centerDialogVisible = false
         this.$emit('timelist')
-      }).catch(() => {
-        console.log(0)
+      }).catch(error => {
+        console.log(error)
       })
     },
     handleSelectionChange(val) {

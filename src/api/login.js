@@ -17,7 +17,6 @@ export function logout(data) {
 }
 
 export function modifyPassword(data) {
-  console.log(data)
   return request({
     url: '/api/opinfo/update_pwd',
     method: 'post',

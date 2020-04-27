@@ -67,7 +67,8 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$emit('copy_authority', this.form.num)
-      }).catch(() => {
+      }).catch((error) => {
+        console.log(error)
         this.$message({
           type: 'info',
           message: '已取消删除'

@@ -168,7 +168,6 @@ export default {
   methods: {
     getLeaveList() {
       this.$store.dispatch('interactive/getLeaveList', {}).then(response => {
-        console.log(response.LeaveClass)
         this.leaveList = response.LeaveClass
       }).catch(error => {
         console.log(error)

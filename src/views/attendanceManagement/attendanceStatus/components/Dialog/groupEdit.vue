@@ -53,7 +53,6 @@ export default {
         })
       } else if (this.de_data === 0) {
         this.form.devicegroupid = this.devicegroupid
-        console.log(this.form)
         this.$store.dispatch('interactive/Update_groups_list', this.form).then(response => {
           this.dialogVisible = false
           this.$parent.All_groups_list()

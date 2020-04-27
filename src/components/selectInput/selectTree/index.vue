@@ -50,9 +50,6 @@ export default {
       this.defaultCheckedKeys = [val]
     }
   },
-  mounted() {
-    console.log(this.options)
-  },
   methods: {
     popoverHide(checkedIds, checkedData) {
       this.$emit('DeptRow', { id: checkedIds, row: checkedData })

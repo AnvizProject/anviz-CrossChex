@@ -41,7 +41,7 @@ export default{
           value: 1,
           label: '普通用户'
         }, {
-          value: 2,
+          value: 3,
           label: '管理员'
         }],
         User_option5: [{

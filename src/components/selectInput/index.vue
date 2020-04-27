@@ -32,11 +32,6 @@ export default {
         }
       }
     }
-  },
-  methods: {
-    select(id) {
-      console.log(id)
-    }
   }
 }
 </script>

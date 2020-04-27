@@ -21,7 +21,7 @@
               <el-input v-model="form.db_password" :type="pwdType"/>
             </el-form-item>
             <el-form-item label="数据库名">
-              <el-select v-model="form.db_database" placeholder="请选择">
+              <el-select v-model="form.db_database" filterable placeholder="请选择">
                 <el-option v-for="(v,k) in db_name" :key="k" :label="v" :value="v"/>
               </el-select>
             </el-form-item>

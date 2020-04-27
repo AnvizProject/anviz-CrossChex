@@ -48,21 +48,17 @@ export default {
   methods: {
     // 部门新增、修改
     submit() {
-      console.log(this.row_data)
       this.form.SupDeptid = this.SupDeptid
-      console.log(this.form)
       if (this.de_data === 1) {
         this.$store.dispatch('interactive/Depart_create', this.form).then(response => {
           this.dialogVisible = false
           this.row_data.children.push({ label: this.form.DeptName, children: [], SupDeptid: response.dept.Deptid })
           this.form.DeptName = ''
-          console.log(response)
         }).catch(error => {
           console.log(error)
         })
       } else if (this.de_data === 0) {
         this.form.Deptid = this.SupDeptid
-        console.log(this.form)
         this.$store.dispatch('interactive/Depart_update', this.form).then(response => {
           this.dialogVisible = false
           this.$emit('form', this.form)
