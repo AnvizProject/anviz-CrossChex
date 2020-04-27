@@ -198,25 +198,25 @@
                       label="对应时段"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="OnTime"
+                      prop="OnTimeText"
                       label="应上班时间"
                       width="95px"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="OffTime"
+                      prop="OffTimeText"
                       width="95px"
                       label="应下班时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="SOntime"
+                      prop="ClassTime"
                       label="班次时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="EOntime"
+                      prop="AOntime2"
                       label="签到时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="EOfftime"
+                      prop="Aofftime2"
                       label="签退时间"
                       show-overflow-tooltip/>
                     <el-table-column
@@ -280,11 +280,11 @@
                       label="排定时长"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="AWorktime"
+                      prop="UWorktime"
                       label="工作时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="UWorktime"
+                      prop="AWorktime"
                       label="实际时间"
                       show-overflow-tooltip/>
                     <el-table-column
@@ -303,7 +303,7 @@
                       label="外出时间"
                       show-overflow-tooltip/>
                     <el-table-column
-                      prop="address"
+                      prop="ShiftTime"
                       label="排班时间"
                       show-overflow-tooltip/>
                   </el-table>
