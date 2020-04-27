@@ -3,7 +3,7 @@ import store from './store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { Message } from 'element-ui'
-import { getToken, getInfo } from '@/utils/auth' // getToken from cookie
+import { getToken, getInfo, removeToken } from '@/utils/auth' // getToken from cookie
 
 NProgress.configure({ showSpinner: false })// NProgress configuration
 
@@ -17,7 +17,12 @@ router.beforeEach((to, from, next) => {
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
       if (JSON.stringify(store.state.user.userInfo) === '{}') {
-        store.state.user.userInfo = JSON.parse(getInfo())
+        if (getInfo()) {
+          store.state.user.userInfo = JSON.parse(getInfo())
+        } else {
+          removeToken()
+          next({ path: '/' })
+        }
       } else {
         next()
       }
