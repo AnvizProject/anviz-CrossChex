@@ -7,9 +7,9 @@
     <span slot="title" class="dialog-header ">
       <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
       <div>{{ dialogtitle }}</div>
-      <el-button size="mini" type="primary" @click="save">确 定</el-button>
+      <el-button :loading="loading" size="mini" type="primary" @click="save">确 定</el-button>
     </span>
-    <div class="parameter">
+    <div v-loading="loading" class="parameter">
       <span class="parameter-item">
         <h4>终端网络参数</h4>
         <div class="parameter-item-wrap">
@@ -200,7 +200,8 @@ export default {
         wifiName: '',
         wifiPwd: ''
       },
-      result: {}
+      result: {},
+      loading: false
     }
   },
   mounted() {
