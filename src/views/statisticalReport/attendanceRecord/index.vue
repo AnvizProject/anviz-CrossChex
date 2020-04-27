@@ -192,13 +192,8 @@
             width="120px"
             label="验证方式编码"
             show-overflow-tooltip/>
-          <!-- <el-table-column label="验证方式">
-              <template slot-scope="scope">
-                {{ scope.row.AttFlag }}
-              </template>
-            </el-table-column> -->
           <el-table-column
-            prop="AttFlag"
+            prop="AttFlagName"
             align="center"
             label="验证方式"
             show-overflow-tooltip/>

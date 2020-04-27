@@ -139,7 +139,8 @@
         <el-tab-pane label="自定义字段" name="second">
           <div class="custom">
             <h4>自定义字段</h4>
-            <div class="parameter-item-wrap">
+            <div class="box">
+              <!-- <div class="parameter-item-wrap"> -->
               <div class="parameter-item-center">
                 <div>性别</div>
                 <div class="net-input-item">
@@ -160,8 +161,8 @@
                     class="input-box"/>
                 </div>
               </div>
-            </div>
-            <div class="parameter-item-wrap">
+              <!-- </div> -->
+              <!-- <div class="parameter-item-wrap"> -->
               <div class="parameter-item-center">
                 <div>联系电话</div>
                 <div class="net-input-item">
@@ -182,8 +183,8 @@
                     class="input-box"/>
                 </div>
               </div>
-            </div>
-            <div class="parameter-item-wrap">
+              <!-- </div> -->
+              <!-- <div class="parameter-item-wrap"> -->
               <div class="parameter-item-center">
                 <div>聘用日期</div>
                 <div class="net-input-item">
@@ -204,6 +205,17 @@
                     class="input-box"/>
                 </div>
               </div>
+              <div v-for="(v,k) in CustomField" :key="k" class="parameter-item-center">
+                <div>{{ v }}</div>
+                <div class="net-input-item">
+                  <el-input
+                    v-model="userform.OtherInfo[v]"
+                    placeholder="请输入内容"
+                    clearable
+                    class="input-box"/>
+                </div>
+              </div>
+            <!-- </div> -->
             </div>
           </div>
         </el-tab-pane>
@@ -332,19 +344,32 @@ export default {
         Picture: '',
         net: '1',
         face: null,
-        FingerInfo: {}
+        FingerInfo: {},
+        OtherInfo: {
+          demo: ''
+        }
       },
       defaultProps: {
         id: 'Deptid',
         children: 'SubDept',
         label: 'DeptName'
-      }
+      },
+      CustomField: []
     }
   },
   mounted() {
     this.register_list()
+    this.getField()
   },
   methods: {
+    // 获取自定义字段
+    getField() {
+      this.$store.dispatch('interactive/Base_para_details', {}).then(response => {
+        this.CustomField = response.BasePara.CustomField
+      }).catch(() => {
+        console.log('error')
+      })
+    },
     // 新增人员
     Adduser() {
       this.Last()
@@ -387,7 +412,8 @@ export default {
         Picture: '',
         net: '1',
         face: null,
-        FingerInfo: {}
+        FingerInfo: {},
+        OtherInfo: {}
       }
     },
     dept_id(data) {
@@ -399,6 +425,7 @@ export default {
       this.dialogtitle = '修改人员'
       this.isAdd = false
       this.userform = Object.assign({}, this.userform, this.rowdata)
+      this.userform.OtherInfo = JSON.parse(this.userform.OtherInfo)
       if (this.userform.admingroupid > 0) {
         this.usertype = 2
       }
@@ -433,7 +460,7 @@ export default {
           this.word2_color = '#3CA060'
           this.word2 = '已登记'
         }
-        console.log(response)
+        // console.log(response)
       }).catch(error => {
         console.log(error)
       })
@@ -443,7 +470,7 @@ export default {
       this.$store.dispatch('interactive/Terminal_list', { getClientsByType: 1 }).then(response => {
         this.fing = response.FingerClients
         this.humanFace = response.FaceClients
-        console.log(response)
+        // console.log(response)
       }).catch(() => {
         console.log('error')
       })
@@ -451,7 +478,6 @@ export default {
     // 最大id人员
     Last() {
       this.$store.dispatch('interactive/Last', {}).then(response => {
-        console.log(response)
         if (response.last_userinfo.length === 0) {
           this.userform.userid = 1
           this.userform.UserCode = 1
@@ -466,7 +492,7 @@ export default {
     // websocket接收回调函数返回数据的方法
     getConfigResult(res) {
       // console.log(this.fingerid)
-      console.log(res)
+      // console.log(res)
       if (res.ret === '10000') {
         return
       }
@@ -517,7 +543,8 @@ export default {
       } else {
         action = 'interactive/userEdit'
       }
-      console.log((this.userform))
+      this.userform.OtherInfo = JSON.stringify(this.userform.OtherInfo)
+      // return
       this.$store.dispatch(action, this.userform).then(response => {
         if (this.two === 1) {
           this.$message({
@@ -623,13 +650,22 @@ export default {
       margin-bottom: 0;
     }
   }
+  .box{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
   .parameter-item-center{
     width: 48%;
-    &:first-child{
-      margin-right: 2%;
-    }
-    &:last-child{
-      margin-left: 2%;
+    margin-bottom: 10px;
+    // &:first-child{
+    //   margin-right: 2%;
+    // }
+    // &:last-child{
+    //   margin-left: 2%;
+    // }
+    &:nth-child(odd){
+      margin-right: 4%
     }
     >div:first-child{
       font-weight: 600;
