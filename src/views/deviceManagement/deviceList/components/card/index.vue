@@ -279,6 +279,7 @@ export default {
       }
     }
     .el-card__body{
+      height: 43px;
       padding: 3px 0;
       background: #F4F4F4;
     }

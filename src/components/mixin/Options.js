@@ -2,20 +2,6 @@ export default{
   data() {
     return {
       options: {
-        User_option1: [
-          {
-            value: 1,
-            label: '市场部'
-          }, {
-            value: 2,
-            label: '研发部'
-          }, {
-            value: 3,
-            label: '人事部'
-          }, {
-            value: 4,
-            label: '财务部'
-          }],
         User_option2: [{
           value: 1,
           label: '1'
@@ -33,22 +19,22 @@ export default{
           label: '5'
         }],
         User_option3: [{
-          value: 1,
+          value: 0,
           label: '独立'
         }, {
-          value: 2,
+          value: 1,
           label: '卡+指纹'
         }, {
-          value: 3,
+          value: 2,
           label: '密码+指纹'
         }, {
-          value: 4,
+          value: 3,
           label: '卡+密码'
         }, {
-          value: 5,
+          value: 4,
           label: '编号+指纹'
         }, {
-          value: 6,
+          value: 5,
           label: '卡+密码+指纹'
         }],
         User_option4: [{
@@ -59,20 +45,56 @@ export default{
           label: '管理员'
         }],
         User_option5: [{
-          value: 1,
+          value: 0,
           label: '0'
         }, {
-          value: 2,
+          value: 1,
           label: '1'
         }, {
-          value: 3,
+          value: 2,
           label: '2'
         }, {
-          value: 4,
+          value: 3,
           label: '3'
         }, {
-          value: 5,
+          value: 4,
           label: '4'
+        }, {
+          value: 5,
+          label: '5'
+        }, {
+          value: 6,
+          label: '6'
+        }, {
+          value: 7,
+          label: '7'
+        }, {
+          value: 8,
+          label: '8'
+        }, {
+          value: 9,
+          label: '9'
+        }, {
+          value: 10,
+          label: '10'
+        }, {
+          value: 11,
+          label: '11'
+        }, {
+          value: 12,
+          label: '12'
+        }, {
+          value: 13,
+          label: '13'
+        }, {
+          value: 14,
+          label: '14'
+        }, {
+          value: 15,
+          label: '15'
+        }, {
+          value: 16,
+          label: '16'
         }],
         record_identifier: [{
           value: 0,

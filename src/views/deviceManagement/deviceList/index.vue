@@ -53,7 +53,7 @@ import cardSelect from './components/card'
 import Terminal from './components/terminal'
 import Ringing from './components/ringing'
 import Devicegroup from '@/components/Devicegroup'
-import Dialog from '../components/Dialog/edit'
+import Dialog from './components/edit'
 import progressSelf from '@/components/Progress'
 var timestamp = Date.parse(new Date()) / 1000
 export default {
@@ -152,6 +152,8 @@ export default {
       })
     },
     add() {
+      this.$refs.Dialog.disabled = false
+      this.$refs.Dialog.loading = false
       this.$refs.Dialog.form = ''
       this.$refs.Dialog.Prohibit = false
       this.$refs.Dialog.centerDialogVisible = true
@@ -159,13 +161,15 @@ export default {
       this.de_data = 1
     },
     edit() {
+      this.$refs.Dialog.loading = true
+      this.$refs.Dialog.disabled = true
+      this.$refs.Dialog.Prohibit = true
       this.$refs.Dialog.centerDialogVisible = true
       this.de_data = 0
       this.$refs.Dialog.dialogtitle = '修改终端'
-      this.$refs.Dialog.disabled = false
       this.$refs.Dialog.form_data = this.ter_list[this.key]
+      this.$refs.Dialog.disabled = false
       this.$refs.Dialog.loading = false
-      this.$refs.Dialog.Prohibit = true
     },
     del() {
       this.$confirm('是否确定删除此部门?', '提示', {
@@ -206,8 +210,10 @@ export default {
         })
         setTimeout(() => {
           if (res.cmd === 'get_device_param') {
-            this.$refs.Terminal.centerDialogVisible = true
             this.$refs.Terminal.form = res.data
+            this.$refs.Terminal.loading = false
+            this.$refs.Terminal.disabled = false
+            this.$refs.Terminal.exceed = 'auto'
           }
           if (res.cmd === 'get_ring_setting') {
             this.$refs.Ringing.centerDialogVisible = true
@@ -239,6 +245,7 @@ export default {
     },
     // 终端参数
     terminal_para() {
+      this.$refs.Terminal.centerDialogVisible = true
       this.socketApi.sendSock(JSON.parse('{"cmd":"get_device_param", "data": {"ts":"' + timestamp + '","clientid": "' + this.clientid + '"}}'), this.getConfigResult)
     },
     // 获取打铃设置

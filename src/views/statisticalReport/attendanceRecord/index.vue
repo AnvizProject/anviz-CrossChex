@@ -258,7 +258,22 @@ export default {
   },
   mounted: function() {
     this.personnel.unshift({ userid: '0', Name: '所有人员' })
-    this.getData({})
+    this.$confirm('确定要进行考勤统计分析吗?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      this.$message({
+        type: 'success',
+        message: '完成分析'
+      })
+      this.getData({})
+    }).catch(() => {
+      this.$message({
+        type: 'info',
+        message: '已取消'
+      })
+    })
   },
   methods: {
     getData(data) {

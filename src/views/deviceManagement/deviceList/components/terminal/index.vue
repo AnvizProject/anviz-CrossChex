@@ -8,310 +8,312 @@
       <div slot="title" class="dialog-header ">
         <el-button size="mini" @click="centerDialogVisible = false">取 消</el-button>
         <div>终端参数</div>
-        <el-button size="mini" type="primary">确 定</el-button>
+        <el-button :disabled="disabled" size="mini" type="primary">确 定</el-button>
       </div>
-      <div class="parameter">
-        <span class="parameter-item">
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div>比对精度</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value4" v-model="form.precision"/>
-                </span>
+      <div v-loading="loading" :style="{'overflow':exceed}" class="parameter-wrap">
+        <div class="parameter">
+          <span class="parameter-item">
+            <div class="parameter-item-wrap">
+              <div class="parameter-item-center">
+                <div>比对精度</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value4" v-model="form.precision"/>
+                  </span>
+                </div>
+              </div>
+              <div class="parameter-item-center">
+                <div>记录报警阈值（0-5000）</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <el-input
+                      v-model="form.record_alarm_value"
+                      placeholder="请输入内容"
+                      clearable
+                      class="input-box"/>
+                  </span>
+                </div>
               </div>
             </div>
-            <div class="parameter-item-center">
-              <div>记录报警阈值（0-5000）</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <el-input
-                    v-model="form.record_alarm_value"
-                    placeholder="请输入内容"
-                    clearable
-                    class="input-box"/>
-                </span>
+            <div class="parameter-item-wrap">
+              <div class="parameter-item-center">
+                <div>用户独立时段限制</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value5" v-model="form.user_period_limit"/>
+                  </span>
+                </div>
+              </div>
+              <div class="parameter-item-center">
+                <div>工作码提示功能</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value6" v-model="form.workcode_prompt"/>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div>用户独立时段限制</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value5" v-model="form.user_period_limit"/>
-                </span>
+            <div class="parameter-item-wrap">
+              <div class="parameter-item-center">
+                <div>实时监控功能</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value7" v-model="form.realtime_monitor"/>
+                  </span>
+                </div>
+              </div>
+              <div class="parameter-item-center">
+                <div>打铃功能</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value8" v-model="form.ring"/>
+                  </span>
+                </div>
               </div>
             </div>
-            <div class="parameter-item-center">
-              <div>工作码提示功能</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value6" v-model="form.workcode_prompt"/>
-                </span>
+            <div class="parameter-item-wrap">
+              <div class="parameter-item-center">
+                <div>智能更新指纹模板</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value9" v-model="form.update_fingerprint"/>
+                  </span>
+                </div>
+              </div>
+              <div class="parameter-item-center">
+                <div>韦根模式</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value10" v-model="form.wiegand_mode"/>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div>实时监控功能</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value7" v-model="form.realtime_monitor"/>
-                </span>
+            <div class="parameter-item-wrap">
+              <div class="parameter-item-center">
+                <div>固定韦根区号</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <el-input
+                      v-model="form.wiegand_area_code"
+                      placeholder="请输入内容"
+                      clearable
+                      class="input-box"/>
+                  </span>
+                </div>
+              </div>
+              <div class="parameter-item-center">
+                <div>继电器延时（0-15秒）</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <el-input
+                      v-model="form.relay_time"
+                      placeholder="请输入内容"
+                      clearable
+                      class="input-box"/>
+                  </span>
+                </div>
               </div>
             </div>
-            <div class="parameter-item-center">
-              <div>打铃功能</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value8" v-model="form.ring"/>
-                </span>
+            <div class="parameter-item-wrap">
+              <div class="parameter-item-center">
+                <div>门磁报警延时（0-250)</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <el-input
+                      v-model="form.door_alarm_delay"
+                      placeholder="请输入内容"
+                      clearable
+                      class="input-box"/>
+                  </span>
+                </div>
+              </div>
+              <div class="parameter-item-center">
+                <div>韦根输入卡号模式</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value11" v-model="form.card_mode"/>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div>智能更新指纹模板</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value9" v-model="form.update_fingerprint"/>
-                </span>
+            <div class="parameter-item-wrap">
+              <div class="parameter-item-center">
+                <div>反潜回</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value12" v-model="form.anti_passback"/>
+                  </span>
+                </div>
+              </div>
+              <div class="parameter-item-center">
+                <div>韦根选项（M7）</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value13" v-model="form.wiegand_option"/>
+                  </span>
+                </div>
               </div>
             </div>
-            <div class="parameter-item-center">
-              <div>韦根模式</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value10" v-model="form.wiegand_mode"/>
-                </span>
+            <div class="parameter-item-wrap">
+              <div class="parameter-item-center">
+                <div>保存无效卡记录</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value14" v-model="form.save_invalid_record"/>
+                  </span>
+                </div>
+              </div>
+              <div class="parameter-item-center">
+                <div>读取卡号模式</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value15" v-model="form.read_card_mode"/>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div>固定韦根区号</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <el-input
-                    v-model="form.wiegand_area_code"
-                    placeholder="请输入内容"
-                    clearable
-                    class="input-box"/>
-                </span>
+            <div class="parameter-item-wrap">
+              <div>
+                <div>重复考勤的时间间隔（0-250分钟）</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <el-input
+                      v-model="form.repeat_clock_time"
+                      placeholder="请输入内容"
+                      clearable
+                      class="input-box"/>
+                  </span>
+                </div>
               </div>
             </div>
-            <div class="parameter-item-center">
-              <div>继电器延时（0-15秒）</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <el-input
-                    v-model="form.relay_time"
-                    placeholder="请输入内容"
-                    clearable
-                    class="input-box"/>
-                </span>
+          </span>
+          <span class="parameter-item">
+            <div class="parameter-item-wrap">
+              <div class="parameter-item-center">
+                <div>管理密码（0-999999）</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <el-input
+                      v-model="form.pwd"
+                      placeholder="请输入内容"
+                      clearable
+                      class="input-box"/>
+                  </span>
+                </div>
+              </div>
+              <div class="parameter-item-center">
+                <div>休眠时间（0-250分钟）</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <el-input
+                      v-model="form.sleep_time"
+                      placeholder="请输入内容"
+                      clearable
+                      class="input-box"/>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div>门磁报警延时（0-250)</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <el-input
-                    v-model="form.door_alarm_delay"
-                    placeholder="请输入内容"
-                    clearable
-                    class="input-box"/>
-                </span>
+            <div class="parameter-item-wrap">
+              <div class="parameter-item-center">
+                <div>音量（0-5）</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <el-input
+                      v-model="form.volume"
+                      placeholder="请输入内容"
+                      clearable
+                      class="input-box"/>
+                  </span>
+                </div>
+              </div>
+              <div class="parameter-item-center">
+                <div>日期显示格式</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value16" v-model="form.date_format"/>
+                  </span>
+                </div>
               </div>
             </div>
-            <div class="parameter-item-center">
-              <div>韦根输入卡号模式</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value11" v-model="form.card_mode"/>
-                </span>
+            <div class="parameter-item-wrap">
+              <div>
+                <div>时间显示格式</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <selectbox :options="device_options.value17" v-model="form.time_format"/>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div>反潜回</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value12" v-model="form.anti_passback"/>
-                </span>
+            <div class="parameter-item-wrap">
+              <div class="parameter-item-center">
+                <div>公司名称</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <el-input
+                      v-model="form.company_name"
+                      placeholder="请输入内容"
+                      clearable
+                      class="input-box"/>
+                  </span>
+                </div>
+              </div>
+              <div class="parameter-item-center">
+                <div>公司地址</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <el-input
+                      v-model="form.address"
+                      placeholder="请输入内容"
+                      clearable
+                      class="input-box"/>
+                  </span>
+                </div>
               </div>
             </div>
-            <div class="parameter-item-center">
-              <div>韦根选项（M7）</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value13" v-model="form.wiegand_option"/>
-                </span>
+            <div class="parameter-item-wrap">
+              <div>
+                <div>公司传真</div>
+                <div class="net-input-item">
+                  <span class="icon-size icon-advanced"/>
+                  <span>
+                    <el-input
+                      v-model="form.fax"
+                      placeholder="请输入内容"
+                      clearable
+                      class="input-box"/>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div>保存无效卡记录</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value14" v-model="form.save_invalid_record"/>
-                </span>
-              </div>
-            </div>
-            <div class="parameter-item-center">
-              <div>读取卡号模式</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value15" v-model="form.read_card_mode"/>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="parameter-item-wrap">
-            <div>
-              <div>重复考勤的时间间隔（0-250分钟）</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <el-input
-                    v-model="form.repeat_clock_time"
-                    placeholder="请输入内容"
-                    clearable
-                    class="input-box"/>
-                </span>
-              </div>
-            </div>
-          </div>
-        </span>
-        <span class="parameter-item">
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div>管理密码（0-999999）</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <el-input
-                    v-model="form.pwd"
-                    placeholder="请输入内容"
-                    clearable
-                    class="input-box"/>
-                </span>
-              </div>
-            </div>
-            <div class="parameter-item-center">
-              <div>休眠时间（0-250分钟）</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <el-input
-                    v-model="form.sleep_time"
-                    placeholder="请输入内容"
-                    clearable
-                    class="input-box"/>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div>音量（0-5）</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <el-input
-                    v-model="form.volume"
-                    placeholder="请输入内容"
-                    clearable
-                    class="input-box"/>
-                </span>
-              </div>
-            </div>
-            <div class="parameter-item-center">
-              <div>日期显示格式</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value16" v-model="form.date_format"/>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="parameter-item-wrap">
-            <div>
-              <div>时间显示格式</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <selectbox :options="device_options.value17" v-model="form.time_format"/>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="parameter-item-wrap">
-            <div class="parameter-item-center">
-              <div>公司名称</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <el-input
-                    v-model="form.company_name"
-                    placeholder="请输入内容"
-                    clearable
-                    class="input-box"/>
-                </span>
-              </div>
-            </div>
-            <div class="parameter-item-center">
-              <div>公司地址</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <el-input
-                    v-model="form.address"
-                    placeholder="请输入内容"
-                    clearable
-                    class="input-box"/>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="parameter-item-wrap">
-            <div>
-              <div>公司传真</div>
-              <div class="net-input-item">
-                <span class="icon-size icon-advanced"/>
-                <span>
-                  <el-input
-                    v-model="form.fax"
-                    placeholder="请输入内容"
-                    clearable
-                    class="input-box"/>
-                </span>
-              </div>
-            </div>
-          </div>
-        </span>
+          </span>
+        </div>
       </div>
       <div slot="footer">
         <el-row>
@@ -348,29 +350,32 @@ export default {
       centerDialogVisible: false,
       showClo: false,
       Prohibit: false,
+      loading: true,
+      disabled: true,
+      exceed: 'hidden',
       form: {
-        precision: 1,
+        precision: '1',
         record_alarm_value: '1000',
-        repeat_clock_time: 0,
-        workcode_prompt: 0,
-        realtime_monitor: 0,
-        ring: 0,
-        update_fingerprint: 0,
-        wiegand_mode: 1,
+        repeat_clock_time: '0',
+        workcode_prompt: '0',
+        realtime_monitor: '0',
+        ring: '0',
+        update_fingerprint: '0',
+        wiegand_mode: '1',
         wiegand_area_code: null,
-        relay_time: 5,
-        door_alarm_delay: 0,
+        relay_time: '5',
+        door_alarm_delay: '0',
         card_mode: null,
         anti_passback: null,
         wiegand_option: null,
         save_invalid_record: null,
         read_card_mode: null,
-        user_period_limit: null,
+        user_period_limit: '0',
         pwd: 12345,
         sleep_time: 10,
-        volume: 3,
-        date_format: 0,
-        time_format: 0,
+        volume: '3',
+        date_format: '0',
+        time_format: '0',
         company_name: null,
         address: null,
         fax: null
@@ -379,28 +384,28 @@ export default {
   },
   methods: {
     reset() {
-      this.form.precision = 2
+      this.form.precision = '2'
       this.form.record_alarm_value = '1000'
-      this.form.repeat_clock_time = 0
-      this.form.workcode_prompt = 0
-      this.form.realtime_monitor = 0
-      this.form.ring = 0
-      this.form.update_fingerprint = 0
-      this.form.wiegand_mode = 1
+      this.form.repeat_clock_time = '0'
+      this.form.workcode_prompt = '0'
+      this.form.realtime_monitor = '0'
+      this.form.ring = '0'
+      this.form.update_fingerprint = '0'
+      this.form.wiegand_mode = '1'
       this.form.wiegand_area_code = null
-      this.form.relay_time = 5
-      this.form.door_alarm_delay = 0
+      this.form.relay_time = '5'
+      this.form.door_alarm_delay = '0'
       this.form.card_mode = null
       this.form.anti_passback = null
       this.form.wiegand_option = null
       this.form.save_invalid_record = null
       this.form.read_card_mode = null
-      this.form.user_period_limit = null
+      this.form.user_period_limit = '0'
       this.form.pwd = 12345
       this.form.sleep_time = 10
-      this.form.volume = 3
-      this.form.date_format = 0
-      this.form.time_format = 0
+      this.form.volume = '3'
+      this.form.date_format = '0'
+      this.form.time_format = '0'
       this.form.company_name = null
       this.form.address = null
       this.form.fax = null
@@ -420,6 +425,12 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  .parameter-wrap{
+    height: 100%;
+    >div:first-child{
+      font-weight: 600;
+    }
   }
   .parameter{
     display: flex;

@@ -108,7 +108,7 @@
                         <div class="grid-content bg-purple-light day">
                           <div class="day-top">统计规则</div>
                           <div class="day-down">
-                            <h5>单位设定</h5>
+                            <h4 class="mg10-up-down">单位设定</h4>
                             <el-form :inline="true" :model="statItem" class="demo-form-inline">
                               <el-form-item label="最小单位数">
                                 <el-input v-model="statItem.MinUnit" placeholder="请填写"/>
@@ -122,7 +122,7 @@
                               </el-form-item>
                             </el-form>
                             <el-divider/>
-                            <h5>舍入控制</h5>
+                            <h4 class="mg10-up-down">舍入控制</h4>
                             <el-radio-group v-model="statItem.SRControl">
                               <el-radio :label="0">向下舍弃</el-radio>
                               <el-radio :label="1">向上进入</el-radio>
