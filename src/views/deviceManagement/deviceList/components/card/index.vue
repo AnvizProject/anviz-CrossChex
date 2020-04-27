@@ -103,7 +103,7 @@ export default {
         })
         setTimeout(() => {
           if (res.cmd === 'get_net_param') {
-            this.$refs.setting.centerDialogVisible = true
+            this.$refs.setting.loading = false
             this.$refs.setting.form.IP.value = res.data.ip
             this.$refs.setting.form.gate.value = res.data.gate
             this.$refs.setting.form.netMask.value = res.data.mask
@@ -147,6 +147,8 @@ export default {
     },
     // 获取网络参数
     get_net_param() {
+      this.$refs.setting.loading = true
+      this.$refs.setting.centerDialogVisible = true
       this.socketApi.sendSock(JSON.parse('{"cmd":"get_net_param", "data": {"ts":"' + timestamp + '","clientid": "' + this.val.Clientid + '"}}'), this.getConfigResult)
     },
     // 设置网络参数

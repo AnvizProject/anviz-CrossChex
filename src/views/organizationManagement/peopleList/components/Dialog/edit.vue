@@ -425,7 +425,11 @@ export default {
       this.dialogtitle = '修改人员'
       this.isAdd = false
       this.userform = Object.assign({}, this.userform, this.rowdata)
-      this.userform.OtherInfo = JSON.parse(this.userform.OtherInfo)
+      if (this.userform.OtherInfo === null) {
+        this.userform.OtherInfo = '{}'
+      } else {
+        this.userform.OtherInfo = JSON.parse(this.userform.OtherInfo)
+      }
       if (this.userform.admingroupid > 0) {
         this.usertype = 2
       }
@@ -533,9 +537,7 @@ export default {
       }, 30000)
       this.socketApi.sendSock(JSON.parse('{"cmd":"enroll_finger", "data": {"ts":"' + timestamp + '","clientid": "' + Number(this.userform.net) + '","userid":"' + this.userform.userid + '","fingerid": "' + fingid + '"}}'), this.getConfigResult)
     },
-
     // 确定
-
     save() {
       let action = ''
       if (this.isAdd) {
@@ -566,7 +568,6 @@ export default {
             })
           })
         }
-
         this.$emit('people_list')
       }).catch(() => {
         console.log('error')
