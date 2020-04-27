@@ -114,7 +114,6 @@ export default {
       this.isactive = index
     },
     add_time() {
-      console.log(this.ring_data)
       for (let i = 0; i < this.ring_data.length; i++) {
         if (this.ring_data[i].ring_time === this.form.ring_time) {
           this.$message({
@@ -123,9 +122,7 @@ export default {
           })
           return
         } else if (Number(this.ring_data[i].week) === 0 && this.ring_data[i].ring_time === '00:00') {
-          console.log(i)
           const obj = Object.assign({}, this.form)
-          console.log(obj)
           this.$set(this.ring_data, i, obj)
           break
         }
