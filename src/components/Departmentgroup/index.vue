@@ -2,7 +2,7 @@
   <span class="filter-box">
     <el-button :style="{'color':fontColor}" size="mini" @mouseover.native="move" @mouseleave.native="leave">{{ value }}<i :class="ok ? 'icon-under' : 'icon-up'"/></el-button>
     <div class="filter-con">
-      <p class="filter-all">所有部门</p>
+      <p class="filter-all" @click="all_depart">所有部门</p>
       <div v-for="(item, index) in dep_list" :key="index">
         <p class="filter-title" >{{ item.DeptName }}</p>
         <div v-for="(item, index) in item.SubDept" :key="index" class="secondary">
@@ -53,6 +53,11 @@ export default {
       this.Deptid = Dept.Deptid
       this.value = Dept.DeptName
       this.fontColor = '#3CA060'
+      this.$emit('Dept_list')
+    },
+    all_depart() {
+      this.value = '所有部门'
+      this.Deptid = 0
       this.$emit('Dept_list')
     }
   }

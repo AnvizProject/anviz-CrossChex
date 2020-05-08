@@ -2,6 +2,8 @@
   <div id="app" class="selectTree">
     <select-tree :data = "options" :node-key="nodeKey" :checked-keys="defaultCheckedKeys" :default-props="defaultProps" @popoverHide="popoverHide" />
     <!-- <el-input v-model="input" placeholder="请输入内容"/> -->
+    <pre>{{ options }}</pre>
+    {{ defaultCheckedKeys }}
   </div>
 </template>
 
@@ -17,7 +19,7 @@ export default {
     },
     deptid: {
       type: Number,
-      default: 0
+      default: 1
     },
     defaultProps: {
       type: Object,

@@ -463,7 +463,6 @@ export default {
     // 人员详情
     people_detail() {
       this.$store.dispatch('interactive/userDetail', this.userform.userid).then(response => {
-        console.log(response)
         if (response.userinfo.Picture === null) {
           this.textHide = true
         } else {
@@ -550,7 +549,7 @@ export default {
         this.loading = false
         this.register_title = '登记超时，请重新登记！'
       }, 30000)
-      this.socketApi.sendSock(JSON.parse('{"cmd":"enroll_finger", "data": {"ts":"' + timestamp + '","clientid": "' + Number(this.userform.net) + '","userid":"' + this.userform.userid + '","fingerid": "' + fingid + '"}}'), this.getConfigResult)
+      this.socketApi.sendSock(JSON.parse('{"cmd":"enroll_finger", "data": {"ts":"' + timestamp + '","clientid": "' + Number(this.info.net) + '","userid":"' + this.userform.userid + '","fingerid": "' + fingid + '"}}'), this.getConfigResult)
     },
     // 确定
     save() {

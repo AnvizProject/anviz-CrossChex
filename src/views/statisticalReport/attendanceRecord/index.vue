@@ -281,6 +281,7 @@ export default {
           return
         }
         this.tableData = response.Checkinout
+        console.log(response)
       }).catch(error => {
         console.log(error)
       })
@@ -291,6 +292,7 @@ export default {
       this.$store.dispatch('interactive/userList', { Deptid: this.$refs.DeptGroup.Deptid }).then(response => {
         this.searchForm.Deptid = this.$refs.DeptGroup.Deptid
         this.personnel = response.userinfo_list.data
+        console.log(response)
         this.personnel.unshift({ userid: '0', Name: '全部人员' })
       }).catch(error => {
         console.log(error)
