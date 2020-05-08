@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>忘记考勤设置</span>
-        <el-button type="primary" size="small" style="float: right;">增加</el-button>
+        <el-button type="primary" size="small" style="float: right;" @click="add">增加</el-button>
       </div>
       <div class="text item">
         <div class="content-part">
@@ -118,6 +118,13 @@ export default {
         response.WorkCode.forEach((v, k) => {
           this.forget_options.value2.push({ value: v.WorkID, label: v.WorkName })
         })
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    add() {
+      this.$store.dispatch('interactive/Forget_check', (this.form)).then(response => {
+        console.log(response)
       }).catch(error => {
         console.log(error)
       })
