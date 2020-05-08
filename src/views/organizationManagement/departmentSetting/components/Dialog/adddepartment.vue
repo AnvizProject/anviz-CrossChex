@@ -13,7 +13,7 @@
       <el-form-item label="部门名称">
         <div style="display: flex">
           <span><selectTree :options = "dept" :node-key="nodeKey" :deptid="form.SupDeptid" multiple @DeptRow="getDeptRow"/></span>
-          <span style="width: 100%"><el-input v-model="form.DeptName" type="text" size="small"/></span>
+          <span style="width: 100%"><el-input v-model="form.DeptName" type="text"/></span>
         </div>
       </el-form-item>
     </el-form>

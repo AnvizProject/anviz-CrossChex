@@ -2,8 +2,6 @@
   <div id="app" class="selectTree">
     <select-tree :data = "options" :node-key="nodeKey" :checked-keys="defaultCheckedKeys" :default-props="defaultProps" @popoverHide="popoverHide" />
     <!-- <el-input v-model="input" placeholder="请输入内容"/> -->
-    <pre>{{ options }}</pre>
-    {{ defaultCheckedKeys }}
   </div>
 </template>
 
@@ -82,7 +80,7 @@ export default {
     }
     .tree-wrap{
       .el-input__inner{
-        height: 32px;
+        height: 40px;
       }
     }
     .el-input__inner{
@@ -98,6 +96,9 @@ export default {
   }
   .el-popover{
     min-width: 157px;
+  }
+  .el-popper{
+    margin-top: 5px !important;
   }
   .el-tree{
     width: auto !important;

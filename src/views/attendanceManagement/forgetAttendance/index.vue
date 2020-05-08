@@ -9,7 +9,7 @@
         <div class="content-part">
           <el-form class="data-selection" auto-complete="on" label-position="left" label-width="25%">
             <el-form-item label="工作部门">
-              <selectInput :options="dep_list" :default-props="defaultProps" :deptid ="Deptid"/>
+              <selectInput v-if="dep_list.length !== 0" ref="DeptGroup" :options="dep_list" :default-props="defaultProps" :deptid ="Deptid" @DeptRow="dept_id"/>
             </el-form-item>
             <el-form-item label="员工">
               <el-select v-model="form.userid" placeholder="人员">
@@ -21,10 +21,10 @@
               </el-select>
             </el-form-item>
             <el-form-item label="考勤状态">
-              <el-input v-model="form.CheckType"/>
+              <selectbox :options="forget_options.value1" v-model="form.CheckType"/>
             </el-form-item>
-            <el-form-item label="工作状态">
-              <el-input v-model="form.WorkType"/>
+            <el-form-item label="工种类型">
+              <selectbox :options="forget_options.value2" v-model="form.WorkType"/>
             </el-form-item>
             <el-form-item label="考勤时间">
               <el-date-picker
@@ -40,8 +40,10 @@
 </template>
 <script>
 import selectInput from '@/components/selectInput/selectTree'
+import selectbox from '@/components/select'
 export default {
   components: {
+    selectbox,
     selectInput
   },
   data() {
@@ -49,11 +51,15 @@ export default {
       personnel: [],
       Deptid: 1,
       dep_list: [],
+      forget_options: {
+        value1: [],
+        value2: []
+      },
       form: {
         userid: '0',
         CheckTime: '',
-        CheckType: null,
-        WorkType: null
+        CheckType: 0,
+        WorkType: 1
       },
       defaultProps: {
         id: 'Deptid',
@@ -64,28 +70,58 @@ export default {
   },
   mounted() {
     this.depart_list()
+    this.status_index()
+    this.getJobSetting()
+    this.Dept_list()
   },
   methods: {
+    // 部门id
+    dept_id(data) {
+      this.Deptid = data.id
+      console.log(data)
+      this.Dept_list()
+    },
     // 部门列表
     depart_list() {
       this.$store.dispatch('interactive/Depart_list', {}).then(response => {
         this.dep_list = response.dept_tree
+        console.log(response)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    // 人员列表
+    Dept_list() {
+      this.form.userid = '0'
+      this.$store.dispatch('interactive/userList', { Deptid: this.Deptid }).then(response => {
+        this.form.Deptid = this.$refs.DeptGroup.Deptid
+        this.personnel = response.userinfo_list.data
+        this.personnel.unshift({ userid: '0', Name: '全部人员' })
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    // 考勤状态
+    status_index() {
+      this.$store.dispatch('interactive/Status_index', {}).then(response => {
+        response.Status.forEach((v, k) => {
+          this.forget_options.value1.push({ value: v.StatusID, label: v.StatusText })
+        })
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    // 工种类型
+    getJobSetting() {
+      this.$store.dispatch('interactive/getJobList', {}).then(response => {
+        console.log(response)
+        response.WorkCode.forEach((v, k) => {
+          this.forget_options.value2.push({ value: v.WorkID, label: v.WorkName })
+        })
       }).catch(error => {
         console.log(error)
       })
     }
-    // // 人员列表
-    // Dept_list() {
-    //   this.form.userid = '0'
-    //   this.$store.dispatch('interactive/userList', { Deptid: this.$refs.DeptGroup.Deptid }).then(response => {
-    //     this.form.Deptid = this.$refs.DeptGroup.Deptid
-    //     this.personnel = response.userinfo_list.data
-    //     console.log(response)
-    //     this.personnel.unshift({ userid: '0', Name: '全部人员' })
-    //   }).catch(error => {
-    //     console.log(error)
-    //   })
-    // }
   }
 }
 </script>
@@ -95,54 +131,13 @@ export default {
       padding: 20px 0px;
       margin-bottom: 1em;
     }
-    .file-selection-wrap{
-      max-width: 900px;
-      margin: 0 auto;
-    }
     .el-form{
       max-width: 900px;
       margin: 0 auto;
-      &.file-selection{
-        display: flex;
-        width: 60%;
-        margin: 10px auto;
-        align-items: center;
-        span:first-child{
-          width: 25%;
-        }
-        span:nth-child(2){
-          width: 65%;
-        }
-        span:last-child{
-          width: 10%;
-          .el-button{
-            width: 100%;
-            height: 40px;
-            background: #D5DEE4 !important;
-            border-color: #D5DEE4 !important;
-            border-radius:0;
-          }
-        }
-      }
       &.data-selection{
         .el-form-item{
           width: 60%;
           margin: 10px auto;
-        }
-      }
-      .data-base-selection{
-        display: flex;
-        width: 60%;
-        margin: 10px auto;
-        align-items: center;
-        span:first-child{
-          width: 25%;
-        }
-        span:last-child{
-          width: 75%;
-          .el-select{
-            width: 100%;
-          }
         }
       }
     }
@@ -167,5 +162,10 @@ export default {
   .box-card {
     width: 100%;
     height: 100%;
+  }
+  .el-date-editor{
+    &.el-input{
+      width: 100% !important;
+    }
   }
 </style>
