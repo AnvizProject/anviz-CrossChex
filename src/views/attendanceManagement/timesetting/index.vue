@@ -79,6 +79,10 @@ export default {
     deleteRow(index, rows) {
       console.log(rows.Timeid)
       this.$store.dispatch('interactive/delete_time', rows.Timeid).then(response => {
+        this.$message({
+          message: '删除成功',
+          type: 'success'
+        })
         this.timelist()
       }).catch(error => {
         console.log(error)

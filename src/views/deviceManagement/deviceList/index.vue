@@ -308,17 +308,6 @@ export default {
       }
     }
   }
-  .el-main{
-    .icon{
-      font-size: 24px;
-      &.icon-edit{
-        color:#FA6400;
-      }
-      &.icon-recycle{
-        color:#D0021B;
-      }
-    }
-  }
 .main {
   display: grid;
   // grid-template-columns: repeat(4, 1fr);

@@ -228,6 +228,7 @@ export default {
       this.$store.dispatch('interactive/userList', { per_page: this.per_page.perPage, Deptid: this.$refs.DeptGroup.Deptid, page: this.per_page.page, ClientNumber: this.$refs.DeviceGroup.Clientid, search_key: this.$refs.search.input }).then(response => {
         this.tableData = response.userinfo_list.data
         this.total = response.userinfo_list.total
+        console.log(response)
         this.tableData.forEach((v, k) => {
           if (v.Pwd === '') {
             v.hasPwd = 0
@@ -343,11 +344,13 @@ export default {
     },
     // 设置权限
     set_authority() {
+      console.log(this.multipleSelection)
       if (this.multipleSelection.length !== 1) {
         this.$refs.authority.defaultKey = []
       } else {
-        this.$refs.authority.defaultKey = this.multipleSelection[0].ClientNumbers.split(',')
+        this.$refs.authority.defaultKey = this.multipleSelection[0].clientids.split(',')
       }
+      console.log(this.$refs.authority.defaultKey)
       this.$refs.authority.centerDialogVisible = true
     },
     // 复制权限

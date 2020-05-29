@@ -30,7 +30,8 @@
               <el-date-picker
                 v-model="form.CheckTime"
                 type="datetime"
-                placeholder="选择日期时间"/>
+                placeholder="选择日期时间"
+                value-format="yyyy-MM-dd HH:mm:ss"/>
             </el-form-item>
           </el-form>
         </div>
@@ -94,9 +95,10 @@ export default {
     Dept_list() {
       this.form.userid = '0'
       this.$store.dispatch('interactive/userList', { Deptid: this.Deptid }).then(response => {
-        this.form.Deptid = this.$refs.DeptGroup.Deptid
         this.personnel = response.userinfo_list.data
-        this.personnel.unshift({ userid: '0', Name: '全部人员' })
+        this.form.userid = response.userinfo_list.data[0].userid
+        // this.personnel.unshift({ userid: '0', Name: '全部人员' })
+        console.log(response)
       }).catch(error => {
         console.log(error)
       })
@@ -122,9 +124,15 @@ export default {
         console.log(error)
       })
     },
+    // 增加
     add() {
+      console.log(this.form)
       this.$store.dispatch('interactive/Forget_check', (this.form)).then(response => {
         console.log(response)
+        this.$message({
+          message: '设置成功',
+          type: 'success'
+        })
       }).catch(error => {
         console.log(error)
       })

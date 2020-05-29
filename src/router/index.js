@@ -62,6 +62,12 @@ export const constantRouterMap = [
         name: 'Rights Groups',
         line: true,
         meta: { title: 'System_Settings.Rights_Groups', icon: 'icon-period' }
+      },
+      {
+        path: '/systemSettings/registered',
+        component: () => import('@/views/systemSettings/registered/index'),
+        name: 'Registered',
+        meta: { title: 'System_Settings.Registered', icon: 'icon-period' }
       }
     ]
   },
@@ -110,6 +116,7 @@ export const constantRouterMap = [
       {
         path: '/deviceManagement/accessControl',
         name: 'Access Control',
+        line: true,
         component: () => import('@/views/deviceManagement/accessControl/index'),
         meta: { title: 'Device_Management.Access_Control', icon: 'icon-door-setting' }
       }
@@ -200,6 +207,7 @@ export const constantRouterMap = [
             path: '/attendanceManagement/attendanceSetting/leaveWork',
             component: () => import('@/views/attendanceManagement/leaveWork/index'),
             name: 'Leave Work',
+            line: true,
             meta: { title: 'Attendance_Management.Leave_Work', icon: 'icon-ac' }
           },
           {
@@ -212,6 +220,7 @@ export const constantRouterMap = [
             path: '/attendanceManagement/attendanceSetting/lateLeave',
             component: () => import('@/views/attendanceManagement/lateLeave/index'),
             name: 'Late Leave',
+            line: true,
             meta: { title: 'Attendance_Management.Late_Leave', icon: 'icon-ac' }
           },
           {

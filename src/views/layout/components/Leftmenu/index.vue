@@ -35,7 +35,7 @@
               <el-menu-item :index="v.path.split('/')[2]">
                 <!-- <template slot="title"> -->
                 <span :class="v.meta.icon" class="icon"/>
-                <span v-if="!isCollapse" slot="title">{{ $t(v.meta.title) }}</span>
+                <span v-if="!isCollapse" slot="title" :style="{textDecoration: v.line===true?'line-through':'none'}">{{ $t(v.meta.title) }}</span>
                 <!-- </template> -->
               </el-menu-item>
             </el-tooltip>

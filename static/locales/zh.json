@@ -10,7 +10,8 @@
     "Database_Settings":"数据库设置",
     "Basic_Parameters":"基本参数",
     "Admin_Management":"管理员管理",
-    "Rights_Groups":"权限组管理"
+    "Rights_Groups":"权限组管理",
+    "Registered":"注册"
   },
   "Organization_Management":{
     "People_List":"人员列表",

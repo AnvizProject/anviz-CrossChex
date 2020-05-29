@@ -57,6 +57,7 @@ export default {
         v.FingerClient.forEach((m, n) => {
           m.label = m.ClientName
           m.id = m.Clientid
+          m.number = m.ClientNumber
         })
       })
       return treeData
@@ -64,7 +65,9 @@ export default {
   },
   watch: {
     defaultKey(val) {
-      this.$refs.tree.setCheckedKeys(val)
+      this.$nextTick(function() {
+        this.$refs.tree.setCheckedKeys(val)
+      })
     }
   },
   methods: {

@@ -4,10 +4,10 @@ export default{
       device_options: {
         value1: [
           {
-            value: '0',
+            value: 0,
             label: '指纹/卡/Facepass7'
           }, {
-            value: '1',
+            value: 1,
             label: 'Facepass Pro'
           }
         ],

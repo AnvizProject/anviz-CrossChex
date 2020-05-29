@@ -31,6 +31,7 @@ export default {
   methods: {
     handleSizeChange(val) {
       this.$emit('per_page', { perPage: val, page: 1 })
+      this.pageSize = val
     },
     handleCurrentChange(val) {
       this.$emit('page', { perPage: this.pageSize, page: val })
@@ -51,6 +52,7 @@ export default {
       background-color: #ffffff;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
       height: 40px !important;
+      padding: 0 15px;
     }
     .el-main{
       padding: 15px 15px 0;

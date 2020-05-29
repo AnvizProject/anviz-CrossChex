@@ -15,7 +15,6 @@
   color: $color-re;
   border-color: $color-dd;
   border: 1px solid $color-dd;
-  border-radius: 0;
   transition: $transition-base;
 
   @media (max-width: $mobile-max-width) {
@@ -65,7 +64,6 @@ form {
   .el-form-item {
     .el-form-item__label {
       font-weight: normal;
-      text-align: left;
     }
 
     &.group {

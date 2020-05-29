@@ -1,10 +1,10 @@
 import request from '@/utils/request'
-// 忘记考勤
-export function forget_check(data) {
+
+// 数据管理
+export function data_manage(data) {
   return request({
-    url: '/api/check_log/forget',
+    url: '/api/data_manage/index',
     method: 'post',
     data
   })
 }
-

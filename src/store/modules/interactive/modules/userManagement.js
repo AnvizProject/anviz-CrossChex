@@ -34,7 +34,6 @@ const userManagement = {
     },
     // 人员修改
     userEdit({ commit }, userEditInfo) {
-      userEditInfo.access_token = store.getters.token
       return new Promise((resolve, reject) => {
         useredit(userEditInfo).then(response => {
           resolve()

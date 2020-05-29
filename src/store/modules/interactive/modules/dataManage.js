@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-// /*忘记考勤*/
-import { forget_check } from '@/api/forget'
+// /*数据管理*/
+import { data_manage } from '@/api/dataManage'
 import store from '../../..'
-const forget = {
+const dataManage = {
   state: {
   },
   mutations: {
@@ -11,10 +11,10 @@ const forget = {
   },
   actions: {
     // 基本参数详情
-    Forget_check({ commit }, forget_check_data) {
-      forget_check_data.access_token = store.getters.token
+    Data_manage({ commit }, Data_manage_data) {
+      Data_manage_data.access_token = store.getters.token
       return new Promise((resolve, reject) => {
-        forget_check(forget_check_data).then(response => {
+        data_manage(Data_manage_data).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -23,4 +23,4 @@ const forget = {
     }
   }
 }
-export default forget
+export default dataManage

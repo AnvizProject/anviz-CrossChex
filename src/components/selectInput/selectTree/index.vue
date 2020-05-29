@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="selectTree">
+    {{ deptid }}
     <select-tree :data = "options" :node-key="nodeKey" :checked-keys="defaultCheckedKeys" :default-props="defaultProps" @popoverHide="popoverHide" />
     <!-- <el-input v-model="input" placeholder="请输入内容"/> -->
   </div>
@@ -46,7 +47,8 @@ export default {
     }
   },
   watch: {
-    deptid(val) {
+    deptid: function(val) {
+      console.log(val)
       this.defaultCheckedKeys = [val]
     }
   },

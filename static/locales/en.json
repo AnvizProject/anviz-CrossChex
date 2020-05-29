@@ -11,7 +11,8 @@
     "Database_Settings":"Database Settings",
     "Basic_Parameters":"Basic Parameters",
     "Admin_Management":"Administrator Management",
-    "Rights_Groups":"Authority Group Management"
+    "Rights_Groups":"Authority Group Management",
+    "Registered" :"Registered"
   }, 
 
   "Organization_Management":{
