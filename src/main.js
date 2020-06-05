@@ -26,11 +26,20 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 Vue.prototype.socketApi = socketApi
+const startVue = function() {
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    i18n,
+    render: h => h(App)
+  })
+}
 
-new Vue({
-  el: '#app',
-  router,
-  store,
-  i18n,
-  render: h => h(App)
+const start = async() => {
+  await store.dispatch('Register', { cmd: 'check_register' }).then(response => {
+  })
+}
+start().then(() => {
+  startVue()
 })

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-// /*系统设置->考勤参数*/
+// /*考勤管理->考勤参数*/
 import { getLeaveList, createLeave, updateLeave, delLeave } from '@/api/leaveSetting'
 import store from '../../..'
 const attendancePara = {

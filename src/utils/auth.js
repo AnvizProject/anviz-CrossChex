@@ -29,3 +29,4 @@ export function getInfo() {
 export function setInfo(userinfo) {
   return Cookies.set('UserInfo', userinfo)
 }
+

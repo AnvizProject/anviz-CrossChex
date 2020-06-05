@@ -25,6 +25,7 @@ import Delimiter from '../views/layout/Delimiter'
 **/
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
+  { path: '/registered', component: () => import('@/views/registered/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
   { path: '/', redirect: '/systemSettings', component: Layout, hidden: true },
   // 系统设置
@@ -62,12 +63,6 @@ export const constantRouterMap = [
         name: 'Rights Groups',
         line: true,
         meta: { title: 'System_Settings.Rights_Groups', icon: 'icon-period' }
-      },
-      {
-        path: '/systemSettings/registered',
-        component: () => import('@/views/systemSettings/registered/index'),
-        name: 'Registered',
-        meta: { title: 'System_Settings.Registered', icon: 'icon-period' }
       }
     ]
   },
@@ -207,7 +202,6 @@ export const constantRouterMap = [
             path: '/attendanceManagement/attendanceSetting/leaveWork',
             component: () => import('@/views/attendanceManagement/leaveWork/index'),
             name: 'Leave Work',
-            line: true,
             meta: { title: 'Attendance_Management.Leave_Work', icon: 'icon-ac' }
           },
           {
@@ -220,7 +214,6 @@ export const constantRouterMap = [
             path: '/attendanceManagement/attendanceSetting/lateLeave',
             component: () => import('@/views/attendanceManagement/lateLeave/index'),
             name: 'Late Leave',
-            line: true,
             meta: { title: 'Attendance_Management.Late_Leave', icon: 'icon-ac' }
           },
           {

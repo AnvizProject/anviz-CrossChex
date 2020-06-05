@@ -29,7 +29,7 @@ export default {
   .search{
     width: 100%;
     height: 32px;
-    padding: 0 30px;
+    padding: 0 25px;
     display: flex;
     align-items: center;
     justify-content: flex-end;

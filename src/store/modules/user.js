@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 import { login, logout, modifyPassword } from '@/api/login'
+import { register } from '@/api/register'
 import { getToken, setToken, removeToken, setInfo } from '@/utils/auth'
 
 const user = {
@@ -8,6 +9,7 @@ const user = {
     token: getToken(),
     name: '123',
     userInfo: {},
+    statusCode: '',
     avatar: '',
     roles: []
   },
@@ -18,6 +20,9 @@ const user = {
     },
     SET_INFO: (state, userInfo) => {
       state.userInfo = userInfo
+    },
+    SET_CODE: (state, statusCode) => {
+      state.statusCode = statusCode
     },
     SET_NAME: (state, name) => {
       state.name = name
@@ -53,25 +58,6 @@ const user = {
       })
     },
 
-    // 获取用户信息
-    // GetInfo({ commit, state }) {
-    //   return new Promise((resolve, reject) => {
-    //     getInfo(state.token).then(response => {
-    //       const data = response.data
-    //       if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-    //         commit('SET_ROLES', data.roles)
-    //       } else {
-    //         reject('getInfo: roles must be a non-null array !')
-    //       }
-    //       commit('SET_NAME', data.name)
-    //       commit('SET_AVATAR', data.avatar)
-    //       resolve(response)
-    //     }).catch(error => {
-    //       reject(error)
-    //     })
-    //   })
-    // },
-
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
@@ -94,11 +80,22 @@ const user = {
         resolve()
       })
     },
+    // 修改密码
     EditPwd({ commit, state }, EditPwd_data) {
-      EditPwd_data.access_token = state.token
       return new Promise((resolve, reject) => {
         modifyPassword(EditPwd_data).then(() => {
           resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 注册
+    Register({ commit, state }, Register_data) {
+      return new Promise((resolve, reject) => {
+        register(Register_data).then(response => {
+          commit('SET_CODE', response.error_code)
+          resolve(response)
         }).catch(error => {
           reject(error)
         })

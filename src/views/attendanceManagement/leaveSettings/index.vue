@@ -185,6 +185,7 @@ export default {
       console.log(key)
       console.log(this.leaveList[key])
       this.form = Object.assign({}, this.leaveList[key])
+      console.log(this.form)
     },
     edit() {
       this.$store.dispatch('interactive/updateLeave', this.form).then(response => {
